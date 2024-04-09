@@ -1,0 +1,12 @@
+body {
+    text-transform: capitalize;
+    height: 500vh;
+}
+
+/* header styling */
+
+.cryptoLogoStyling{
+    width: 100px;
+    height: 100px;
+}
+
