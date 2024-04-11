@@ -171,17 +171,26 @@ document.body.appendChild(headerContainer);
 const mainHeader = document.createElement('h1');
 mainHeader.setAttribute('id', 'main-header');
 mainHeader.setAttribute('class', 'mainHeaderStyle');
+mainHeader.setAttribute('class', 'parallax-header');
+mainHeader.style.fontWeight = "bold"; // Set the font weight to bold
+mainHeader.style.fontSize = "25px"; // Set the font size to 20 pixels
+
+mainHeader.style.backgroundImage = "url('../assets/cr.png')";
 mainHeader.textContent = "Cryptonite";
 
 headerContainer.appendChild(mainHeader);
 
+document.addEventListener('scroll', function () {
+    const scrollTop = window.scrollY;
+    const parallaxSpeed = 0.5; // Adjust this value to control the parallax speed
+    mainHeader.style.transform = `translateY(${scrollTop * parallaxSpeed}px)`;
+});
+// const logo = document.createElement('img');
+// logo.setAttribute('src', '../assets/cryptocurrency-coins-logo-design_652638-28 Background Removed.png');
+// logo.setAttribute('alt', 'this is my crypto logo');
+// logo.setAttribute('class', 'cryptoLogoStyling');
 
-const logo = document.createElement('img');
-logo.setAttribute('src', '../assets/cryptocurrency-coins-logo-design_652638-28 Background Removed.png');
-logo.setAttribute('alt', 'this is my crypto logo');
-logo.setAttribute('class', 'cryptoLogoStyling');
-
-headerContainer.appendChild(logo);
+// headerContainer.appendChild(logo);
 
 const navbarContainer = document.createElement('div');
 navbarContainer.setAttribute('class', 'navContainer');
@@ -209,8 +218,8 @@ navbar.innerHTML = `
         </li>
        
       </ul>
-      <form class="d-flex ms-auto" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+      <form class="d-flex ms-auto searchStyle" role="search">
+        <input class="form-control me-2 searchStyle" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-dark" type="submit">Search</button>
       </form>
     </div>
@@ -237,11 +246,16 @@ async function getCoins() {
 
         const first25Coins = data.slice(0, 25);
         console.log(first25Coins);
-        const section = document.createElement('section');
-        section.setAttribute('id', 'coin-section');
-        document.body.appendChild(section);
+
+        const cardContainer = document.createElement('section');
+        cardContainer.setAttribute('id', 'coin-container');
+        document.body.appendChild(cardContainer);
+
+
+
 
         first25Coins.forEach(coin => {
+
             const cardOutput = document.createElement('div');
             cardOutput.setAttribute('class', 'cardOutputStyle mb-3 col-md-4');
             cardOutput.setAttribute('id', 'card-coin-output');
@@ -251,23 +265,33 @@ async function getCoins() {
 
             <div class="row g-0">
             <div class="col-md-4">
-                <img src="../assets/crypto-card-logo.jpg" class="img-fluid rounded-start" alt="a logo picture">
+                <img src="../assets/card-logo.png" class="img-fluid rounded-start" alt="a logo picture">
             </div>
             <div class="col-md-8">
                 <div class="card-body text-bg-light text-dark">
                     <h5 class="card-title">${coin.symbol}</h5>
                     <p class="card-text">${coin.name}</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
+                    <p>
+                    <button class="btn btn-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    more info </button>
+                  </p>
+                  <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                    coin info
+                    </div>
+                  </div>
+             </div>
             </div>
         </div>
         </div>
 
             `;
 
-            section.appendChild(cardOutput);
+            cardContainer.appendChild(cardOutput);
 
         });
+        document.body.style.height = `${window.innerHeight}px`;
+
         return first25Coins;
 
     } catch (err) {
@@ -280,7 +304,7 @@ getCoins();
 let isAdditionalInfoDisplayed = {
     'home-id': false,
     'live-reports-id': false,
-    'about-id': false // Add more IDs and initial states as needed
+    'about-id': false
 };
 
 function showNavInfo(navItemId) {
@@ -300,9 +324,12 @@ function showNavInfo(navItemId) {
     isAdditionalInfoDisplayed[navItemId] = !isAdditionalInfoDisplayed[navItemId];
 }
 
-// Add click event listeners for each navbar item
-const navbarItems = ['home-id', 'live-reports-id', 'about-id']; // Add more IDs as needed
+const navbarItems = ['home-id', 'live-reports-id', 'about-id'];
 navbarItems.forEach(itemId => {
     document.getElementById(itemId).addEventListener('click', () => showNavInfo(itemId));
 });
+
+
+
+
 
