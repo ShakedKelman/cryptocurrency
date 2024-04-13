@@ -258,7 +258,7 @@ async function getCoins() {
             cardOutput.setAttribute('class', 'cardOutputStyle mb-3 col-md-4');
             cardOutput.setAttribute('id', 'card-coin-output');
             const coinInfoId = `coin-info-id-${index}`;
-            cardOutput.setAttribute('id', coinInfoId);
+            cardOutput.setAttribute('id', `card-coin-output-${index}`);
 
 
             cardOutput.innerHTML = `
@@ -277,7 +277,7 @@ async function getCoins() {
                     more info </button>
                   </p>
                   <div class="collapse" id="collapseExample">
-                    <div class="card card-body" id="coin-info-id">
+                    <div class="card card-body" id="coin-info-id-${index}">
                     </div>
                   </div>
              </div>
@@ -292,7 +292,7 @@ async function getCoins() {
             // Add event listener to "more info" button
             const moreInfoButton = cardOutput.querySelector('.more-info-btn');
             moreInfoButton.addEventListener('click', async () => {
-                await getCoinInfo(coin.id, 'coin-info-id');
+                await getCoinInfo(coin.id, coinInfoId);
             });
 
         });
