@@ -252,13 +252,14 @@ async function getCoins() {
         document.body.appendChild(cardContainer);
 
 
-
-
-        first25Coins.forEach(coin => {
+        first25Coins.forEach((coin, index) => {
 
             const cardOutput = document.createElement('div');
             cardOutput.setAttribute('class', 'cardOutputStyle mb-3 col-md-4');
             cardOutput.setAttribute('id', 'card-coin-output');
+            const coinInfoId = `coin-info-id-${index}`;
+            cardOutput.setAttribute('id', coinInfoId);
+
 
             cardOutput.innerHTML = `
             <div class="card mb-3 border border-dark" style="max-width: 540px;">
@@ -272,12 +273,11 @@ async function getCoins() {
                     <h5 class="card-title">${coin.symbol}</h5>
                     <p class="card-text">${coin.name}</p>
                     <p>
-                    <button class="btn btn-dark btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button class="btn btn-dark btn-sm more-info-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     more info </button>
                   </p>
                   <div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                    coin info
+                    <div class="card card-body" id="coin-info-id">
                     </div>
                   </div>
              </div>
@@ -288,6 +288,12 @@ async function getCoins() {
             `;
 
             cardContainer.appendChild(cardOutput);
+
+            // Add event listener to "more info" button
+            const moreInfoButton = cardOutput.querySelector('.more-info-btn');
+            moreInfoButton.addEventListener('click', async () => {
+                await getCoinInfo(coin.id, 'coin-info-id');
+            });
 
         });
         document.body.style.height = `${window.innerHeight}px`;
@@ -330,6 +336,27 @@ navbarItems.forEach(itemId => {
 });
 
 
+async function getCoinInfo(coinId, coinInfoId) {
+    try {
+        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
+        const data = await response.json();
+
+        const moreInfoData = document.getElementById(coinInfoId);
+        moreInfoData.innerHTML = `
+         <img src="${data.image.small}">
+         <div>
+         market price:${data.market_data.current_price.usd}$
+         ${data.market_data.current_price.eur}€
+         ${data.market_data.current_price.ils}₪
+         </div>
+         `
 
 
+        console.log(data.id);
+        console.log("Coin ID:", coinId);
+        console.log("card ID:", coinInfoId);
 
+    } catch (error) {
+        console.log("an error happened");
+    }
+}
