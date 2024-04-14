@@ -164,7 +164,7 @@ const dataDebug =
         }
     ];
 
-    const cache={};
+const cache = {};
 
 
 const headerContainer = document.createElement('header');
@@ -355,8 +355,14 @@ getCoins();
 async function getCoinInfo(coinId, coinInfoId) {
     try {
         startProgress();
-        const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
-        const data = await response.json();
+        let data;
+        if (!cache.hasOwnProperty(coinId) ) {
+            const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
+            data = await response.json();
+            cache[coinId] = data;
+        } else {
+            data = cache[coinId];
+        }
 
         const moreInfoData = document.getElementById(coinInfoId);
         moreInfoData.innerHTML = `
@@ -369,13 +375,13 @@ async function getCoinInfo(coinId, coinInfoId) {
         </div>
     `;
 
-cache[coinId]
         console.log(data.id);
         console.log("Coin ID:", coinId);
         console.log("card ID:", coinInfoId);
 
     } catch (error) {
         console.log("an error happened");
+        console.log(error);
     }
     endProgress();
 }
