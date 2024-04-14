@@ -164,6 +164,9 @@ const dataDebug =
         }
     ];
 
+    const cache={};
+
+
 const headerContainer = document.createElement('header');
 headerContainer.setAttribute('class', 'headerContainer');
 document.body.appendChild(headerContainer);
@@ -195,7 +198,6 @@ document.addEventListener('scroll', function () {
 const navbarContainer = document.createElement('div');
 navbarContainer.setAttribute('class', 'navContainer');
 document.body.appendChild(navbarContainer);
-
 document.body.appendChild(headerContainer);
 // Create navbar element
 const navbar = document.createElement('nav');
@@ -231,6 +233,16 @@ navbar.innerHTML = `
 
 navbarContainer.appendChild(navbar);
 document.body.appendChild(navbarContainer);
+
+const progressBarContainer = document.createElement('div');
+progressBarContainer.setAttribute('id', 'progress-bar-container');
+navbarContainer.appendChild(progressBarContainer);
+
+const progressBar = document.createElement('div');
+progressBar.setAttribute('id', 'progress-bar');
+progressBarContainer.appendChild(progressBar);
+
+
 
 let isAdditionalInfoDisplayed = {
     'home-id': false,
@@ -305,11 +317,11 @@ async function getCoins() {
                     <h5 class="card-title">${coin.symbol}</h5>
                     <p class="card-text">${coin.name}</p>
                     <p>
-                    <button class="btn btn-dark btn-sm more-info-btn-${index}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button class="btn btn-dark btn-sm more-info-btn-${index}" data-bs-target="#collapseExample${index}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     more info </button>
                   </p>
-                  <div class="collapse" id="collapseExample">
-                    <div class="card card-body" id="coin-info-id-${index}">
+                  <div class="collapse multi-collapse" aria-expanded="false" id="collapseExample${index}">
+                    <div class="card card-body cardIndex${index}" id="coin-info-id-${index}">
                     </div>
                   </div>
              </div>
@@ -326,7 +338,7 @@ async function getCoins() {
             moreInfoButton.addEventListener('click', async () => {
                 await getCoinInfo(coin.id, coinInfoId);
             });
-            
+
         });
         document.body.style.height = `${window.innerHeight}px`;
 
@@ -342,6 +354,7 @@ getCoins();
 
 async function getCoinInfo(coinId, coinInfoId) {
     try {
+        startProgress();
         const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
         const data = await response.json();
 
@@ -355,8 +368,8 @@ async function getCoinInfo(coinId, coinInfoId) {
            <br>  in ils-${data.market_data.current_price.ils}₪
         </div>
     `;
-    
 
+cache[coinId]
         console.log(data.id);
         console.log("Coin ID:", coinId);
         console.log("card ID:", coinInfoId);
@@ -364,34 +377,34 @@ async function getCoinInfo(coinId, coinInfoId) {
     } catch (error) {
         console.log("an error happened");
     }
+    endProgress();
 }
 
-const progressBar=document.createElement('div');
-progressBar.setAttribute('id','progress-bar');
-document.body.appendChild(progressBar);
-
-const progressBarInner = document.createElement('div');
-progressBarInner.setAttribute('id', 'progress-bar-inner');
-progressBar.appendChild(progressBarInner);
 
 
-
-$(function() {
-    $("#progress-bar").progressbar({
-      value: 0 // Initial value (0%)
-    });
-
-    // Simulate progress (increase value over time)
-    function simulateProgress() {
-      var val = $("#progress-bar").progressbar("value");
-      val = val + 10; // Increase value by 10%
-      if (val <= 100) {
+// Simulate progress (increase value over time)
+function simulateProgress() {
+    var val = $("#progress-bar").progressbar("value");
+    val = val + 10; // Increase value by 10%
+    if (val <= 100) {
         $("#progress-bar").progressbar("value", val);
         setTimeout(simulateProgress, 1000); // Update every 1 second
-      }
     }
+}
+
+
+const startProgress = function () {
+    $("#progress-bar").progressbar({
+        value: 0 // Initial value (0%)
+    });
 
     simulateProgress(); // Start the progress simulation
-  });
+};
 
-  simulateProgress(); // This will manually start the progress simulation
+const endProgress = function () {
+    $("#progress-bar").progressbar({
+        value: 100 // Initial value (0%)
+    });
+
+};
+
