@@ -47,3 +47,34 @@ body {
     justify-content: center; /* Align items horizontally */
     align-items: center; /* Align items vertically */
 }
+
+
+/* coin output */
+.coinInfoImg{
+    width: 30px;
+    height: 30px;
+}
+
+.coinInfoDiv{
+    text-align: left;
+    gap: 10px;
+    font-size: small;
+}
+
+
+/* progressbar */
+#progress-bar {
+    width: 100px;
+    height: 200px;
+    background-color: #131212;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+/* #progress-bar-inner {
+    width: 0%;
+    height: 100%;
+    background-color: #007bff;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+} */

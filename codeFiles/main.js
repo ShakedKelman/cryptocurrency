@@ -231,6 +231,38 @@ navbar.innerHTML = `
 
 navbarContainer.appendChild(navbar);
 document.body.appendChild(navbarContainer);
+
+let isAdditionalInfoDisplayed = {
+    'home-id': false,
+    'live-reports-id': false,
+    'about-id': false
+};
+const navbarItems = ['home-id', 'live-reports-id', 'about-id'];
+
+navbarItems.forEach(itemId => {
+    const navItem = document.getElementById(itemId);
+
+    navItem.addEventListener('click', () => {
+        if (isAdditionalInfoDisplayed[itemId]) {
+            navItem.textContent = itemId.replace(/-/g, ' ').replace('id', '').replace(/\b\w/g, l => l.toUpperCase());
+        } else {
+            const additionalInfo = document.createElement('div');
+            additionalInfo.textContent = `This is more info for ${itemId.replace('-id', '')}`;
+            additionalInfo.setAttribute('class', 'nav-additional-info');
+
+            navItem.textContent = '';
+            navItem.appendChild(additionalInfo);
+        }
+
+        isAdditionalInfoDisplayed[itemId] = !isAdditionalInfoDisplayed[itemId];
+    });
+});
+
+
+navbarItems.forEach(itemId => {
+    document.getElementById(itemId).addEventListener('click', () => showNavInfo(itemId));
+});
+
 // a function to fetch the coin information
 async function getCoins() {
     try {
@@ -273,7 +305,7 @@ async function getCoins() {
                     <h5 class="card-title">${coin.symbol}</h5>
                     <p class="card-text">${coin.name}</p>
                     <p>
-                    <button class="btn btn-dark btn-sm more-info-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button class="btn btn-dark btn-sm more-info-btn-${index}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     more info </button>
                   </p>
                   <div class="collapse" id="collapseExample">
@@ -290,11 +322,11 @@ async function getCoins() {
             cardContainer.appendChild(cardOutput);
 
             // Add event listener to "more info" button
-            const moreInfoButton = cardOutput.querySelector('.more-info-btn');
+            const moreInfoButton = cardOutput.querySelector(`.more-info-btn-${index}`);
             moreInfoButton.addEventListener('click', async () => {
                 await getCoinInfo(coin.id, coinInfoId);
             });
-
+            
         });
         document.body.style.height = `${window.innerHeight}px`;
 
@@ -307,34 +339,6 @@ async function getCoins() {
 }
 getCoins();
 
-let isAdditionalInfoDisplayed = {
-    'home-id': false,
-    'live-reports-id': false,
-    'about-id': false
-};
-
-function showNavInfo(navItemId) {
-    const navItem = document.getElementById(navItemId);
-
-    if (isAdditionalInfoDisplayed[navItemId]) {
-        navItem.textContent = navItemId.replace('-', ' ').replace('id', '').replace(/\b\w/g, l => l.toUpperCase()); // Revert to original text
-    } else {
-        const additionalInfo = document.createElement('div');
-        additionalInfo.textContent = `This is more info for ${navItemId.replace('-id', '')}`;
-        additionalInfo.setAttribute('class', 'nav-additional-info');
-
-        navItem.textContent = '';
-        navItem.appendChild(additionalInfo);
-    }
-
-    isAdditionalInfoDisplayed[navItemId] = !isAdditionalInfoDisplayed[navItemId];
-}
-
-const navbarItems = ['home-id', 'live-reports-id', 'about-id'];
-navbarItems.forEach(itemId => {
-    document.getElementById(itemId).addEventListener('click', () => showNavInfo(itemId));
-});
-
 
 async function getCoinInfo(coinId, coinInfoId) {
     try {
@@ -343,14 +347,15 @@ async function getCoinInfo(coinId, coinInfoId) {
 
         const moreInfoData = document.getElementById(coinInfoId);
         moreInfoData.innerHTML = `
-         <img src="${data.image.small}">
-         <div>
-         market price:${data.market_data.current_price.usd}$
-         ${data.market_data.current_price.eur}€
-         ${data.market_data.current_price.ils}₪
-         </div>
-         `
-
+        <img src="${data.image.small}" class="coinInfoImg">
+        <div class="coinInfoDiv">
+            market price:
+           <br> in usd-${data.market_data.current_price.usd}$
+           <br>  in eur-${data.market_data.current_price.eur}€
+           <br>  in ils-${data.market_data.current_price.ils}₪
+        </div>
+    `;
+    
 
         console.log(data.id);
         console.log("Coin ID:", coinId);
@@ -360,3 +365,33 @@ async function getCoinInfo(coinId, coinInfoId) {
         console.log("an error happened");
     }
 }
+
+const progressBar=document.createElement('div');
+progressBar.setAttribute('id','progress-bar');
+document.body.appendChild(progressBar);
+
+const progressBarInner = document.createElement('div');
+progressBarInner.setAttribute('id', 'progress-bar-inner');
+progressBar.appendChild(progressBarInner);
+
+
+
+$(function() {
+    $("#progress-bar").progressbar({
+      value: 0 // Initial value (0%)
+    });
+
+    // Simulate progress (increase value over time)
+    function simulateProgress() {
+      var val = $("#progress-bar").progressbar("value");
+      val = val + 10; // Increase value by 10%
+      if (val <= 100) {
+        $("#progress-bar").progressbar("value", val);
+        setTimeout(simulateProgress, 1000); // Update every 1 second
+      }
+    }
+
+    simulateProgress(); // Start the progress simulation
+  });
+
+  simulateProgress(); // This will manually start the progress simulation
