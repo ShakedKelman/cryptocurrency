@@ -305,23 +305,32 @@ async function getCoins() {
             cardOutput.setAttribute('id', `card-coin-output-${index}`);
 
 
+
             cardOutput.innerHTML = `
             <div class="card mb-3 border border-dark" style="max-width: 540px;">
-
+         
             <div class="row g-0">
             <div class="col-md-4">
                 <img src="../assets/card-logo.png" class="img-fluid rounded-start" alt="a logo picture">
             </div>
             <div class="col-md-8">
-                <div class="card-body text-bg-light text-dark">
+            
+                    <div class="card-body text-bg-light text-dark" >
+                    <label class="toggle-switch" id="toggle button">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                  </label>
+                    
                     <h5 class="card-title">${coin.symbol}</h5>
                     <p class="card-text">${coin.name}</p>
+                    
                     <p>
                     <button class="btn btn-dark btn-sm more-info-btn-${index}" data-bs-target="#collapseExample${index}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     more info </button>
                   </p>
                   <div class="collapse multi-collapse" aria-expanded="false" id="collapseExample${index}">
                     <div class="card card-body cardIndex${index}" id="coin-info-id-${index}">
+                    
                     </div>
                   </div>
              </div>
@@ -356,10 +365,14 @@ async function getCoinInfo(coinId, coinInfoId) {
     try {
         startProgress();
         let data;
-        if (!cache.hasOwnProperty(coinId) ) {
+        if (!cache.hasOwnProperty(coinId)) {
             const response = await fetch(`https://api.coingecko.com/api/v3/coins/${coinId}`);
             data = await response.json();
             cache[coinId] = data;
+            setTimeout(() => {
+                delete cache[coinId];
+                console.log(`Cache for ${coinId} cleared.`);
+            }, 2 * 60 * 1000); // 2 minutes in milliseconds
         } else {
             data = cache[coinId];
         }
@@ -413,4 +426,3 @@ const endProgress = function () {
     });
 
 };
-
