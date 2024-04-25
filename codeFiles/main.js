@@ -166,6 +166,31 @@ const dataDebug =
 
 const cache = {};
 
+// Simulate progress (increase value over time)
+function simulateProgress() {
+    var val = $("#progress-bar").progressbar("value");
+    val = val + 10; // Increase value by 10%
+    if (val <= 100) {
+        $("#progress-bar").progressbar("value", val);
+        setTimeout(simulateProgress, 1000); // Update every 1 second
+    }
+}
+
+
+const startProgress = function () {
+    $("#progress-bar").progressbar({
+        value: 0 // Initial value (0%)
+    });
+
+    simulateProgress(); // Start the progress simulation
+};
+
+const endProgress = function () {
+    $("#progress-bar").progressbar({
+        value: 100 // Initial value (0%)
+    });
+
+};
 
 const headerContainer = document.createElement('header');
 headerContainer.setAttribute('class', 'headerContainer');
@@ -188,12 +213,7 @@ document.addEventListener('scroll', function () {
     const parallaxSpeed = 0.5; // Adjust this value to control the parallax speed
     mainHeader.style.transform = `translateY(${scrollTop * parallaxSpeed}px)`;
 });
-// const logo = document.createElement('img');
-// logo.setAttribute('src', '../assets/cryptocurrency-coins-logo-design_652638-28 Background Removed.png');
-// logo.setAttribute('alt', 'this is my crypto logo');
-// logo.setAttribute('class', 'cryptoLogoStyling');
 
-// headerContainer.appendChild(logo);
 
 const navbarContainer = document.createElement('div');
 navbarContainer.setAttribute('class', 'navContainer');
@@ -344,17 +364,40 @@ async function getCoins() {
 
             cardContainer.appendChild(cardOutput);
         
-            const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
+//             const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
             
-toggleSwitch.addEventListener('change', function(event) {
-    toggleSwitch.checked = event.target.checked;
-    if (!toggleSwitch.checked) {
+// toggleSwitch.addEventListener('change', function(event) {
+//     toggleSwitch.checked = event.target.checked;
+//     if (!toggleSwitch.checked) {
+//         removeReport(index);
+//     }
+//     else {
+//         addToReport(coin, index); 
+//     }
+// });
+
+function handleToggleSwitchChange(index, isChecked, coin) {
+    if (!isChecked) {
         removeReport(index);
-    }
-    else {
+    } else {
         addToReport(coin, index); 
     }
+}
+
+// function handleToggleSwitchChange(index, isChecked, coin) {
+//     if (!isChecked) {
+//         removeReport(index);
+//     } else {
+//         addToReport(coin, index); 
+//     }
+// }
+
+// Usage:
+const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
+toggleSwitch.addEventListener('change', function(event) {
+    handleToggleSwitchChange(index, event.target.checked, coin);
 });
+
 
 function removeReport(index) {
     const reportIndex = reportsArray.findIndex(item => item.index === index);
@@ -430,58 +473,161 @@ async function getCoinInfo(coinId, coinInfoId) {
 
 
 
-// Simulate progress (increase value over time)
-function simulateProgress() {
-    var val = $("#progress-bar").progressbar("value");
-    val = val + 10; // Increase value by 10%
-    if (val <= 100) {
-        $("#progress-bar").progressbar("value", val);
-        setTimeout(simulateProgress, 1000); // Update every 1 second
-    }
-}
+// // Simulate progress (increase value over time)
+// function simulateProgress() {
+//     var val = $("#progress-bar").progressbar("value");
+//     val = val + 10; // Increase value by 10%
+//     if (val <= 100) {
+//         $("#progress-bar").progressbar("value", val);
+//         setTimeout(simulateProgress, 1000); // Update every 1 second
+//     }
+// }
 
 
-const startProgress = function () {
-    $("#progress-bar").progressbar({
-        value: 0 // Initial value (0%)
-    });
+// const startProgress = function () {
+//     $("#progress-bar").progressbar({
+//         value: 0 // Initial value (0%)
+//     });
 
-    simulateProgress(); // Start the progress simulation
-};
+//     simulateProgress(); // Start the progress simulation
+// };
 
-const endProgress = function () {
-    $("#progress-bar").progressbar({
-        value: 100 // Initial value (0%)
-    });
+// const endProgress = function () {
+//     $("#progress-bar").progressbar({
+//         value: 100 // Initial value (0%)
+//     });
 
-};
+// };
 
 
-// const toggleSwitch = document.getElementById('toggle-button'); // Assuming 'toggle button' is the ID
 
-// Define the reports array globally
 const reportsArray = [];
-
-// Define an array to store the IDs of the cards that have been added to the reports
 const addedCardIds = [];
 
-// Define the addToReport function
+
 function addToReport(coin, index) {
-    // Check if the card ID has already been added to the reports
     if (!addedCardIds.includes(index)) {
-        // Check if the reports array length is less than 5
         if (reportsArray.length < 5) {
-            // Push an object containing both coin and index to the reports array
             reportsArray.push({ coin, index });
-            // Push the index to the addedCardIds array
             addedCardIds.push(index);
             console.log('Added coin to reports array:', coin);
             console.log('Reports array:', reportsArray);
         } else {
-            alert('Maximum number of coins reached. you need to remove a card in order to add this one ');
+            const modalText = document.getElementById('model-text');
+            modalText.innerHTML = generateModalContent();
+            $('#maxCoinsModal').modal('show');
         }
     } else {
         console.log('This card has already been added to the reports.');
     }
 }
+// function generateModalContent() {
+//     let content = '<ul>';
+//     reportsArray.forEach((item, index) => {
+//         content += `<li>${item.coin.name} (${item.coin.symbol})`;
+//         content += `<label class="toggle-switch" id="toggle-button-${index}">
+//                         <input type="checkbox" id="toggle-switch-${index}" checked>
+//                         <span class="slider"></span>
+//                     </label></li>`;
+//     });
+//     content += '</ul>';
+//     return content;
+// // }
+// function generateModalContent() {
+//     let content = '<ul>';
+//     reportsArray.forEach((item, index) => {
+//         content += `<li>${item.coin.name} (${item.coin.symbol})`;
+//         content += `<label class="toggle-switch" id="toggle-button-${index}">
+//                         <input type="checkbox" id="toggle-switch-${index}" checked>
+//                         <span class="slider"></span>
+//                     </label></li>`;
+//     });
+//     content += '</ul>';
 
+//     // Add event listener to each toggle switch
+//     reportsArray.forEach((item, index) => {
+//         const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
+//         toggleSwitch.addEventListener('change', function(event) {
+//             handleToggleSwitchChange(index, event.target.checked, item.coin);
+//         });
+//     });
+
+//     return content;reportsArray
+// }
+
+
+function generateModalContent() {
+    let content = '<ul>';
+    reportsArray.forEach((item, index) => {
+        content += `<li>${item.coin.name} (${item.coin.symbol})`;
+        content += `<label class="toggle-switch" id="toggle-button-${index}">
+                        <input type="checkbox" id="toggle-switch-${index}" checked>
+                        <span class="slider"></span>
+                    </label></li>`;
+    });
+    content += '</ul>';
+
+    // Add event listener to each toggle switch
+    reportsArray.forEach((item, index) => {
+        const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
+        toggleSwitch.addEventListener('change', function(event) {
+            handleToggleSwitchChange(index, event.target.checked, item.coin);
+        });
+    });
+
+    return content;
+}
+
+function closeModal() {
+    $('#maxCoinsModal').modal('hide');
+    console.log(reportsArray);
+}
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     const closeButton = document.querySelector('#maxCoinsModal .close');
+    
+//     closeButton.addEventListener('click', function() {
+//         closeModal();
+//     });
+
+
+// });
+
+// document.addEventListener('DOMContentLoaded', function() {
+//     const closeButton = document.querySelector('#maxCoinsModal .close');
+    
+//     closeButton.addEventListener('click', function() {
+//         closeModal(reportsArray);
+//     });
+
+//     // Render modal content on page load
+//     const modalText = document.getElementById('model-text');
+//     modalText.innerHTML = generateModalContent();
+// });
+
+
+// function reloadPage() {
+//     window.location.reload();
+// }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const closeButton = document.querySelector('#maxCoinsModal .close');
+    
+    closeButton.addEventListener('click', function() {
+        closeModal();
+        renderReportsArray(); // Render the reports array after closing the modal
+    });
+
+    // Render modal content on page load
+    const modalText = document.getElementById('model-text');
+    modalText.innerHTML = generateModalContent();
+});
+
+function renderReportsArray() {
+    // Render the reports array wherever you want to display it
+    console.log('Reports array:', reportsArray);
+}
+
+function reloadPage() {
+    window.location.reload();
+}
