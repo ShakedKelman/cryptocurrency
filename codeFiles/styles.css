@@ -83,6 +83,7 @@ body {
 }
 
 #progress-bar-container{
+    background-color: #4e8f8fc9;
     height: 10px;
     margin: 0px;
     padding: 0px;
@@ -133,3 +134,4 @@ body {
     background-color: white; /* Change thumb color to white when checked */
   }
  
+  

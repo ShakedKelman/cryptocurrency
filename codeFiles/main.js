@@ -277,6 +277,7 @@ navbarItems.forEach(itemId => {
 
 // a function to fetch the coin information
 async function getCoins() {
+    
     try {
         let response;
         let data;
@@ -315,11 +316,11 @@ async function getCoins() {
             </div>
             <div class="col-md-8">
             
-                    <div class="card-body text-bg-light text-dark" >
-                    <label class="toggle-switch" id="toggle button">
-                    <input type="checkbox">
-                    <span class="slider"></span>
-                  </label>
+            <div class="card-body text-bg-light text-dark" >
+            <label class="toggle-switch" id="toggle-button-${index}">
+                <input type="checkbox" id="toggle-switch-${index}">
+                <span class="slider"></span>
+            </label>
                     
                     <h5 class="card-title">${coin.symbol}</h5>
                     <p class="card-text">${coin.name}</p>
@@ -340,7 +341,35 @@ async function getCoins() {
 
             `;
 
+
             cardContainer.appendChild(cardOutput);
+        
+            const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
+            
+toggleSwitch.addEventListener('change', function(event) {
+    toggleSwitch.checked = event.target.checked;
+    if (!toggleSwitch.checked) {
+        removeReport(index);
+    }
+    else {
+        addToReport(coin, index); 
+    }
+});
+
+function removeReport(index) {
+    const reportIndex = reportsArray.findIndex(item => item.index === index);
+    if (reportIndex !== -1) {
+        const removedCoin = reportsArray[reportIndex].coin; // Get the coin object before removing it
+        reportsArray.splice(reportIndex, 1);
+        const addedIndex = addedCardIds.indexOf(index);
+        if (addedIndex !== -1) {
+            addedCardIds.splice(addedIndex, 1);
+        }
+        console.log('Removed coin from reports array:', removedCoin); // Log the removed coin
+        console.log('Reports array:', reportsArray);
+    }
+}
+
 
             // Add event listener to "more info" button
             const moreInfoButton = cardOutput.querySelector(`.more-info-btn-${index}`);
@@ -426,3 +455,33 @@ const endProgress = function () {
     });
 
 };
+
+
+// const toggleSwitch = document.getElementById('toggle-button'); // Assuming 'toggle button' is the ID
+
+// Define the reports array globally
+const reportsArray = [];
+
+// Define an array to store the IDs of the cards that have been added to the reports
+const addedCardIds = [];
+
+// Define the addToReport function
+function addToReport(coin, index) {
+    // Check if the card ID has already been added to the reports
+    if (!addedCardIds.includes(index)) {
+        // Check if the reports array length is less than 5
+        if (reportsArray.length < 5) {
+            // Push an object containing both coin and index to the reports array
+            reportsArray.push({ coin, index });
+            // Push the index to the addedCardIds array
+            addedCardIds.push(index);
+            console.log('Added coin to reports array:', coin);
+            console.log('Reports array:', reportsArray);
+        } else {
+            alert('Maximum number of coins reached. you need to remove a card in order to add this one ');
+        }
+    } else {
+        console.log('This card has already been added to the reports.');
+    }
+}
+
