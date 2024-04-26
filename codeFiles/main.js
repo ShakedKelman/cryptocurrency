@@ -192,9 +192,8 @@ const endProgress = function () {
 
 };
 
-const headerContainer = document.createElement('header');
-headerContainer.setAttribute('class', 'headerContainer');
-document.body.appendChild(headerContainer);
+const headerLogo = document.getElementById('header-main');
+//document.body.appendChild(headerContainer);
 
 const mainHeader = document.createElement('h1');
 mainHeader.setAttribute('id', 'main-header');
@@ -206,7 +205,7 @@ mainHeader.style.fontSize = "25px"; // Set the font size to 20 pixels
 mainHeader.style.backgroundImage = "url('../assets/cr.png')";
 mainHeader.textContent = "Cryptonite";
 
-headerContainer.appendChild(mainHeader);
+headerLogo.appendChild(mainHeader);
 
 document.addEventListener('scroll', function () {
     const scrollTop = window.scrollY;
@@ -215,44 +214,46 @@ document.addEventListener('scroll', function () {
 });
 
 
-const navbarContainer = document.createElement('div');
-navbarContainer.setAttribute('class', 'navContainer');
-document.body.appendChild(navbarContainer);
-document.body.appendChild(headerContainer);
+//const navbarContainer = document.getElementById('navbar-container');
+//navbarContainer.setAttribute('class', 'navContainer');
+//document.body.appendChild(navbarContainer);
+//document.body.appendChild(headerContainer);
 // Create navbar element
-const navbar = document.createElement('nav');
-navbar.setAttribute('class', 'navbar navbar-expand-lg navbar-light bg-light');
+//const navbar = document.createElement('nav');
+//navbar.setAttribute('class', 'navbar navbar-expand-lg navbar-light bg-light');
 
 // Navbar content
-navbar.innerHTML = `
-<nav class="navbar navbar-expand-lg bg-light">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
-        <li class="nav-item">
-          <a class="nav-link active" id="home-id" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"  id="live-reports-id">live reports</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"  id="about-id">about</a>
-        </li>
-        </li>
+// navbar.innerHTML = `
+// <nav class="navbar navbar-expand-lg bg-light">
+//     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+//       <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
+//         <li class="nav-item">
+//           <a class="nav-link active" data-section="home-sect" id="home-id" aria-current="page" href="#">Home</a>
+//         </li>
+//         <li class="nav-item">
+//           <a class="nav-link" data-section="live-reports-sect" href="#"  id="live-reports-id">live reports</a>
+//         </li>
+//         <li class="nav-item">
+//           <a class="nav-link" data-section="about-sect" href="#"  id="about-id">about</a>
+//         </li>
+//         </li>
        
-      </ul>
-      <form class="d-flex ms-auto searchStyle" role="search">
-        <input class="form-control me-2 searchStyle" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-dark" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
-`;
+//       </ul>
+//       <form class="d-flex ms-auto searchStyle" role="search">
+//         <input class="form-control me-2 searchStyle" type="search" placeholder="Search" aria-label="Search">
+//         <button class="btn btn-dark" type="submit">Search</button>
+//       </form>
+//     </div>
+//   </div>
+// </nav>
+// `;
 
 // Append navbar after the header
 
-navbarContainer.appendChild(navbar);
-document.body.appendChild(navbarContainer);
+//navbarContainer.appendChild(navbar);
+//document.body.appendChild(navbarContainer);
+
+const navbarContainer = document.getElementById("navbar-container");
 
 const progressBarContainer = document.createElement('div');
 progressBarContainer.setAttribute('id', 'progress-bar-container');
@@ -275,25 +276,43 @@ navbarItems.forEach(itemId => {
     const navItem = document.getElementById(itemId);
 
     navItem.addEventListener('click', () => {
+        console.log( this )
         if (isAdditionalInfoDisplayed[itemId]) {
-            navItem.textContent = itemId.replace(/-/g, ' ').replace('id', '').replace(/\b\w/g, l => l.toUpperCase());
+            //navItem.textContent = itemId.replace(/-/g, ' ').replace('id', '').replace(/\b\w/g, l => l.toUpperCase());
         } else {
-            const additionalInfo = document.createElement('div');
-            additionalInfo.textContent = `This is more info for ${itemId.replace('-id', '')}`;
-            additionalInfo.setAttribute('class', 'nav-additional-info');
 
-            navItem.textContent = '';
-            navItem.appendChild(additionalInfo);
+            //const additionalInfo = document.createElement('div');
+            //additionalInfo.textContent = `This is more info for ${itemId.replace('-id', '')}`;
+            //additionalInfo.setAttribute('class', 'nav-additional-info');
+
+            //navItem.textContent = '';
+            //navItem.appendChild(additionalInfo);
+            //const sectIdToDisplay = navItem.getAttribute('data-section');
+            
         }
+
+
+        // reflect the display on the respective navitem(s)
+        const toActivate = Object.keys(isAdditionalInfoDisplayed)
+                .filter( navId => navId !== itemId );
+        toActivate.forEach( navId => $('#' + navId).removeClass('active')); // hide all sections not under itemId
+        $('#' + itemId).addClass('active'); // show the section under itemId
+
+        // reflect the display on the respective section(s)
+        const toHide = Object.keys(isAdditionalInfoDisplayed)
+                .filter( navId => navId !== itemId )
+                .map( navId => navId.replace(/-id/, '-sect') );
+        toHide.forEach( sectId => $('#' + sectId).hide()); // hide all sections not under itemId
+        $('#' + itemId.replace(/-id/, '-sect')).show(); // show the section under itemId
 
         isAdditionalInfoDisplayed[itemId] = !isAdditionalInfoDisplayed[itemId];
     });
 });
 
 
-navbarItems.forEach(itemId => {
-    document.getElementById(itemId).addEventListener('click', () => showNavInfo(itemId));
-});
+//navbarItems.forEach(itemId => {
+//    document.getElementById(itemId).addEventListener('click', () => showNavInfo(itemId));
+//});
 
 // a function to fetch the coin information
 async function getCoins() {
@@ -312,9 +331,10 @@ async function getCoins() {
         const first25Coins = data.slice(0, 25);
         console.log(first25Coins);
 
-        const cardContainer = document.createElement('section');
-        cardContainer.setAttribute('id', 'coin-container');
-        document.body.appendChild(cardContainer);
+        const cardContainer = document.getElementById('home-sect');
+        
+        //cardContainer.setAttribute('id', 'coin-container');
+        //document.body.appendChild(cardContainer);
 
 
         first25Coins.forEach((coin, index) => {
