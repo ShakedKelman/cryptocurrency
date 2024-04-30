@@ -237,7 +237,7 @@ document.addEventListener('scroll', function () {
 //           <a class="nav-link" data-section="about-sect" href="#"  id="about-id">about</a>
 //         </li>
 //         </li>
-       
+
 //       </ul>
 //       <form class="d-flex ms-auto searchStyle" role="search">
 //         <input class="form-control me-2 searchStyle" type="search" placeholder="Search" aria-label="Search">
@@ -276,7 +276,7 @@ navbarItems.forEach(itemId => {
     const navItem = document.getElementById(itemId);
 
     navItem.addEventListener('click', () => {
-        console.log( this )
+        console.log(this)
         if (isAdditionalInfoDisplayed[itemId]) {
             //navItem.textContent = itemId.replace(/-/g, ' ').replace('id', '').replace(/\b\w/g, l => l.toUpperCase());
         } else {
@@ -288,21 +288,21 @@ navbarItems.forEach(itemId => {
             //navItem.textContent = '';
             //navItem.appendChild(additionalInfo);
             //const sectIdToDisplay = navItem.getAttribute('data-section');
-            
+
         }
 
 
         // reflect the display on the respective navitem(s)
         const toActivate = Object.keys(isAdditionalInfoDisplayed)
-                .filter( navId => navId !== itemId );
-        toActivate.forEach( navId => $('#' + navId).removeClass('active')); // hide all sections not under itemId
+            .filter(navId => navId !== itemId);
+        toActivate.forEach(navId => $('#' + navId).removeClass('active')); // hide all sections not under itemId
         $('#' + itemId).addClass('active'); // show the section under itemId
 
         // reflect the display on the respective section(s)
         const toHide = Object.keys(isAdditionalInfoDisplayed)
-                .filter( navId => navId !== itemId )
-                .map( navId => navId.replace(/-id/, '-sect') );
-        toHide.forEach( sectId => $('#' + sectId).hide()); // hide all sections not under itemId
+            .filter(navId => navId !== itemId)
+            .map(navId => navId.replace(/-id/, '-sect'));
+        toHide.forEach(sectId => $('#' + sectId).hide()); // hide all sections not under itemId
         $('#' + itemId.replace(/-id/, '-sect')).show(); // show the section under itemId
 
         isAdditionalInfoDisplayed[itemId] = !isAdditionalInfoDisplayed[itemId];
@@ -316,7 +316,7 @@ navbarItems.forEach(itemId => {
 
 // a function to fetch the coin information
 async function getCoins() {
-    
+
     try {
         let response;
         let data;
@@ -332,7 +332,7 @@ async function getCoins() {
         console.log(first25Coins);
 
         const cardContainer = document.getElementById('home-sect');
-        
+
         //cardContainer.setAttribute('id', 'coin-container');
         //document.body.appendChild(cardContainer);
 
@@ -383,55 +383,63 @@ async function getCoins() {
 
 
             cardContainer.appendChild(cardOutput);
-        
-//             const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
+
+            //             const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
+
+            // toggleSwitch.addEventListener('change', function(event) {
+            //     toggleSwitch.checked = event.target.checked;
+            //     if (!toggleSwitch.checked) {
+            //         removeReport(index);
+            //     }
+            //     else {
+            //         addToReport(coin, index); 
+            //     }
+            // });
+            // function handleToggleSwitchChange(index, isChecked, coin, mainToggleIndex) {
+            //     if (!isChecked) {
+            //         removeReport(index);
+            //     } else {
+            //         addToReport(coin, index);
+            //     }
+            //     console.log("Selected toggle card index:", index);
+            //     console.log("Main toggle index:", mainToggleIndex); // Log the main toggle index
+            // }
+            function handleToggleSwitchChange(index, isChecked, coin, mainToggleIndex) {
+                if (!isChecked) {
+                    removeReport(index);
+                } else {
+                    addToReport(coin, index);
+                }
+                console.log("Selected toggle card index:", index);
+                console.log("Main toggle index:", mainToggleIndex); // Log the main toggle index
             
-// toggleSwitch.addEventListener('change', function(event) {
-//     toggleSwitch.checked = event.target.checked;
-//     if (!toggleSwitch.checked) {
-//         removeReport(index);
-//     }
-//     else {
-//         addToReport(coin, index); 
-//     }
-// });
+                // If the modal toggle is unchecked, uncheck the corresponding coin card toggle switch
+                if (!isChecked) {
+                    $(`#toggle-switch-${index}`).prop('checked', false);
+                }
+            }
+            
 
-function handleToggleSwitchChange(index, isChecked, coin) {
-    if (!isChecked) {
-        removeReport(index);
-    } else {
-        addToReport(coin, index); 
-    }
-}
-
-// function handleToggleSwitchChange(index, isChecked, coin) {
-//     if (!isChecked) {
-//         removeReport(index);
-//     } else {
-//         addToReport(coin, index); 
-//     }
-// }
-
-// Usage:
-const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
-toggleSwitch.addEventListener('change', function(event) {
-    handleToggleSwitchChange(index, event.target.checked, coin);
-});
+            // Usage:
+            const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
+            toggleSwitch.addEventListener('change', function (event) {
+                handleToggleSwitchChange(index, event.target.checked, coin);
+            });
 
 
-function removeReport(index) {
-    const reportIndex = reportsArray.findIndex(item => item.index === index);
-    if (reportIndex !== -1) {
-        const removedCoin = reportsArray[reportIndex].coin; // Get the coin object before removing it
-        reportsArray.splice(reportIndex, 1);
-        const addedIndex = addedCardIds.indexOf(index);
-        if (addedIndex !== -1) {
-            addedCardIds.splice(addedIndex, 1);
-        }
-        console.log('Removed coin from reports array:', removedCoin); // Log the removed coin
-        console.log('Reports array:', reportsArray);
-    }
-}
+            function removeReport(index) {
+                const reportIndex = reportsArray.findIndex(item => item.index === index);
+                if (reportIndex !== -1) {
+                    const removedCoin = reportsArray[reportIndex].coin; // Get the coin object before removing it
+                    reportsArray.splice(reportIndex, 1);
+                    const addedIndex = addedCardIds.indexOf(index);
+                    if (addedIndex !== -1) {
+                        addedCardIds.splice(addedIndex, 1);
+                    }
+                    console.log('Removed coin from reports array:', removedCoin); // Log the removed coin
+                    console.log('Reports array:', reportsArray);
+                }
+            }
 
 
             // Add event listener to "more info" button
@@ -527,15 +535,16 @@ const addedCardIds = [];
 
 function addToReport(coin, index) {
     if (!addedCardIds.includes(index)) {
-        if (reportsArray.length < 5) {
+        if (reportsArray.length < 1) {
             reportsArray.push({ coin, index });
             addedCardIds.push(index);
             console.log('Added coin to reports array:', coin);
             console.log('Reports array:', reportsArray);
         } else {
-            const modalText = document.getElementById('model-text');
-            modalText.innerHTML = generateModalContent();
-            $('#maxCoinsModal').modal('show');
+            const modalDOM = $('#model-text');
+            modalDOM.html(generateModalContent()); // Populate modal body with content
+            $('#maxCoinsModal').modal('show'); // Show the modal
+
         }
     } else {
         console.log('This card has already been added to the reports.');
@@ -577,35 +586,86 @@ function addToReport(coin, index) {
 
 
 function generateModalContent() {
-    let content = '<ul>';
+
+    let switches = $('#modal-switches');
+    switches.empty();
+
     reportsArray.forEach((item, index) => {
-        content += `<li>${item.coin.name} (${item.coin.symbol})`;
-        content += `<label class="toggle-switch" id="toggle-button-${index}">
-                        <input type="checkbox" id="toggle-switch-${index}" checked>
-                        <span class="slider"></span>
-                    </label></li>`;
-    });
-    content += '</ul>';
+        // Create a new <li> element, within create a label + input, within the latter create a span
+        const li = $('<li>');
+        li.text(`${item.coin.name} (${item.coin.symbol})`);
+        const label = $('<label>').addClass('toggle-switch').attr('id', `modal-toggle-${index}`);
+        const inp = $('<input>').attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
+
+
+        inp.on('change', function () {
+            const index = parseInt($(this).attr('id').replace(/.*-/, ''));
+            const checked = $(this).prop('checked');
+            const coin = reportsArray[index].coin;
+            const mainToggleIndex = index; // Set mainToggleIndex to the chosen index
+            const checkbox = $(`#toggle-switch-${index}`);
+            checkbox.prop('checked', !checkbox.prop('checked')).change();
+            handleToggleSwitchChange(index, checked, coin, mainToggleIndex); // Pass mainToggleIndex to the handleToggleSwitchChange function
+        });
+        
+        
+        const span = $('<span>').addClass('slider');
+        label.append(inp).append(span);
+        li.append(label);
+        switches.append(li);
+
+
+        // li.appendChild(label.appendChild(inp).appendChild(span))
+        // // Append the new element to an existing element with id 'container'
+        // switches.append(li);
+
+    })
+
+    // reportsArray.forEach((item, index) => {
+    //     content += `<li>${item.coin.name} (${item.coin.symbol})`;
+    //     content += `<label class="toggle-switch" id="toggle-button-${index}">
+    //                     <input type="checkbox" id="toggle-switch-${index}" checked>
+    //                     <span class="slider"></span>
+    //                 </label></li>`;
+    // });
+    // content += '</ul>';
 
     // Add event listener to each toggle switch
+    /*
     reportsArray.forEach((item, index) => {
         const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
         toggleSwitch.addEventListener('change', function(event) {
             handleToggleSwitchChange(index, event.target.checked, item.coin);
         });
     });
+    */
 
-    return content;
+    return switches;
 }
 
 function closeModal() {
     $('#maxCoinsModal').modal('hide');
-    console.log(reportsArray);
+    console.log('Reports array:', reportsArray);
+
+    // Iterate over each report in the array
+    reportsArray.forEach(report => {
+        const index = report.index;
+        const isChecked = $(`#modal-switch-${index}`).prop('checked');
+
+        if (isChecked) {
+            console.log(`Coin at index ${index} is checked.`);
+            // Perform actions if the toggle switch is checked
+        } else {
+            console.log(`Coin at index ${index} is not checked.`);
+            // Perform actions if the toggle switch is not checked
+        }
+    });
 }
+
 
 // document.addEventListener('DOMContentLoaded', function() {
 //     const closeButton = document.querySelector('#maxCoinsModal .close');
-    
+
 //     closeButton.addEventListener('click', function() {
 //         closeModal();
 //     });
@@ -615,7 +675,7 @@ function closeModal() {
 
 // document.addEventListener('DOMContentLoaded', function() {
 //     const closeButton = document.querySelector('#maxCoinsModal .close');
-    
+
 //     closeButton.addEventListener('click', function() {
 //         closeModal(reportsArray);
 //     });
@@ -630,17 +690,17 @@ function closeModal() {
 //     window.location.reload();
 // }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const closeButton = document.querySelector('#maxCoinsModal .close');
-    
-    closeButton.addEventListener('click', function() {
+
+    closeButton.addEventListener('click', function () {
         closeModal();
         renderReportsArray(); // Render the reports array after closing the modal
     });
 
     // Render modal content on page load
-    const modalText = document.getElementById('model-text');
-    modalText.innerHTML = generateModalContent();
+    const modalDOM = document.getElementById('model-text');
+    //modalText.innerHTML = generateModalContent();
 });
 
 function renderReportsArray() {
@@ -650,4 +710,30 @@ function renderReportsArray() {
 
 function reloadPage() {
     window.location.reload();
+}
+
+function filterByName() {
+    const filterValue = document.getElementById('filterInput').value.toLowerCase();
+    const filteredData = dataDebug.filter(item => item.name.toLowerCase().includes(filterValue));
+    displayResults(filteredData);
+}
+
+function displayResults(results) {
+    const resultList = document.getElementById('resultList');
+    resultList.innerHTML = '';
+    results.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.id} - ${item.symbol} - ${item.name}`;
+        resultList.appendChild(li);
+    });
+}
+
+// function showAll() {
+//     document.getElementById('filterInput').value = ''; // Clear the filter input
+//     // displayResults(dataDebug); // Display all results
+// }
+function showAll() {
+    document.getElementById('filterInput').value = ''; // Clear the filter input
+    const resultList = document.getElementById('resultList');
+    resultList.innerHTML = ''; // Clear the UI output
 }
