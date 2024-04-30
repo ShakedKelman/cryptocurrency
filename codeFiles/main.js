@@ -277,6 +277,7 @@ navbarItems.forEach(itemId => {
 
     navItem.addEventListener('click', () => {
         console.log(this)
+        
         if (isAdditionalInfoDisplayed[itemId]) {
             //navItem.textContent = itemId.replace(/-/g, ' ').replace('id', '').replace(/\b\w/g, l => l.toUpperCase());
         } else {

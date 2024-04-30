@@ -39,7 +39,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-section="about-sect" href="#" id="about-id">about</a>
-                         
+
                         </li>
                         </li>
 
@@ -49,15 +49,17 @@
                         <button type="button" class="btn btn-dark btn-sm" onclick="filterByName()">search</button>
                         <button type="button" class="btn btn-secondary btn-sm" onclick="showAll()">Clear Filter</button>
                     </form>
-                    
-                    </div>
-                    </div>
-                    </nav>
-                    <ul id="resultList"></ul>
-                    <ul id="more-info"></ul>
 
-                    </div>
-                    </div>
+                </div>
+        </div>
+        </nav>
+        <ul id="resultList"></ul>
+        <ul id="more-info-about"></ul>
+        <ul id="more-info-live-reports"></ul>
+
+
+    </div>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="maxCoinsModal" tabindex="-1" role="dialog" aria-labelledby="maxCoinsModalLabel"
@@ -80,18 +82,32 @@
             </div>
         </div>
     </div>
-
     <div>
-
         <section id="home-sect" class="coin-container">
         </section>
+    
         <section id="live-reports-sect">
-            <h2>Live report</h2>
+            <div>Live report</div>
         </section>
+    
         <section id="about-sect">
-            <h2>About</h2>
+            <h5 class="aboutHeader">About the Creator</h5>
+            <div class="about-img-container">
+                <div class="card" style="width: 18rem;">
+                    <img class="about-img card-img-top" src="../assets/about-img.jpeg" alt="about image">
+                    <div class="card-body">
+                        <h5 class="card-title">Shaked Kelman</h5>
+                        <p class="card-text">Hi there! My name is Shaked I'm 21 years old, currently living in Jerusalem, very interested in coding and learning new techniques</p>
+                    </div>
+                    <div class="card-footer">
+                        <h6>About the project</h6>
+                        <p>this project was createdin order to help my clients get easy access to today's current state of each cryptocurrency in the market.</p>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
+    
 </body>
 
 </html>
