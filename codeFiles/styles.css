@@ -101,19 +101,47 @@ body {
   }
   
   /* Style the toggle switch */
-  .slider {
+  
+  /* .slider {
     position: relative;
     display: inline-block;
     width: 40px;
     height: 20px;
+    background-color: rgb(251, 244, 244); 
+    border: 1px solid black;
+    border-radius: 20px;
+    transition: background-color 0.4s;
+  }*/
+  
+  /* Style the toggle switch thumb */
+  /* .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: rgb(19, 19, 19);
+    border-radius: 50%;
+    transition: transform 0.4s;
+  } */
+  .card-body.text-bg-light.text-dark {
+    position: relative; /* Set position to relative for the container */
+}
+
+.slider {
+    position: absolute;
+    top: 10px; /* Adjust the top position for the toggle switch */
+    right: 10px; /* Adjust the right position for the toggle switch */
+    width: 40px; /* Adjust width of the toggle switch */
+    height: 20px; /* Adjust height of the toggle switch */
     background-color: rgb(251, 244, 244); /* Default background color */
     border: 1px solid black;
     border-radius: 20px;
     transition: background-color 0.4s;
-  }
-  
-  /* Style the toggle switch thumb */
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 16px;
@@ -123,7 +151,8 @@ body {
     background-color: rgb(19, 19, 19); /* Default thumb color */
     border-radius: 50%;
     transition: transform 0.4s;
-  }
+}
+
   
   /* Adjust appearance when the toggle switch is checked */
   .toggle-switch input:checked + .slider {
