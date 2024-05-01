@@ -189,3 +189,30 @@ body {
 #about-sect {
     display: none; /* Hide the sections initially */
 }
+/* Adjustments for smaller screens */
+@media screen and (max-width: 991px) {
+    .nav-item{
+        width: 100px;
+        height: 100px;
+    }
+    .navbar-nav {
+        flex-direction: column; /* Change flex direction to column */
+        align-items: flex-start; /* Align items to the start (left) */
+    }
+
+    .navbar-collapse {
+        position: absolute; /* Position the collapse container absolutely */
+        top: 56px; /* Adjust top position as needed */
+        left: 0;
+        right: 0;
+        background-color: #fff; /* Optional: Add background color */
+        z-index: 999; /* Ensure it's above other content */
+        border: 1px solid #ccc; /* Optional: Add border for visual separation */
+        padding: 10px; /* Optional: Add padding */
+    }
+
+    .nav-link {
+        padding: 10px 0; /* Add padding to each link for spacing */
+        border-bottom: 1px solid #ccc; /* Optional: Add border between links */
+    }
+}

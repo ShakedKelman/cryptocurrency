@@ -345,6 +345,7 @@ async function getCoins() {
             cardOutput.setAttribute('id', 'card-coin-output');
             const coinInfoId = `coin-info-id-${index}`;
             cardOutput.setAttribute('id', `card-coin-output-${index}`);
+            cardOutput.setAttribute('coin-id', coin.id)
 
 
 
@@ -406,6 +407,7 @@ async function getCoins() {
             //     console.log("Main toggle index:", mainToggleIndex); // Log the main toggle index
             // }
             function handleToggleSwitchChange(index, isChecked, coin, mainToggleIndex) {
+                console.log($(`#toggle-switch-${index}`))
                 if (!isChecked) {
                     removeReport(index);
                 } else {
@@ -422,8 +424,9 @@ async function getCoins() {
             
 
             // Usage:
-            const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
-            toggleSwitch.addEventListener('change', function (event) {
+            const toggleSwitch = $(`#toggle-switch-${index}`);
+            toggleSwitch.on('change', function (event) {
+                console.log('EVEVEVEVEVE', event)
                 handleToggleSwitchChange(index, event.target.checked, coin);
             });
 
@@ -586,81 +589,104 @@ function addToReport(coin, index) {
 // }
 
 
-function generateModalContent() {
+// function generateModalContent() {
 
+//     let switches = $('#modal-switches');
+//     switches.empty();
+
+//     reportsArray.forEach((item, index) => {
+//         // Create a new <li> element, within create a label + input, within the latter create a span
+//         const li = $('<li>');
+//         li.text(`${item.coin.name} (${item.coin.symbol})`);
+//         const label = $('<label>').addClass('toggle-switch').attr('id', `modal-toggle-${index}`);
+//         const inp = $('<input>').attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
+
+
+//         inp.on('change', function () {
+//             const index = parseInt($(this).attr('id').replace(/.*-/, ''));
+//             const checked = $(this).prop('checked');
+//             const coin = reportsArray[index].coin;
+//             const mainToggleIndex = index; // Set mainToggleIndex to the chosen index
+//             const checkbox = $(`#toggle-switch-${index}`);
+//             checkbox.prop('checked', !checkbox.prop('checked')).change();
+//             handleToggleSwitchChange(index, checked, coin, mainToggleIndex); // Pass mainToggleIndex to the handleToggleSwitchChange function
+//         });
+        
+        
+//         const span = $('<span>').addClass('slider');
+//         label.append(inp).append(span);
+//         li.append(label);
+//         switches.append(li);
+
+
+//     })
+
+
+//     return switches;
+// }
+function generateModalContent() {
     let switches = $('#modal-switches');
     switches.empty();
 
-    reportsArray.forEach((item, index) => {
+    reportsArray.forEach((item) => {
+        const coin = item.coin; // Define coin variable here
+        const coin_hash = Object.assign( {},
+            ...Array.from( $('.cardOutputStyle') )
+            .map( d => ({ [ d.getAttribute('coin-id') ]: d.id.replace(/.*-/, '') }) ) )
+        const index = coin_hash[ coin.id ];
+
         // Create a new <li> element, within create a label + input, within the latter create a span
         const li = $('<li>');
-        li.text(`${item.coin.name} (${item.coin.symbol})`);
+        li.text(`${coin.name} (${coin.symbol})`);
         const label = $('<label>').addClass('toggle-switch').attr('id', `modal-toggle-${index}`);
-        const inp = $('<input>').attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
+        const inp = $('<input>')
+        inp.attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
 
-
-        inp.on('change', function () {
-            const index = parseInt($(this).attr('id').replace(/.*-/, ''));
-            const checked = $(this).prop('checked');
-            const coin = reportsArray[index].coin;
-            const mainToggleIndex = index; // Set mainToggleIndex to the chosen index
-            const checkbox = $(`#toggle-switch-${index}`);
-            checkbox.prop('checked', !checkbox.prop('checked')).change();
-            handleToggleSwitchChange(index, checked, coin, mainToggleIndex); // Pass mainToggleIndex to the handleToggleSwitchChange function
-        });
-        
-        
         const span = $('<span>').addClass('slider');
         label.append(inp).append(span);
         li.append(label);
         switches.append(li);
 
-
-        // li.appendChild(label.appendChild(inp).appendChild(span))
-        // // Append the new element to an existing element with id 'container'
-        // switches.append(li);
-
-    })
-
-    // reportsArray.forEach((item, index) => {
-    //     content += `<li>${item.coin.name} (${item.coin.symbol})`;
-    //     content += `<label class="toggle-switch" id="toggle-button-${index}">
-    //                     <input type="checkbox" id="toggle-switch-${index}" checked>
-    //                     <span class="slider"></span>
-    //                 </label></li>`;
-    // });
-    // content += '</ul>';
-
-    // Add event listener to each toggle switch
-    /*
-    reportsArray.forEach((item, index) => {
-        const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
-        toggleSwitch.addEventListener('change', function(event) {
-            handleToggleSwitchChange(index, event.target.checked, item.coin);
+        inp[0].addEventListener('change', function(ev) {
+            $( '#' + ev.target.id.replace(/modal-/, 'toggle-') ).click()
+            // handleToggleSwitchChange(index, $( this).prop('checked'), coin); // Pass coin as a parameter
         });
+
+        // Add event listener to the toggle switch
+        /*
+        inp.on('change', function (ev) {
+            console.log([ 'EEEEEEEEEEEE', ev ])
+            //handleToggleSwitchChange(index, $(this).prop('checked'), coin); // Pass coin as a parameter
+        });
+        */
     });
-    */
 
     return switches;
 }
+
+// const toggleSwitch = document.getElementById('my-toggle-switch');
+
+// // To toggle the switch programmatically
+// toggleSwitch.checked = !toggleSwitch.checked;
+
 
 function closeModal() {
     $('#maxCoinsModal').modal('hide');
     console.log('Reports array:', reportsArray);
 
-    // Iterate over each report in the array
-    reportsArray.forEach(report => {
-        const index = report.index;
-        const isChecked = $(`#modal-switch-${index}`).prop('checked');
+    // // Iterate over each report in the array
+    // reportsArray.forEach(report => {
+    //     const index = report.index;
+    //     const isChecked = $(`#modal-switch-${index}`).prop('checked');
 
-        if (isChecked) {
-            console.log(`Coin at index ${index} is checked.`);
-            // Perform actions if the toggle switch is checked
-        } else {
-            console.log(`Coin at index ${index} is not checked.`);
-            // Perform actions if the toggle switch is not checked
-        }
-    });
+    //     if (isChecked) {
+    //         console.log(`Coin at index ${index} is checked.`);
+    //         // Perform actions if the toggle switch is checked
+    //     } else {
+    //         console.log(`Coin at index ${index} is not checked.`);
+    //         // Perform actions if the toggle switch is not checked
+    //     }
+    // });
 }
 
 
@@ -704,20 +730,42 @@ document.addEventListener('DOMContentLoaded', function () {
     //modalText.innerHTML = generateModalContent();
 });
 
+// function renderReportsArray() {
+//     // Render the reports array wherever you want to display it
+//     console.log('Reports array:', reportsArray);
+// }
 function renderReportsArray() {
     // Render the reports array wherever you want to display it
     console.log('Reports array:', reportsArray);
+
+    // Iterate over each report in the array
+    reportsArray.forEach(report => {
+        const index = report.index;
+        const isChecked = $(`#modal-switch-${index}`).prop('checked');
+
+        if (!isChecked) {
+            // If the toggle switch in the modal is unchecked,
+            // check the corresponding toggle switch in the main UI
+            $(`#toggle-switch-${index}`).prop('checked', true);
+        }
+    });
 }
 
 function reloadPage() {
     window.location.reload();
 }
 
+// function filterByName() {
+//     const filterValue = document.getElementById('filterInput').value.toLowerCase();
+//     const filteredData = dataDebug.filter(item => item.name.toLowerCase().includes(filterValue));
+//     displayResults(filteredData);
+// }
 function filterByName() {
-    const filterValue = document.getElementById('filterInput').value.toLowerCase();
-    const filteredData = dataDebug.filter(item => item.name.toLowerCase().includes(filterValue));
+    const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
+    const filteredData = dataDebug.filter(item => item.name.toLowerCase() === filterValue); // Compare entire name
     displayResults(filteredData);
 }
+
 
 function displayResults(results) {
     const resultList = document.getElementById('resultList');
