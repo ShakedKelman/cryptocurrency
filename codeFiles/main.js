@@ -165,7 +165,6 @@ const dataDebug =
     ];
 
 const cache = {};
-
 // Simulate progress (increase value over time)
 function simulateProgress() {
     var val = $("#progress-bar").progressbar("value");
@@ -191,7 +190,6 @@ const endProgress = function () {
     });
 
 };
-
 const headerLogo = document.getElementById('header-main');
 //document.body.appendChild(headerContainer);
 
@@ -214,44 +212,6 @@ document.addEventListener('scroll', function () {
 });
 
 
-//const navbarContainer = document.getElementById('navbar-container');
-//navbarContainer.setAttribute('class', 'navContainer');
-//document.body.appendChild(navbarContainer);
-//document.body.appendChild(headerContainer);
-// Create navbar element
-//const navbar = document.createElement('nav');
-//navbar.setAttribute('class', 'navbar navbar-expand-lg navbar-light bg-light');
-
-// Navbar content
-// navbar.innerHTML = `
-// <nav class="navbar navbar-expand-lg bg-light">
-//     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-//       <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
-//         <li class="nav-item">
-//           <a class="nav-link active" data-section="home-sect" id="home-id" aria-current="page" href="#">Home</a>
-//         </li>
-//         <li class="nav-item">
-//           <a class="nav-link" data-section="live-reports-sect" href="#"  id="live-reports-id">live reports</a>
-//         </li>
-//         <li class="nav-item">
-//           <a class="nav-link" data-section="about-sect" href="#"  id="about-id">about</a>
-//         </li>
-//         </li>
-
-//       </ul>
-//       <form class="d-flex ms-auto searchStyle" role="search">
-//         <input class="form-control me-2 searchStyle" type="search" placeholder="Search" aria-label="Search">
-//         <button class="btn btn-dark" type="submit">Search</button>
-//       </form>
-//     </div>
-//   </div>
-// </nav>
-// `;
-
-// Append navbar after the header
-
-//navbarContainer.appendChild(navbar);
-//document.body.appendChild(navbarContainer);
 
 const navbarContainer = document.getElementById("navbar-container");
 
@@ -504,34 +464,6 @@ async function getCoinInfo(coinId, coinInfoId) {
 
 
 
-// // Simulate progress (increase value over time)
-// function simulateProgress() {
-//     var val = $("#progress-bar").progressbar("value");
-//     val = val + 10; // Increase value by 10%
-//     if (val <= 100) {
-//         $("#progress-bar").progressbar("value", val);
-//         setTimeout(simulateProgress, 1000); // Update every 1 second
-//     }
-// }
-
-
-// const startProgress = function () {
-//     $("#progress-bar").progressbar({
-//         value: 0 // Initial value (0%)
-//     });
-
-//     simulateProgress(); // Start the progress simulation
-// };
-
-// const endProgress = function () {
-//     $("#progress-bar").progressbar({
-//         value: 100 // Initial value (0%)
-//     });
-
-// };
-
-
-
 const reportsArray = [];
 const addedCardIds = [];
 
@@ -552,76 +484,7 @@ function addToReport(coin, index) {
         $('#maxCoinsModal').modal('show'); // Show the modal
     }
 }
-// function generateModalContent() {
-//     let content = '<ul>';
-//     reportsArray.forEach((item, index) => {
-//         content += `<li>${item.coin.name} (${item.coin.symbol})`;
-//         content += `<label class="toggle-switch" id="toggle-button-${index}">
-//                         <input type="checkbox" id="toggle-switch-${index}" checked>
-//                         <span class="slider"></span>
-//                     </label></li>`;
-//     });
-//     content += '</ul>';
-//     return content;
-// // }
-// function generateModalContent() {
-//     let content = '<ul>';
-//     reportsArray.forEach((item, index) => {
-//         content += `<li>${item.coin.name} (${item.coin.symbol})`;
-//         content += `<label class="toggle-switch" id="toggle-button-${index}">
-//                         <input type="checkbox" id="toggle-switch-${index}" checked>
-//                         <span class="slider"></span>
-//                     </label></li>`;
-//     });
-//     content += '</ul>';
 
-//     // Add event listener to each toggle switch
-//     reportsArray.forEach((item, index) => {
-//         const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
-//         toggleSwitch.addEventListener('change', function(event) {
-//             handleToggleSwitchChange(index, event.target.checked, item.coin);
-//         });
-//     });
-
-//     return content;reportsArray
-// }
-
-
-// function generateModalContent() {
-
-//     let switches = $('#modal-switches');
-//     switches.empty();
-
-//     reportsArray.forEach((item, index) => {
-//         // Create a new <li> element, within create a label + input, within the latter create a span
-//         const li = $('<li>');
-//         li.text(`${item.coin.name} (${item.coin.symbol})`);
-//         const label = $('<label>').addClass('toggle-switch').attr('id', `modal-toggle-${index}`);
-//         const inp = $('<input>').attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
-
-
-//         inp.on('change', function () {
-//             const index = parseInt($(this).attr('id').replace(/.*-/, ''));
-//             const checked = $(this).prop('checked');
-//             const coin = reportsArray[index].coin;
-//             const mainToggleIndex = index; // Set mainToggleIndex to the chosen index
-//             const checkbox = $(`#toggle-switch-${index}`);
-//             checkbox.prop('checked', !checkbox.prop('checked')).change();
-//             handleToggleSwitchChange(index, checked, coin, mainToggleIndex); // Pass mainToggleIndex to the handleToggleSwitchChange function
-//         });
-        
-        
-//         const span = $('<span>').addClass('slider');
-//         label.append(inp).append(span);
-//         li.append(label);
-//         switches.append(li);
-
-
-//     })
-
-
-//     return switches;
-// }
 function generateModalContent() {
     let switches = $('#modal-switches');
     switches.empty();
@@ -677,49 +540,7 @@ function closeModal() {
     $('#maxCoinsModal').modal('hide');
     console.log('Reports array:', reportsArray);
 
-    // // Iterate over each report in the array
-    // reportsArray.forEach(report => {
-    //     const index = report.index;
-    //     const isChecked = $(`#modal-switch-${index}`).prop('checked');
-
-    //     if (isChecked) {
-    //         console.log(`Coin at index ${index} is checked.`);
-    //         // Perform actions if the toggle switch is checked
-    //     } else {
-    //         console.log(`Coin at index ${index} is not checked.`);
-    //         // Perform actions if the toggle switch is not checked
-    //     }
-    // });
-}
-
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     const closeButton = document.querySelector('#maxCoinsModal .close');
-
-//     closeButton.addEventListener('click', function() {
-//         closeModal();
-//     });
-
-
-// });
-
-// document.addEventListener('DOMContentLoaded', function() {
-//     const closeButton = document.querySelector('#maxCoinsModal .close');
-
-//     closeButton.addEventListener('click', function() {
-//         closeModal(reportsArray);
-//     });
-
-//     // Render modal content on page load
-//     const modalText = document.getElementById('model-text');
-//     modalText.innerHTML = generateModalContent();
-// });
-
-
-// function reloadPage() {
-//     window.location.reload();
-// }
-
+   }
 document.addEventListener('DOMContentLoaded', function () {
     const closeButton = document.querySelector('#maxCoinsModal .close');
 
