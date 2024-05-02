@@ -896,7 +896,7 @@ function initializeChart() {
         exportEnabled: true,
         animationEnabled: true,
         title:{
-            text: "Units Sold VS Profit"
+            text: "coin name to USD"
         },
         subtitles: [{
             text: "Click Legend to Hide or Unhide Data Series"
@@ -905,19 +905,19 @@ function initializeChart() {
             title: "States"
         },
         axisY: {
-            title: "Units Sold",
+            title: "coin value",
             titleFontColor: "#4F81BC",
             lineColor: "#4F81BC",
             labelFontColor: "#4F81BC",
             tickColor: "#4F81BC"
         },
-        axisY2: {
-            title: "Profit in USD",
-            titleFontColor: "#C0504E",
-            lineColor: "#C0504E",
-            labelFontColor: "#C0504E",
-            tickColor: "#C0504E"
-        },
+        // axisY2: {
+        //     title: "Profit in USD",
+        //     titleFontColor: "#C0504E",
+        //     lineColor: "#C0504E",
+        //     labelFontColor: "#C0504E",
+        //     tickColor: "#C0504E"
+        // },
         toolTip: {
             shared: true
         },
