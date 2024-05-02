@@ -162,6 +162,37 @@ body {
     transform: translateX(20px); /* Move thumb to the right when checked */
     background-color: white; /* Change thumb color to white when checked */
   }
+  .slider-modal {
+    width: 40px; /* Adjust width of the toggle switch */
+    height: 20px; /* Adjust height of the toggle switch */
+    background-color: rgb(251, 244, 244); /* Default background color */
+    border: 1px solid black;
+    border-radius: 20px;
+    position: relative;
+    display: inline-block; /* Use inline-block to avoid overlap */
+}
+
+.slider-modal:before {
+    content: "";
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    top: 2px;
+    left: 2px;
+    background-color: rgb(19, 19, 19); /* Default thumb color */
+    border-radius: 50%;
+    transition: transform 0.4s;
+}
+
+/* Adjust appearance when the toggle switch is checked */
+.toggle-switch input:checked + .slider-modal {
+    background-color: rgb(11, 11, 11); /* Background color when checked */
+}
+
+.toggle-switch input:checked + .slider-modal:before {
+    transform: translateX(20px); /* Move thumb to the right when checked */
+    background-color: white; /* Change thumb color to white when checked */
+}
 
 
 

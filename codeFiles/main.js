@@ -407,7 +407,7 @@ async function getCoins() {
             //     console.log("Main toggle index:", mainToggleIndex); // Log the main toggle index
             // }
             function handleToggleSwitchChange(index, isChecked, coin, mainToggleIndex) {
-                console.log($(`#toggle-switch-${index}`))
+                console.log(index, isChecked, coin)
                 if (!isChecked) {
                     removeReport(index);
                 } else {
@@ -426,7 +426,6 @@ async function getCoins() {
             // Usage:
             const toggleSwitch = $(`#toggle-switch-${index}`);
             toggleSwitch.on('change', function (event) {
-                console.log('EVEVEVEVEVE', event)
                 handleToggleSwitchChange(index, event.target.checked, coin);
             });
 
@@ -539,19 +538,18 @@ const addedCardIds = [];
 
 function addToReport(coin, index) {
     if (!addedCardIds.includes(index)) {
-        if (reportsArray.length < 1) {
             reportsArray.push({ coin, index });
             addedCardIds.push(index);
             console.log('Added coin to reports array:', coin);
             console.log('Reports array:', reportsArray);
-        } else {
-            const modalDOM = $('#model-text');
-            modalDOM.html(generateModalContent()); // Populate modal body with content
-            $('#maxCoinsModal').modal('show'); // Show the modal
-
-        }
     } else {
         console.log('This card has already been added to the reports.');
+    }
+
+    if (reportsArray.length > 2) {
+        const modalDOM = $('#model-text');
+        modalDOM.html(generateModalContent()); // Populate modal body with content
+        $('#maxCoinsModal').modal('show'); // Show the modal
     }
 }
 // function generateModalContent() {
@@ -628,29 +626,34 @@ function generateModalContent() {
     let switches = $('#modal-switches');
     switches.empty();
 
+    const coin_hash = Object.assign( {},
+        ...Array.from( $('.cardOutputStyle') )
+        .map( d => ({ [ d.getAttribute('coin-id') ]: d.id.replace(/.*-/, '') }) ) )
+
     reportsArray.forEach((item) => {
         const coin = item.coin; // Define coin variable here
-        const coin_hash = Object.assign( {},
-            ...Array.from( $('.cardOutputStyle') )
-            .map( d => ({ [ d.getAttribute('coin-id') ]: d.id.replace(/.*-/, '') }) ) )
         const index = coin_hash[ coin.id ];
+        console.log(index)
 
         // Create a new <li> element, within create a label + input, within the latter create a span
         const li = $('<li>');
         li.text(`${coin.name} (${coin.symbol})`);
+        const div = $('<span>')
         const label = $('<label>').addClass('toggle-switch').attr('id', `modal-toggle-${index}`);
         const inp = $('<input>')
         inp.attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
-
-        const span = $('<span>').addClass('slider');
-        label.append(inp).append(span);
-        li.append(label);
-        switches.append(li);
 
         inp[0].addEventListener('change', function(ev) {
             $( '#' + ev.target.id.replace(/modal-/, 'toggle-') ).click()
             // handleToggleSwitchChange(index, $( this).prop('checked'), coin); // Pass coin as a parameter
         });
+
+        console.log(inp)
+        const span = $('<span>').addClass('slider-modal').attr('id', `modal-slider-${index}`)
+        label.append(inp).append(span);
+        div.append(label)
+        li.append(div);
+        switches.append(li);
 
         // Add event listener to the toggle switch
         /*
