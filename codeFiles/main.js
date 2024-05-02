@@ -765,8 +765,13 @@ function reloadPage() {
 // }
 function filterByName() {
     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
-    const filteredData = dataDebug.filter(item => item.name.toLowerCase() === filterValue); // Compare entire name
+    const filteredData = dataDebug.filter(item => item.symbol.toLowerCase() === filterValue); // Compare entire name
     displayResults(filteredData);
+    if (filteredData.length === 0) {
+        alert('please type the full name of the coin you want to find');
+    }
+    filterInput.value = '';
+
 }
 
 
@@ -775,7 +780,7 @@ function displayResults(results) {
     resultList.innerHTML = '';
     results.forEach(item => {
         const li = document.createElement('li');
-        li.textContent = `${item.id} - ${item.symbol} - ${item.name}`;
+        li.textContent = `${item.symbol} - ${item.id} - ${item.name}`;
         resultList.appendChild(li);
     });
 }
@@ -789,7 +794,13 @@ function showAll() {
     const resultList = document.getElementById('resultList');
     resultList.innerHTML = ''; // Clear the UI output
 }
-
+$(document).ready(function() {
+    // Initialize the popover
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+    });
+});
 
 // function initializeChart() {
 //     var options = {
