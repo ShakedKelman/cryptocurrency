@@ -166,14 +166,17 @@ const dataDebug =
 
 const cache = {};
 // Simulate progress (increase value over time)
+// Simulate progress (increase value over time)
 function simulateProgress() {
     var val = $("#progress-bar").progressbar("value");
     val = val + 10; // Increase value by 10%
     if (val <= 100) {
         $("#progress-bar").progressbar("value", val);
+        $("#progress-label").text(val + "%");
         setTimeout(simulateProgress, 1000); // Update every 1 second
-    }
+     }
 }
+
 
 
 const startProgress = function () {
@@ -189,7 +192,9 @@ const endProgress = function () {
         value: 100 // Initial value (0%)
     });
 
+    $("#progress-label").text("Complete!"); // Update progress label when complete
 };
+
 const headerLogo = document.getElementById('header-main');
 //document.body.appendChild(headerContainer);
 
@@ -215,14 +220,19 @@ document.addEventListener('scroll', function () {
 
 const navbarContainer = document.getElementById("navbar-container");
 
+/*
 const progressBarContainer = document.createElement('div');
 progressBarContainer.setAttribute('id', 'progress-bar-container');
 navbarContainer.appendChild(progressBarContainer);
 
+const progressBarLabel = document.createElement('div');
+progressBarLabel.setAttribute('id', 'progress-label');
+progressBarContainer.appendChild(progressBarLabel);
+
 const progressBar = document.createElement('div');
 progressBar.setAttribute('id', 'progress-bar');
-progressBarContainer.appendChild(progressBar);
-
+progressBarLabel.appendChild(progressBar);
+*/
 
 
 let isAdditionalInfoDisplayed = {
@@ -274,7 +284,7 @@ navbarItems.forEach(itemId => {
 //navbarItems.forEach(itemId => {
 //    document.getElementById(itemId).addEventListener('click', () => showNavInfo(itemId));
 //});
-
+  
 // a function to fetch the coin information
 async function getCoins() {
 
@@ -404,11 +414,14 @@ async function getCoins() {
                 }
             }
 
-
             // Add event listener to "more info" button
             const moreInfoButton = cardOutput.querySelector(`.more-info-btn-${index}`);
-            moreInfoButton.addEventListener('click', async () => {
+            moreInfoButton.addEventListener('click', async (ev) => {
+                const btnTarget = ev.target.getAttribute('data-bs-target')
+                console.log( $(btnTarget).prop('class') )
+                setTimeout( () => getMyCollapse(btnTarget), 500 )
                 await getCoinInfo(coin.id, coinInfoId);
+                
             });
 
         });
@@ -423,6 +436,13 @@ async function getCoins() {
 }
 getCoins();
 
+const getMyCollapse = (elem = '#collapseExample1') => {
+    console.log( $(elem).prop('class') )
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function getCoinInfo(coinId, coinInfoId) {
     try {
@@ -438,7 +458,11 @@ async function getCoinInfo(coinId, coinInfoId) {
             }, 2 * 60 * 1000); // 2 minutes in milliseconds
         } else {
             data = cache[coinId];
+            await sleep(2000)
         }
+
+        //$('#dummy').removeClass('done')
+        //$('#dummy').addClass("load").delay(4000).addClass("done").removeClass('load');
 
         const moreInfoData = document.getElementById(coinInfoId);
         moreInfoData.innerHTML = `
