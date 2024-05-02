@@ -1,4 +1,10 @@
 const debug = true;
+
+const reportsArray = [];
+let saveReportsArray = [];
+const addedCardIds = [];
+let eventHandlerType;
+
 const dataDebug =
     [
 
@@ -488,8 +494,6 @@ async function getCoinInfo(coinId, coinInfoId) {
 
 
 
-const reportsArray = [];
-const addedCardIds = [];
 
 
 function addToReport(coin, index) {
@@ -509,15 +513,46 @@ function addToReport(coin, index) {
     }
 }
 
+
+
+function getCoinHash() {
+    const coin_hash = Object.assign( {},
+        ...Array.from( $('.cardOutputStyle') )
+        .map( d => ({ [ d.getAttribute('coin-id') ]: d.id.replace(/.*-/, '') }) ) )
+    return coin_hash;
+}
+
+
+//
+// save a snapshot of the toggle buttons that appear inside the modal
+// and add an event listener to the 'undo' button in the modal. When
+// undo is clicked, any unchecked toggles will be restored to checked.
+//
+function undoSaveHistory() {
+    const undoBtn = $('#undoModal');
+    if (eventHandlerType === 'click') {
+        console.log('EventHandler "click" has already been applied to #undoModal');
+    } else {
+        // create a click handler that restores the reportsArray to the toggles' original positions
+        undoBtn.on('click', function(ev) {
+            eventHandlerType = ev.type;
+            $("[id*='modal-switch-']:not(:checked)").click();
+        })
+    }
+}
+
+
 function generateModalContent() {
     let switches = $('#modal-switches');
     switches.empty();
 
-    const coin_hash = Object.assign( {},
-        ...Array.from( $('.cardOutputStyle') )
-        .map( d => ({ [ d.getAttribute('coin-id') ]: d.id.replace(/.*-/, '') }) ) )
+    const coin_hash = getCoinHash();
 
-    reportsArray.forEach((item) => {
+    undoSaveHistory();
+
+    reportsArray
+      .sort((a,b) => coin_hash[ a.coin.id ] - coin_hash[ b.coin.id])
+      .forEach((item) => {
         const coin = item.coin; // Define coin variable here
         const index = coin_hash[ coin.id ];
         console.log(index)
