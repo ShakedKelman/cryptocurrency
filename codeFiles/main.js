@@ -506,7 +506,7 @@ function addToReport(coin, index) {
         console.log('This card has already been added to the reports.');
     }
 
-    if (reportsArray.length > 2) {
+    if (reportsArray.length >5) {
         const modalDOM = $('#model-text');
         modalDOM.html(generateModalContent()); // Populate modal body with content
         $('#maxCoinsModal').modal('show'); // Show the modal
@@ -542,9 +542,33 @@ function undoSaveHistory() {
 }
 
 
-function generateModalContent() {
+async function fetchCoinPrices() {
+    const coinSymbols = reportsArray.map(item => item.coin.symbol).join(',');
+    console.log('Coin symbols:', coinSymbols); // Log the coin symbols
+
+    const url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log('Fetched coin prices:', data); // Log the fetched items
+
+        return data;
+    } catch (error) {
+        console.error('Error fetching coin prices:', error);
+        return {};
+    }
+}
+
+
+
+
+
+
+async function generateModalContent() {
     let switches = $('#modal-switches');
     switches.empty();
+    const coinPrices = await fetchCoinPrices();
 
     const coin_hash = getCoinHash();
 
@@ -595,11 +619,20 @@ function generateModalContent() {
 // toggleSwitch.checked = !toggleSwitch.checked;
 
 
-function closeModal() {
-    $('#maxCoinsModal').modal('hide');
-    console.log('Reports array:', reportsArray);
+// function closeModal() {
+//     $('#maxCoinsModal').modal('hide');
+//     console.log('Reports array:', reportsArray);
 
-   }
+//    }
+function closeModal() {
+    // Check if there are 5 or fewer items in the reportsArray
+    if (reportsArray.length <= 5) {
+        $('#maxCoinsModal').modal('hide');
+        console.log('Reports array:', reportsArray);
+    }else{
+        alert('please mke sure theres are 5 or less coins selected')    }
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const closeButton = document.querySelector('#maxCoinsModal .close');
 
@@ -634,9 +667,6 @@ function renderReportsArray() {
     });
 }
 
-function reloadPage() {
-    window.location.reload();
-}
 
 // function filterByName() {
 //     const filterValue = document.getElementById('filterInput').value.toLowerCase();
@@ -669,6 +699,9 @@ function displayResults(results) {
 //     document.getElementById('filterInput').value = ''; // Clear the filter input
 //     // displayResults(dataDebug); // Display all results
 // }
+
+
+
 function showAll() {
     document.getElementById('filterInput').value = ''; // Clear the filter input
     const resultList = document.getElementById('resultList');
@@ -771,33 +804,160 @@ $(document).ready(function() {
 //     }
 // }
 
-function initializeChart() {
-    let options = {
+// function initializeChart() {
+//     let options = {
+//         exportEnabled: true,
+//         animationEnabled: true,
+//         title:{
+//             text: "coin name to USD"
+//         },
+//         subtitles: [{
+//             text: "Click Legend to Hide or Unhide Data Series"
+//         }],
+//         axisX: {
+//             title: "States"
+//         },
+//         axisY: {
+//             title: "coin value",
+//             titleFontColor: "#4F81BC",
+//             lineColor: "#4F81BC",
+//             labelFontColor: "#4F81BC",
+//             tickColor: "#4F81BC"
+//         },
+//         // axisY2: {
+//         //     title: "Profit in USD",
+//         //     titleFontColor: "#C0504E",
+//         //     lineColor: "#C0504E",
+//         //     labelFontColor: "#C0504E",
+//         //     tickColor: "#C0504E"
+//         // },
+//         toolTip: {
+//             shared: true
+//         },
+//         legend: {
+//             cursor: "pointer",
+//             itemclick: toggleDataSeries
+//         },
+//         data: [{
+//             type: "spline",
+//             name: "Units Sold",
+//             showInLegend: true,
+//             xValueFormatString: "MMM YYYY",
+//             yValueFormatString: "#,##0 Units",
+//             dataPoints: [
+//                 { x: new Date(2016, 0, 1),  y: 120 },
+//                 { x: new Date(2016, 1, 1), y: 135 },
+//                 { x: new Date(2016, 2, 1), y: 144 },
+//                 { x: new Date(2016, 3, 1),  y: 103 },
+//                 { x: new Date(2016, 4, 1),  y: 93 },
+//                 { x: new Date(2016, 5, 1),  y: 129 },
+//                 { x: new Date(2016, 6, 1), y: 143 },
+//                 { x: new Date(2016, 7, 1), y: 156 },
+//                 { x: new Date(2016, 8, 1),  y: 122 },
+//                 { x: new Date(2016, 9, 1),  y: 106 },
+//                 { x: new Date(2016, 10, 1),  y: 137 },
+//                 { x: new Date(2016, 11, 1), y: 142 }
+//             ]
+//         },
+//         {
+//             type: "spline",
+//             name: "Profit",
+//             axisYType: "secondary",
+//             showInLegend: true,
+//             xValueFormatString: "MMM YYYY",
+//             yValueFormatString: "$#,##0.#",
+//             dataPoints: [
+//                 { x: new Date(2016, 0, 1),  y: 19034.5 },
+//                 { x: new Date(2016, 1, 1), y: 20015 },
+//                 { x: new Date(2016, 2, 1), y: 27342 },
+//                 { x: new Date(2016, 3, 1),  y: 20088 },
+//                 { x: new Date(2016, 4, 1),  y: 20234 },
+//                 { x: new Date(2016, 5, 1),  y: 29034 },
+//                 { x: new Date(2016, 6, 1), y: 30487 },
+//                 { x: new Date(2016, 7, 1), y: 32523 },
+//                 { x: new Date(2016, 8, 1),  y: 20234 },
+//                 { x: new Date(2016, 9, 1),  y: 27234 },
+//                 { x: new Date(2016, 10, 1),  y: 33548 },
+//                 { x: new Date(2016, 11, 1), y: 32534 }
+//             ]
+//         }]
+//     };
+  
+
+//     // Initialize the chart within the chartContainer element
+   
+    
+//     var chart = new CanvasJS.Chart("chartContainer", options);
+//     chart.render();
+
+//     // Define the toggleDataSeries function
+//     function toggleDataSeries(e) {
+//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+//             e.dataSeries.visible = false;
+//         } else {
+//             e.dataSeries.visible = true;
+//         }
+//         e.chart.render();
+//     }
+// }
+
+// // Call the initializeChart function when the page is loaded
+// $(document).ready(function() {
+//     initializeChart();
+// });
+
+
+async function initializeChart() {
+    let chartData = []; // Declare chartData outside of the updateChartData function
+
+    // Fetch coin prices and update chart data
+    async function updateChartData() {
+        try {
+            // Fetch coin prices
+            const coinPrices = await fetchCoinPrices();
+
+            // Check if coin prices were fetched successfully
+            if (!coinPrices) {
+                console.error('Error fetching coin prices');
+                return;
+            }
+
+            // Update chart data
+            chartData = []; // Reset chartData
+            reportsArray.forEach(item => {
+                const coin = item.coin;
+                const price = coinPrices[coin.symbol]?.USD || 0; // Get USD price from coinPrices
+                chartData.push({ x: coin.name, y: price });
+            });
+
+            // Re-render the chart
+            chart.options.data[0].dataPoints = chartData;
+            chart.render();
+        } catch (error) {
+            console.error('Error updating chart data:', error);
+        }
+    }
+
+    // Define chart options
+    const options = {
         exportEnabled: true,
         animationEnabled: true,
-        title:{
-            text: "coin name to USD"
+        title: {
+            text: "Coin Name to USD"
         },
         subtitles: [{
             text: "Click Legend to Hide or Unhide Data Series"
         }],
         axisX: {
-            title: "States"
+            title: "Coins"
         },
         axisY: {
-            title: "coin value",
+            title: "USD Value",
             titleFontColor: "#4F81BC",
             lineColor: "#4F81BC",
             labelFontColor: "#4F81BC",
             tickColor: "#4F81BC"
         },
-        // axisY2: {
-        //     title: "Profit in USD",
-        //     titleFontColor: "#C0504E",
-        //     lineColor: "#C0504E",
-        //     labelFontColor: "#C0504E",
-        //     tickColor: "#C0504E"
-        // },
         toolTip: {
             shared: true
         },
@@ -805,57 +965,21 @@ function initializeChart() {
             cursor: "pointer",
             itemclick: toggleDataSeries
         },
+    
         data: [{
-            type: "spline",
-            name: "Units Sold",
+            type: "column",
+            name: "USD Value",
             showInLegend: true,
-            xValueFormatString: "MMM YYYY",
-            yValueFormatString: "#,##0 Units",
-            dataPoints: [
-                { x: new Date(2016, 0, 1),  y: 120 },
-                { x: new Date(2016, 1, 1), y: 135 },
-                { x: new Date(2016, 2, 1), y: 144 },
-                { x: new Date(2016, 3, 1),  y: 103 },
-                { x: new Date(2016, 4, 1),  y: 93 },
-                { x: new Date(2016, 5, 1),  y: 129 },
-                { x: new Date(2016, 6, 1), y: 143 },
-                { x: new Date(2016, 7, 1), y: 156 },
-                { x: new Date(2016, 8, 1),  y: 122 },
-                { x: new Date(2016, 9, 1),  y: 106 },
-                { x: new Date(2016, 10, 1),  y: 137 },
-                { x: new Date(2016, 11, 1), y: 142 }
-            ]
-        },
-        {
-            type: "spline",
-            name: "Profit",
-            axisYType: "secondary",
-            showInLegend: true,
-            xValueFormatString: "MMM YYYY",
-            yValueFormatString: "$#,##0.#",
-            dataPoints: [
-                { x: new Date(2016, 0, 1),  y: 19034.5 },
-                { x: new Date(2016, 1, 1), y: 20015 },
-                { x: new Date(2016, 2, 1), y: 27342 },
-                { x: new Date(2016, 3, 1),  y: 20088 },
-                { x: new Date(2016, 4, 1),  y: 20234 },
-                { x: new Date(2016, 5, 1),  y: 29034 },
-                { x: new Date(2016, 6, 1), y: 30487 },
-                { x: new Date(2016, 7, 1), y: 32523 },
-                { x: new Date(2016, 8, 1),  y: 20234 },
-                { x: new Date(2016, 9, 1),  y: 27234 },
-                { x: new Date(2016, 10, 1),  y: 33548 },
-                { x: new Date(2016, 11, 1), y: 32534 }
-            ]
+            dataPoints: chartData // Use chartData here
         }]
     };
-  
 
     // Initialize the chart within the chartContainer element
-   
-    
-    var chart = new CanvasJS.Chart("chartContainer", options);
+    const chart = new CanvasJS.Chart("chartContainer", options);
     chart.render();
+
+    // Call updateChartData every 2 seconds
+    setInterval(updateChartData, 2000);
 
     // Define the toggleDataSeries function
     function toggleDataSeries(e) {
