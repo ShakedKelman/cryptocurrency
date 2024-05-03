@@ -180,7 +180,7 @@ function simulateProgress() {
         $("#progress-bar").progressbar("value", val);
         $("#progress-label").text(val + "%");
         setTimeout(simulateProgress, 1000); // Update every 1 second
-     }
+    }
 }
 
 
@@ -253,7 +253,7 @@ navbarItems.forEach(itemId => {
 
     navItem.addEventListener('click', () => {
         console.log(this)
-        
+
         if (isAdditionalInfoDisplayed[itemId]) {
             //navItem.textContent = itemId.replace(/-/g, ' ').replace('id', '').replace(/\b\w/g, l => l.toUpperCase());
         } else {
@@ -290,7 +290,7 @@ navbarItems.forEach(itemId => {
 //navbarItems.forEach(itemId => {
 //    document.getElementById(itemId).addEventListener('click', () => showNavInfo(itemId));
 //});
-  
+
 // a function to fetch the coin information
 async function getCoins() {
 
@@ -391,13 +391,13 @@ async function getCoins() {
                 }
                 console.log("Selected toggle card index:", index);
                 console.log("Main toggle index:", mainToggleIndex); // Log the main toggle index
-            
+
                 // If the modal toggle is unchecked, uncheck the corresponding coin card toggle switch
                 if (!isChecked) {
                     $(`#toggle-switch-${index}`).prop('checked', false);
                 }
             }
-            
+
 
             // Usage:
             const toggleSwitch = $(`#toggle-switch-${index}`);
@@ -424,10 +424,10 @@ async function getCoins() {
             const moreInfoButton = cardOutput.querySelector(`.more-info-btn-${index}`);
             moreInfoButton.addEventListener('click', async (ev) => {
                 const btnTarget = ev.target.getAttribute('data-bs-target')
-                console.log( $(btnTarget).prop('class') )
-                setTimeout( () => getMyCollapse(btnTarget), 500 )
+                console.log($(btnTarget).prop('class'))
+                setTimeout(() => getMyCollapse(btnTarget), 500)
                 await getCoinInfo(coin.id, coinInfoId);
-                
+
             });
 
         });
@@ -443,7 +443,7 @@ async function getCoins() {
 getCoins();
 
 const getMyCollapse = (elem = '#collapseExample1') => {
-    console.log( $(elem).prop('class') )
+    console.log($(elem).prop('class'))
 }
 
 function sleep(ms) {
@@ -498,15 +498,15 @@ async function getCoinInfo(coinId, coinInfoId) {
 
 function addToReport(coin, index) {
     if (!addedCardIds.includes(index)) {
-            reportsArray.push({ coin, index });
-            addedCardIds.push(index);
-            console.log('Added coin to reports array:', coin);
-            console.log('Reports array:', reportsArray);
+        reportsArray.push({ coin, index });
+        addedCardIds.push(index);
+        console.log('Added coin to reports array:', coin);
+        console.log('Reports array:', reportsArray);
     } else {
         console.log('This card has already been added to the reports.');
     }
 
-    if (reportsArray.length >5) {
+    if (reportsArray.length > 5) {
         const modalDOM = $('#model-text');
         modalDOM.html(generateModalContent()); // Populate modal body with content
         $('#maxCoinsModal').modal('show'); // Show the modal
@@ -516,9 +516,9 @@ function addToReport(coin, index) {
 
 
 function getCoinHash() {
-    const coin_hash = Object.assign( {},
-        ...Array.from( $('.cardOutputStyle') )
-        .map( d => ({ [ d.getAttribute('coin-id') ]: d.id.replace(/.*-/, '') }) ) )
+    const coin_hash = Object.assign({},
+        ...Array.from($('.cardOutputStyle'))
+            .map(d => ({ [d.getAttribute('coin-id')]: d.id.replace(/.*-/, '') })))
     return coin_hash;
 }
 
@@ -534,7 +534,7 @@ function undoSaveHistory() {
         console.log('EventHandler "click" has already been applied to #undoModal');
     } else {
         // create a click handler that restores the reportsArray to the toggles' original positions
-        undoBtn.on('click', function(ev) {
+        undoBtn.on('click', function (ev) {
             eventHandlerType = ev.type;
             $("[id*='modal-switch-']:not(:checked)").click();
         })
@@ -575,40 +575,40 @@ async function generateModalContent() {
     undoSaveHistory();
 
     reportsArray
-      .sort((a,b) => coin_hash[ a.coin.id ] - coin_hash[ b.coin.id])
-      .forEach((item) => {
-        const coin = item.coin; // Define coin variable here
-        const index = coin_hash[ coin.id ];
-        console.log(index)
+        .sort((a, b) => coin_hash[a.coin.id] - coin_hash[b.coin.id])
+        .forEach((item) => {
+            const coin = item.coin; // Define coin variable here
+            const index = coin_hash[coin.id];
+            console.log(index)
 
-        // Create a new <li> element, within create a label + input, within the latter create a span
-        const li = $('<li>');
-        li.text(`${coin.name} (${coin.symbol})`);
-        const div = $('<span>')
-        const label = $('<label>').addClass('toggle-switch').attr('id', `modal-toggle-${index}`);
-        const inp = $('<input>')
-        inp.attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
+            // Create a new <li> element, within create a label + input, within the latter create a span
+            const li = $('<li>');
+            li.text(`${coin.name} (${coin.symbol})`);
+            const div = $('<span>')
+            const label = $('<label>').addClass('toggle-switch').attr('id', `modal-toggle-${index}`);
+            const inp = $('<input>')
+            inp.attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
 
-        inp[0].addEventListener('change', function(ev) {
-            $( '#' + ev.target.id.replace(/modal-/, 'toggle-') ).click()
-            // handleToggleSwitchChange(index, $( this).prop('checked'), coin); // Pass coin as a parameter
+            inp[0].addEventListener('change', function (ev) {
+                $('#' + ev.target.id.replace(/modal-/, 'toggle-')).click()
+                // handleToggleSwitchChange(index, $( this).prop('checked'), coin); // Pass coin as a parameter
+            });
+
+            console.log(inp)
+            const span = $('<span>').addClass('slider-modal').attr('id', `modal-slider-${index}`)
+            label.append(inp).append(span);
+            div.append(label)
+            li.append(div);
+            switches.append(li);
+
+            // Add event listener to the toggle switch
+            /*
+            inp.on('change', function (ev) {
+                console.log([ 'EEEEEEEEEEEE', ev ])
+                //handleToggleSwitchChange(index, $(this).prop('checked'), coin); // Pass coin as a parameter
+            });
+            */
         });
-
-        console.log(inp)
-        const span = $('<span>').addClass('slider-modal').attr('id', `modal-slider-${index}`)
-        label.append(inp).append(span);
-        div.append(label)
-        li.append(div);
-        switches.append(li);
-
-        // Add event listener to the toggle switch
-        /*
-        inp.on('change', function (ev) {
-            console.log([ 'EEEEEEEEEEEE', ev ])
-            //handleToggleSwitchChange(index, $(this).prop('checked'), coin); // Pass coin as a parameter
-        });
-        */
-    });
 
     return switches;
 }
@@ -629,8 +629,9 @@ function closeModal() {
     if (reportsArray.length <= 5) {
         $('#maxCoinsModal').modal('hide');
         console.log('Reports array:', reportsArray);
-    }else{
-        alert('please mke sure theres are 5 or less coins selected')    }
+    } else {
+        alert('please mke sure theres are 5 or less coins selected')
+    }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -707,7 +708,7 @@ function showAll() {
     const resultList = document.getElementById('resultList');
     resultList.innerHTML = ''; // Clear the UI output
 }
-$(document).ready(function() {
+$(document).ready(function () {
     // Initialize the popover
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
@@ -882,11 +883,11 @@ $(document).ready(function() {
 //             ]
 //         }]
 //     };
-  
+
 
 //     // Initialize the chart within the chartContainer element
-   
-    
+
+
 //     var chart = new CanvasJS.Chart("chartContainer", options);
 //     chart.render();
 
@@ -907,15 +908,174 @@ $(document).ready(function() {
 // });
 
 
+// async function initializeChart() {
+//     let chartData = []; // Declare chartData outside of the updateChartData function
+//     let colorIndex = 0; // Initialize color index for assigning colors to coins
+
+//     // Fetch coin prices and update chart data
+// //     // Fetch coin prices and update chart data
+// // async function updateChartData() {
+// //     try {
+// //         // Fetch coin prices
+// //         const coinPrices = await fetchCoinPrices();
+
+// //         // Check if coin prices were fetched successfully
+// //         if (!coinPrices) {
+// //             console.error('Error fetching coin prices');
+// //             return;
+// //         }
+
+// //         // Update chart data
+// //         chartData = []; // Reset chartData
+// //         reportsArray.forEach((item, index) => {
+// //             const coin = item.coin;
+// //             const price = coinPrices[coin.symbol]?.USD || 0; // Get USD price from coinPrices
+// //             const normalizedPrice = price / 100; // Normalize price to fit between 0 and 1
+// //             const scaledPrice = normalizedPrice * 7000; // Scale normalized price to fit between 0 and 70000
+// //             const color = getColorForCoin(coin, index); // Get color for the coin
+// //             chartData.push({ label: coin.symbol, y: scaledPrice, color: color }); // Include color in data points
+// //         });
+
+
+// //         // Re-render the chart
+// //         chart.options.data[0].dataPoints = chartData;
+// //         chart.render();
+
+// //     } catch (error) {
+// //         console.error('Error updating chart data:', error);
+// //     }
+// // }
+
+// async function updateChartData() {
+//     try {
+//         // Fetch coin prices
+//         const coinPrices = await fetchCoinPrices();
+
+//         // Check if coin prices were fetched successfully
+//         if (!coinPrices) {
+//             console.error('Error fetching coin prices');
+//             return;
+//         }
+
+//         // Update chart data
+//         chartData = []; // Reset chartData
+
+//         // Get the current time
+//         const currentTime = new Date();
+
+//         // Push a new data point for each coin
+//         reportsArray.forEach((item, index) => {
+//             const coin = item.coin;
+//             const price = coinPrices[coin.symbol]?.USD || 0; // Get USD price from coinPrices
+//             const normalizedPrice = price / 100; // Normalize price to fit between 0 and 1
+//             const scaledPrice = normalizedPrice * 7000; // Scale normalized price to fit between 0 and 70000
+//             const color = getColorForCoin(coin, index); // Get color for the coin
+
+//             // Calculate the x-value for the data point
+//             const xValue = new Date(currentTime.getTime() + (index * 2000)); // Add 2 seconds for each index
+
+//             // Push the data point to the chartData array
+//             chartData.push({ x: xValue, y: scaledPrice, label: coin.symbol, color: color });
+//         });
+
+//         // Re-render the chart
+//         chart.options.data[0].dataPoints = chartData;
+//         chart.render();
+//     } catch (error) {
+//         console.error('Error updating chart data:', error);
+//     }
+// }
+
+// // Define chart options
+// const options = {
+//     exportEnabled: true,
+//     animationEnabled: true,
+//     title: {
+//         text: "Coin over Time"
+//     },
+//     subtitles: [{
+//         text: "Click Legend to Hide or Unhide Data Series"
+//     }],
+//     axisX: {
+//         title: "Time (Every 2 Seconds)",
+//         titleFontColor: "#4F81BC",
+//         lineColor: "#4F81BC",
+//         labelFontColor: "#4F81BC",
+//         tickColor: "#4F81BC",
+//         interval: 2, // Set interval between ticks to represent every 2 seconds
+//         valueFormatString: "HH:mm:ss" // Format the x-axis labels to display hours, minutes, and seconds
+//     },
+//     axisY: {
+//         title: "USD Value",
+//         titleFontColor: "#4F81BC",
+//         lineColor: "#4F81BC",
+//         labelFontColor: "#4F81BC",
+//         tickColor: "#4F81BC",
+//         minimum: 0, // Set minimum value of y-axis
+//         maximum: 7000, // Set maximum value of y-axis
+//         interval: 1000 // Set interval between ticks on the y-axis
+//     },
+//    toolTip: {
+//     shared: true,
+//     contentFormatter: function(e) {
+//         const xValue = e.entries[0].dataPoint.x;
+//         const formattedX = (xValue instanceof Date) ? xValue.toLocaleTimeString() : xValue;
+//         return `<strong>${formattedX}</strong><br/>${e.entries[0].dataPoint.y} USD`;
+//     }
+
+//     },
+//     legend: {
+//         cursor: "pointer",
+//         itemclick: toggleDataSeries
+//     },
+
+//     data: [{
+//         type: "column",
+//         name: "USD Value",
+//         showInLegend: true,
+//         dataPoints: chartData // Use chartData here
+//     }]
+// };
+
+
+//     // Initialize the chart within the chartContainer element
+//     const chart = new CanvasJS.Chart("chartContainer", options);
+//     chart.render();
+
+//     // Call updateChartData every 2 seconds
+//     setInterval(updateChartData, 2000);
+
+//     // Define the toggleDataSeries function
+//     function toggleDataSeries(e) {
+//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+//             e.dataSeries.visible = false;
+//         } else {
+//             e.dataSeries.visible = true;
+//         }
+//         e.chart.render();
+//     }
+
+//     function getColorForCoin(coin, index) {
+//         const colors = ['#4F81BC', '#C0504E', '#9BBB59', '#FFC000', '#8064A2', '#4BACC6', '#F79646']; // Array of predefined colors
+//         return colors[index % colors.length]; // Return color based on index
+//     }
+// }
+
+// // Call the initializeChart function when the page is loaded
+// $(document).ready(function() {
+//     initializeChart();
+// });
+
 async function initializeChart() {
     let chartData = []; // Declare chartData outside of the updateChartData function
+    let colorIndex = 0; // Initialize color index for assigning colors to coins
 
     // Fetch coin prices and update chart data
     async function updateChartData() {
         try {
             // Fetch coin prices
             const coinPrices = await fetchCoinPrices();
-
+console.log('Fetched coin prices:', JSON.stringify(coinPrices));
             // Check if coin prices were fetched successfully
             if (!coinPrices) {
                 console.error('Error fetching coin prices');
@@ -924,14 +1084,31 @@ async function initializeChart() {
 
             // Update chart data
             chartData = []; // Reset chartData
-            reportsArray.forEach(item => {
+
+            // Get the current time
+            const currentTime = new Date();
+
+            // Push a new data point for each coin
+            reportsArray.forEach((item, index) => {
                 const coin = item.coin;
                 const price = coinPrices[coin.symbol]?.USD || 0; // Get USD price from coinPrices
-                chartData.push({ x: coin.name, y: price });
+                const normalizedPrice = price / 100; // Normalize price to fit between 0 and 1
+                const scaledPrice = normalizedPrice * 7000; // Scale normalized price to fit between 0 and 70000
+                const color = getColorForCoin(coin, index); // Get color for the coin
+
+                // Calculate the x-value for the data point
+                const xValue = new Date(currentTime.getTime() + (index * 2000)); // Add 2 seconds for each index
+
+                // Push the data point to the chartData array
+                chartData.push({ x: xValue, y: scaledPrice, label: coin.symbol, color: color });
             });
+
+            // Log chartData for debugging
+            console.log('Chart Data:', chartData);
 
             // Re-render the chart
             chart.options.data[0].dataPoints = chartData;
+
             chart.render();
         } catch (error) {
             console.error('Error updating chart data:', error);
@@ -943,31 +1120,46 @@ async function initializeChart() {
         exportEnabled: true,
         animationEnabled: true,
         title: {
-            text: "Coin Name to USD"
+            text: "Coin over Time"
         },
         subtitles: [{
             text: "Click Legend to Hide or Unhide Data Series"
         }],
         axisX: {
-            title: "Coins"
+            title: "Time (Every 2 Seconds)",
+            titleFontColor: "#4F81BC",
+            lineColor: "#4F81BC",
+            labelFontColor: "#4F81BC",
+            tickColor: "#4F81BC",
+            interval: 2, // Set interval between ticks to represent every 2 seconds
+            valueFormatString: "HH:mm:ss" // Format the x-axis labels to display hours, minutes, and seconds
         },
         axisY: {
             title: "USD Value",
             titleFontColor: "#4F81BC",
             lineColor: "#4F81BC",
             labelFontColor: "#4F81BC",
-            tickColor: "#4F81BC"
+            tickColor: "#4F81BC",
+            minimum: 0, // Set minimum value of y-axis
+            maximum: 7000, // Set maximum value of y-axis
+            interval: 1000 // Set interval between ticks on the y-axis
         },
         toolTip: {
-            shared: true
+            shared: true,
+            contentFormatter: function (e) {
+                const xValue = e.entries[0].dataPoint.x;
+                const formattedX = (xValue instanceof Date) ? xValue.toLocaleTimeString() : xValue;
+                const yValue = e.entries[0].dataPoint.y.toFixed(6); // Format y-value with two decimal points
+                return `<strong>${formattedX}</strong><br/>${yValue} USD`;
+            }
         },
         legend: {
             cursor: "pointer",
             itemclick: toggleDataSeries
         },
-    
+
         data: [{
-            type: "column",
+            type: "line", // Change type to line
             name: "USD Value",
             showInLegend: true,
             dataPoints: chartData // Use chartData here
@@ -990,9 +1182,14 @@ async function initializeChart() {
         }
         e.chart.render();
     }
+
+    function getColorForCoin(coin, index) {
+        const colors = ['#4F81BC', '#C0504E', '#9BBB59', '#FFC000', '#8064A2', '#4BACC6', '#F79646']; // Array of predefined colors
+        return colors[index % colors.length]; // Return color based on index
+    }
 }
 
 // Call the initializeChart function when the page is loaded
-$(document).ready(function() {
+$(document).ready(function () {
     initializeChart();
 });
