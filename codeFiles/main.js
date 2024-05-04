@@ -327,29 +327,29 @@
 
 //             cardOutput.innerHTML = `
 //             <div class="card mb-3 border border-dark" style="max-width: 540px;">
-         
+
 //             <div class="row g-0">
 //             <div class="col-md-4">
 //                 <img src="../assets/card-logo.png" class="img-fluid rounded-start" alt="a logo picture">
 //             </div>
 //             <div class="col-md-8">
-            
+
 //             <div class="card-body text-bg-light text-dark" >
 //             <label class="toggle-switch" id="toggle-button-${index}">
 //                 <input type="checkbox" id="toggle-switch-${index}">
 //                 <span class="slider"></span>
 //             </label>
-                    
+
 //                     <h5 class="card-title">${coin.symbol}</h5>
 //                     <p class="card-text">${coin.name}</p>
-                    
+
 //                     <p>
 //                     <button class="btn btn-dark btn-sm more-info-btn-${index}" data-bs-target="#collapseExample${index}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 //                     more info </button>
 //                   </p>
 //                   <div class="collapse multi-collapse" aria-expanded="false" id="collapseExample${index}">
 //                     <div class="card card-body cardIndex${index}" id="coin-info-id-${index}">
-                    
+
 //                     </div>
 //                   </div>
 //              </div>
@@ -370,7 +370,7 @@
 //             //         removeReport(index);
 //             //     }
 //             //     else {
-//             //         addToReport(coin, index); 
+//             //         addToReport(coin, index);
 //             //     }
 //             // });
 //             // function handleToggleSwitchChange(index, isChecked, coin, mainToggleIndex) {
@@ -1449,20 +1449,20 @@ navbarItems.forEach(itemId => {
 
     navItem.addEventListener('click', () => {
         console.log(this)
-        
-        if (isAdditionalInfoDisplayed[itemId]) {
-            //navItem.textContent = itemId.replace(/-/g, ' ').replace('id', '').replace(/\b\w/g, l => l.toUpperCase());
-        } else {
 
-            //const additionalInfo = document.createElement('div');
-            //additionalInfo.textContent = `This is more info for ${itemId.replace('-id', '')}`;
-            //additionalInfo.setAttribute('class', 'nav-additional-info');
+        // if (isAdditionalInfoDisplayed[itemId]) {
+        //     //navItem.textContent = itemId.replace(/-/g, ' ').replace('id', '').replace(/\b\w/g, l => l.toUpperCase());
+        // } else {
 
-            //navItem.textContent = '';
-            //navItem.appendChild(additionalInfo);
-            //const sectIdToDisplay = navItem.getAttribute('data-section');
+        //     //const additionalInfo = document.createElement('div');
+        //     //additionalInfo.textContent = `This is more info for ${itemId.replace('-id', '')}`;
+        //     //additionalInfo.setAttribute('class', 'nav-additional-info');
 
-        }
+        //     //navItem.textContent = '';
+        //     //navItem.appendChild(additionalInfo);
+        //     //const sectIdToDisplay = navItem.getAttribute('data-section');
+
+        // }
 
 
         // reflect the display on the respective navitem(s)
@@ -1486,7 +1486,7 @@ navbarItems.forEach(itemId => {
 //navbarItems.forEach(itemId => {
 //    document.getElementById(itemId).addEventListener('click', () => showNavInfo(itemId));
 //});
-  
+
 // a function to fetch the coin information
 async function getCoins() {
 
@@ -1523,29 +1523,29 @@ async function getCoins() {
 
             cardOutput.innerHTML = `
             <div class="card mb-3 border border-dark" style="max-width: 540px;">
-         
+
             <div class="row g-0">
             <div class="col-md-4">
                 <img src="../assets/card-logo.png" class="img-fluid rounded-start" alt="a logo picture">
             </div>
             <div class="col-md-8">
-            
+
             <div class="card-body text-bg-light text-dark" >
             <label class="toggle-switch" id="toggle-button-${index}">
                 <input type="checkbox" id="toggle-switch-${index}">
                 <span class="slider"></span>
             </label>
-                    
+
                     <h5 class="card-title">${coin.symbol}</h5>
                     <p class="card-text">${coin.name}</p>
-                    
+
                     <p>
                     <button class="btn btn-dark btn-sm more-info-btn-${index}" data-bs-target="#collapseExample${index}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     more info </button>
                   </p>
                   <div class="collapse multi-collapse" aria-expanded="false" id="collapseExample${index}">
                     <div class="card card-body cardIndex${index}" id="coin-info-id-${index}">
-                    
+
                     </div>
                   </div>
              </div>
@@ -1566,7 +1566,7 @@ async function getCoins() {
             //         removeReport(index);
             //     }
             //     else {
-            //         addToReport(coin, index); 
+            //         addToReport(coin, index);
             //     }
             // });
             // function handleToggleSwitchChange(index, isChecked, coin, mainToggleIndex) {
@@ -1578,22 +1578,25 @@ async function getCoins() {
             //     console.log("Selected toggle card index:", index);
             //     console.log("Main toggle index:", mainToggleIndex); // Log the main toggle index
             // }
-            function handleToggleSwitchChange(index, isChecked, coin, mainToggleIndex) {
+            function handleToggleSwitchChange(index, isChecked, coin) {
                 console.log(index, isChecked, coin)
                 if (!isChecked) {
                     removeReport(index);
                 } else {
                     addToReport(coin, index);
+                    if (isChecked) {
+                        fetchCoinPrices(); // Call fetchCoinPrices here
+                    }
                 }
                 console.log("Selected toggle card index:", index);
-                console.log("Main toggle index:", mainToggleIndex); // Log the main toggle index
-            
+                // console.log("Main toggle index:", mainToggleIndex); // Log the main toggle index
+
                 // If the modal toggle is unchecked, uncheck the corresponding coin card toggle switch
                 if (!isChecked) {
                     $(`#toggle-switch-${index}`).prop('checked', false);
                 }
             }
-            
+
 
             // Usage:
             const toggleSwitch = $(`#toggle-switch-${index}`);
@@ -1623,7 +1626,7 @@ async function getCoins() {
                 console.log( $(btnTarget).prop('class') )
                 setTimeout( () => getMyCollapse(btnTarget), 500 )
                 await getCoinInfo(coin.id, coinInfoId);
-                
+
             });
 
         });
@@ -1738,6 +1741,53 @@ function undoSaveHistory() {
 }
 
 
+// function generateModalContent() {
+//     let switches = $('#modal-switches');
+//     switches.empty();
+
+//     const coin_hash = getCoinHash();
+
+//     undoSaveHistory();
+
+//     reportsArray
+//       .sort((a,b) => coin_hash[ a.coin.id ] - coin_hash[ b.coin.id])
+//       .forEach((item) => {
+//         const coin = item.coin; // Define coin variable here
+//         const index = coin_hash[ coin.id ];
+//         console.log(index)
+
+//         // Create a new <li> element, within create a label + input, within the latter create a span
+//         const li = $('<li>');
+//         li.text(`${coin.name} (${coin.symbol})`);
+//         const div = $('<span>')
+//         const label = $('<label>').addClass('toggle-switch').attr('id', `modal-toggle-${index}`);
+//         const inp = $('<input>')
+//         inp.attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
+
+//         inp[0].addEventListener('change', function(ev) {
+//             $( '#' + ev.target.id.replace(/modal-/, 'toggle-') ).click()
+//             // handleToggleSwitchChange(index, $( this).prop('checked'), coin); // Pass coin as a parameter
+//         });
+
+//         console.log(inp)
+//         const span = $('<span>').addClass('slider-modal').attr('id', `modal-slider-${index}`)
+//         label.append(inp).append(span);
+//         div.append(label)
+//         li.append(div);
+//         switches.append(li);
+
+//         // Add event listener to the toggle switch
+//         /*
+//         inp.on('change', function (ev) {
+//             console.log([ 'EEEEEEEEEEEE', ev ])
+//             //handleToggleSwitchChange(index, $(this).prop('checked'), coin); // Pass coin as a parameter
+//         });
+//         */
+//     });
+
+//     return switches;
+// }
+
 function generateModalContent() {
     let switches = $('#modal-switches');
     switches.empty();
@@ -1785,6 +1835,17 @@ function generateModalContent() {
     return switches;
 }
 
+
+// async function fetchCoinPricesAndGenerateModalContent() {
+//     try {
+//         const coinPrices = await fetchCoinPrices();
+//         const modalContent = await generateModalContent(coinPrices);
+//         // Do something with modalContent, e.g., append it to the DOM
+//     } catch (error) {
+//         console.error('Error fetching coin prices and generating modal content:', error);
+//         // Handle error gracefully
+//     }
+// }
 // const toggleSwitch = document.getElementById('my-toggle-switch');
 
 // // To toggle the switch programmatically
@@ -1798,7 +1859,7 @@ function closeModal() {
         $('#maxCoinsModal').modal('hide');
         console.log('Reports array:', reportsArray);
     }else{
-        alert('please make sure theres are 5 or less coins selected')    }
+        alert('please make sure there are 5 or less coins selected')    }
 }
 
 
@@ -1973,6 +2034,30 @@ $(document).ready(function() {
 //     }
 // }
 
+
+async function fetchCoinPrices() {
+    await generateModalContent();
+
+    const coinSymbols = reportsArray.map(item => item.coin.symbol).join(',');
+    console.log('Coin symbols:', coinSymbols); // Log the coin symbols
+
+    const url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log('Fetched coin prices:', data); // Log the fetched items
+
+        return data;
+    } catch (error) {
+        console.error('Error fetching coin prices:', error);
+        return {};
+    }
+}
+
+
+
+
 function initializeChart() {
     let options = {
         exportEnabled: true,
@@ -2051,11 +2136,11 @@ function initializeChart() {
             ]
         }]
     };
-  
+
 
     // Initialize the chart within the chartContainer element
-   
-    
+
+
     var chart = new CanvasJS.Chart("chartContainer", options);
     chart.render();
 
