@@ -67,7 +67,8 @@
             <div id="header-main"></div>
             <div id="navbar-container" class="navContainer">
                 
-                <nav class="navbar navbar-expand-sm bg-light navbar-light">
+                <nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
+                    
                     <div class="container-fluid">
                         <!-- Brand and toggle button -->
                         <a class="navbar-brand" href="#">menu</a>
@@ -122,10 +123,10 @@
                     <h6 class="modal-title" id="maxCoinsModalLabel">Maximum number of coins reached-You need to remove a
                         card in order to add this one.
                     </h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close btn btn-outline-info" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <button type="button" class="close" id="undoModal" aria-label="Undo">
+                    <button type="button" class="close btn btn-dark" id="undoModal" aria-label="Undo">
                         <span aria-hidden="true">Undo</span>
                     </button>
                     
@@ -150,7 +151,42 @@
         </section>
     
         <section id="about-sect">
-            <h5 class="aboutHeader">About the Creator</h5>
+<div id="about-header">
+    <div id="carouselExampleDark" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+                <img src="../assets/crypto-about-1.jpeg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>a website that tracks crypto price</h5>
+                    <p>you can track it from all over the world</p>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+                <img src="../assets/crypto-about-2.jpeg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>get to know what crypto is all about</h5>
+                    <p>using the websides card you can learn all you need to know about crypto</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="../assets/crypto-about-3.jpeg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>track graphs that indicates the current change</h5>
+                    <p>allows the clients to track all changes that happen</p>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</div>
+<!-- 
             <div class="about-img-container">
                 <div class="card" style="width: 18rem;">
                     <img class="about-img card-img-top" src="../assets/about-img.jpeg" alt="about image">
@@ -166,7 +202,37 @@
             </div>
         </section>
     </div>
+ -->
+ <div class="card-continer-about">
+
+ <div class="card mb-3 about-img-container">
+    <img src="../assets/about-img.jpeg" class="card-img-top about-img  rounded-circle" alt="about image">
+    <div class="card-body">
+        <h5 class="card-title card-title-about">Shaked Kelman</h5>
+
+ <div class="card-continer-text-about card-footer">
+      
+        <p class="card-text">Hi there! My name is Shaked. I'm 21 years old, currently living in Jerusalem, very interested in coding and learning new techniques.</p>
+    </div>
+    
+    <div class="card-footer">
+        <h6>About the project</h6>
+        <p class="card-text">This project was created in order to help my clients get easy access to today's current state of each cryptocurrency in the market.</p>
+    </div>
+</div>
+</div>
+
+
+</div>
+  
+
+
     <div id="dummy"></div>
+
+
+
+    <button id="back-to-top-btn" class="btn btn-outline-dark d-none">Back to Top</button>
+
 </body>
 
 </html>

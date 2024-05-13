@@ -2386,6 +2386,11 @@ async function fetchAndRenderData(chart) {
             } else {
                 // Add new data points to the existing data series
                 dataSeries.dataPoints.push(dataPoints[0]);
+                
+                // Limit the number of data points to 10
+                if (dataSeries.dataPoints.length > 10) {
+                    dataSeries.dataPoints.shift(); // Remove the oldest data point
+                }
             }
         });
 
@@ -2399,4 +2404,30 @@ async function fetchAndRenderData(chart) {
 // Call the initializeChart function when the page is loaded
 $(document).ready(function () {
     initializeChart();
+});
+
+
+
+// Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Get a reference to the button
+    var backToTopBtn = document.getElementById('back-to-top-btn');
+
+    // Add a click event listener to scroll to the top when clicked
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Add smooth scrolling behavior
+        });
+    });
+
+    // Add a scroll event listener to show/hide the button based on scroll position
+    window.addEventListener('scroll', function() {
+        // Show the button when scrolling down past 200 pixels
+        if (window.pageYOffset > 200) {
+            backToTopBtn.classList.remove('d-none');
+        } else {
+            backToTopBtn.classList.add('d-none');
+        }
+    });
 });
