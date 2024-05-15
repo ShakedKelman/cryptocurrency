@@ -60,6 +60,13 @@ body {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.custom-card-style {
+    border-radius: 10px; /* Adjust border radius to round corners */
+    box-shadow: 
+    0 0 0 2px  rgba(80, 213, 223, 0.2), /* Outer black border */
+    0 0 0 5px rgba(190, 236, 236, 0.2), /* Inner white border */
+    0 0 10px rgba(0, 0, 0, 0.5); /* Depth effect */
+}
 
 .coin-container {
     display: flex;
@@ -76,6 +83,7 @@ body {
     flex: 0 0 calc(33.33% - 100px);
     /* Adjust the width of each card */
     margin: 10px;
+    
 }
 
 .cardOutputStyle .col-md-4 {
@@ -84,6 +92,7 @@ body {
     /* Align items horizontally */
     align-items: center;
     /* Align items vertically */
+    
 }
 
 
@@ -97,6 +106,7 @@ body {
     text-align: left;
     gap: 10px;
     font-size: small;
+    
 }
 
 #progress-bar {
@@ -157,7 +167,9 @@ body {
     position: relative;
     /* Set position to relative for the container */
 }
-
+.card-body{
+    border-radius: 10px;
+}
 .slider {
     position: absolute;
     top: 10px;
@@ -249,10 +261,19 @@ body {
 .card-title-about{
     text-align: center;
 }
-.about-img{
+.about-img {
+    margin: 25px;
+    /* padding: 5px; */
     height: 200px;
     width: 200px;
+ 
+/* border: 1px solid black; */
+    box-shadow: 
+        0 0 0 2px  rgba(50, 189, 199, 0.2), /* Outer black border */
+        0 0 0 5px rgba(50, 189, 199, 0.2), /* Inner white border */
+        0 0 25px rgba(0, 0, 0, 0.5); /* Depth effect */
 }
+
 
 
 .card-continer-about{
@@ -271,8 +292,16 @@ padding: 30px;
     /* Horizontally center the items */
     align-items: center;
     /* Vertically center the items */
+    box-shadow: 
+    0 0 0 2px  rgba(50, 189, 199, 0.2), /* Outer black border */
+    0 0 0 5px rgba(50, 189, 199, 0.2), /* Inner white border */
+    0 0 25px rgba(0, 0, 0, 0.5); /* Depth effect */
 }
 
+
+.about-text{
+    text-align: center;
+}
 
 
 /* .about-img {
