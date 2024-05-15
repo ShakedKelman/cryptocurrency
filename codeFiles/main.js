@@ -6,6 +6,7 @@ const reportsArray = [];
 let saveReportsArray = [];
 const addedCardIds = [];
 let eventHandlerType;
+const usdPrices = [];
 
 const dataDebug =
     [
@@ -1000,8 +1001,32 @@ $(document).ready(function () {
 
 // do not erase this!!!
 
+// async function fetchCoinPrices() {
+//         await generateModalContent();
+
+//     const coinSymbols = reportsArray.map(item => item.coin.symbol).join(',');
+//     console.log('Coin symbols:', coinSymbols); // Log the coin symbols
+
+//     try {
+//         const response = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`);
+//         const data = await response.json();
+//         console.log('Fetched coin prices:', data); // Log the fetched items
+
+//         const usdPrices = Object.keys(data).map(symbol => data[symbol].USD);
+//         console.log('USD prices:', usdPrices); // Log USD prices
+
+//         // return usdPrices; // Return only the USD prices array Return the USD prices array
+//         return data;
+//     } catch (error) {
+//         console.error('Error fetching coin prices:', error);
+//         return [];
+//     }
+// }
+
+
+
 async function fetchCoinPrices() {
-        await generateModalContent();
+    await generateModalContent();
 
     const coinSymbols = reportsArray.map(item => item.coin.symbol).join(',');
     console.log('Coin symbols:', coinSymbols); // Log the coin symbols
@@ -1010,59 +1035,65 @@ async function fetchCoinPrices() {
         const response = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`);
         const data = await response.json();
         console.log('Fetched coin prices:', data); // Log the fetched items
+        // const usdPrices = Object.keys(data).map(symbol => data[symbol].USD);
+        // console.log('USD prices:', usdPrices); // Log USD prices
 
-        return data;
+        // const usdPrices = [];
+        // Object.keys(data).forEach(symbol => {
+        //     usdPrices.push(data[symbol].USD);
+        // });
+
+        const usdPrices = Object.keys(data).map((symbol) => ({ symbol: symbol, price: data[symbol].USD }));
+
+        console.log('USD prices array:', usdPrices); // Log USD prices array
+        initializeChart(usdPrices);
+
+        return data; // Return the entire data object
     } catch (error) {
         console.error('Error fetching coin prices:', error);
         return {};
     }
 }
+async function initializeChart(coinPrices) {
+    console.log('chart works:');
 
-
-
-
-
-
-async function initializeChart() {
-    const coinPrices = await fetchCoinPrices();
+    // Ensure coinPrices is an object
+    if (!Array.isArray(coinPrices)) {
+        console.error('coinPrices is not a valid array:', coinPrices);
+        return;
+    }
 
     // Extract data points from the fetched coin prices
-    const dataPoints = Object.entries(coinPrices).map(([symbol, price]) => ({
-        x: new Date(), // Assuming the current time as the fetch time
-        y: price.USD // Assuming the fetched data contains the USD price for each coin
+    const dataSeries = coinPrices.map(item => ({
+        type: "spline",
+        name: item.symbol, // Use the coin symbol as the series name
+        showInLegend: true,
+        xValueFormatString: "MMM YYYY",
+        yValueFormatString: "$#,##0.########", // Display all digits after the decimal point
+        dataPoints: [{ x: new Date(), y: item.price }] // Initialize with the first data point
     }));
-    console.log('dataPoints:', dataPoints);
-    console.log('coinPrices:', coinPrices);
 
-    // Log the dataPoints array
-    // Log the dataPoints array
+    console.log('Data series:', dataSeries);
 
     let options = {
         exportEnabled: true,
         animationEnabled: true,
         title: {
-            text: "coin name to USD"
+            text: "Coin Prices to USD"
         },
         subtitles: [{
             text: "Click Legend to Hide or Unhide Data Series"
         }],
         axisX: {
-            title: "States"
+            title: "Time"
         },
         axisY: {
-            title: "coin value",
+            title: "Price (USD)",
             titleFontColor: "#4F81BC",
             lineColor: "#4F81BC",
             labelFontColor: "#4F81BC",
             tickColor: "#4F81BC"
         },
-        // axisY2: {
-        //     title: "Profit in USD",
-        //     titleFontColor: "#C0504E",
-        //     lineColor: "#C0504E",
-        //     labelFontColor: "#C0504E",
-        //     tickColor: "#C0504E"
-        // },
         toolTip: {
             shared: true
         },
@@ -1070,20 +1101,10 @@ async function initializeChart() {
             cursor: "pointer",
             itemclick: toggleDataSeries
         },
-        data: [{
-            type: "spline",
-            name: "Coin Value (USD)",
-            showInLegend: true,
-            xValueFormatString: "MMM YYYY",
-            yValueFormatString: "$#,##0.#",
-            dataPoints: dataPoints // Use the fetched data points here
-        }]
+        data: dataSeries // Use the fetched data series here
     };
-    // Initialize the chart within the chartContainer element
-
 
     let chart = new CanvasJS.Chart("chartContainer", options);
-
     chart.render();
 
     // Define the toggleDataSeries function
@@ -1097,10 +1118,312 @@ async function initializeChart() {
     }
 }
 
+
+
+
+// async function initializeChart(coinPrices) {
+//     console.log('chart works:');
+
+//     // Ensure coinPrices is an object
+//     if (!Array.isArray(coinPrices)) {
+//         console.error('coinPrices is not a valid array:', coinPrices);
+//         return;
+//     }
+
+//     // Extract data points from the fetched coin prices
+//     const dataPoints = coinPrices.map(item => ({
+//         label: item.symbol, // Use the coin symbol as label
+//         y: item.price // Use the USD price as the y-value
+//     }));
+
+//     console.log('Data points:', dataPoints);
+
+
+
+//     let options = {
+//         exportEnabled: true,
+//         animationEnabled: true,
+//         title: {
+//             text: "Coin Prices to USD"
+//         },
+//         subtitles: [{
+//             text: "Click Legend to Hide or Unhide Data Series"
+//         }],
+//         axisX: {
+//             title: "Coins"
+//         },
+//         axisY: {
+//             title: "Price (USD)",
+//             titleFontColor: "#4F81BC",
+//             lineColor: "#4F81BC",
+//             labelFontColor: "#4F81BC",
+//             tickColor: "#4F81BC"
+//         },
+//         toolTip: {
+//             shared: true
+//         },
+//         legend: {
+//             cursor: "pointer",
+//             itemclick: toggleDataSeries
+//         },
+//         data: [{
+//             type: "spline",
+//             name: "Coin Value (USD)",
+//             showInLegend: true,
+//             xValueFormatString: "MMM YYYY",
+//             yValueFormatString: "$#,##0.#",
+//             dataPoints: dataPoints // Use the fetched data points here
+//         }]
+//     };
+
+//     let chart = new CanvasJS.Chart("chartContainer", options);
+//     chart.render();
+
+//     // Define the toggleDataSeries function
+//     function toggleDataSeries(e) {
+//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+//             e.dataSeries.visible = false;
+//         } else {
+//             e.dataSeries.visible = true;
+//         }
+//         e.chart.render();
+//     }
+// }
+
+
+
 // Call the initializeChart function when the page is loaded
-$(document).ready(function () {
-    initializeChart();
-});
+// $(document).ready(async function () {
+//     const coinPrices = await fetchCoinPrices(); // Fetch coin prices asynchronously
+//     initializeChart(coinPrices); // Pass fetched coin prices to initializeChart
+//     console.log("initalized initializeChart");
+// });
+
+
+// async function initializeChart() {
+// const coinPrices = await fetchCoinPrices();
+
+// Extract data points from the fetched coin prices
+// const dataPoints = Object.entries(coinPrices).map(([symbol, price]) => ({
+//     x: new Date(), // Assuming the current time as the fetch time
+//     y: price.USD // Assuming the fetched data contains the USD price for each coin
+// }));
+// console.log('dataPoints:', dataPoints);
+// console.log('coinPrices:', coinPrices);
+
+// Log the dataPoints array
+// Log the dataPoints array
+
+// let options = {
+//     exportEnabled: true,
+//     animationEnabled: true,
+//     title: {
+//         text: "coin name to USD"
+//     },
+//     subtitles: [{
+//         text: "Click Legend to Hide or Unhide Data Series"
+//     }],
+//     axisX: {
+//         title: "States"
+//     },
+//     axisY: {
+//         title: "coin value",
+//         titleFontColor: "#4F81BC",
+//         lineColor: "#4F81BC",
+//         labelFontColor: "#4F81BC",
+//         tickColor: "#4F81BC"
+//     },
+//     axisY2: {
+//         title: "Profit in USD",
+//         titleFontColor: "#C0504E",
+//         lineColor: "#C0504E",
+//         labelFontColor: "#C0504E",
+//         tickColor: "#C0504E"
+//     },
+//     toolTip: {
+//         shared: true
+//     },
+//     legend: {
+//         cursor: "pointer",
+//         itemclick: toggleDataSeries
+//     },
+//     data: [{
+//         type: "spline",
+//         name: "Coin Value (USD)",
+//         showInLegend: true,
+//         xValueFormatString: "MMM YYYY",
+//         yValueFormatString: "$#,##0.#",
+//         dataPoints: dataPoints // Use the fetched data points here
+//     }]
+// };
+// Initialize the chart within the chartContainer element
+
+
+// let chart = new CanvasJS.Chart("chartContainer", options);
+
+// chart.render();
+
+// Define the toggleDataSeries function
+// function toggleDataSeries(e) {
+//     if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+//         e.dataSeries.visible = false;
+//     } else {
+//         e.dataSeries.visible = true;
+//     }
+//     e.chart.render();
+// }
+// }
+
+// Call the initializeChart function when the page is loaded
+// $(document).ready(function () {
+// initializeChart();
+// });
+// async function initializeChart(coinPrices) {
+//     // Extract data points from the fetched coin prices
+//     const dataPoints = coinPrices.map((price, index) => ({
+//         label: reportsArray[index].coin.symbol, // Use the corresponding coin symbol as label
+//         y: price // Use the USD price as the y-value
+//     }));
+//     console.log('dataPoints:', dataPoints);
+
+//     let options = {
+//         exportEnabled: true,
+//         animationEnabled: true,
+//         title: {
+//             text: "Coin Prices to USD"
+//         },
+//         subtitles: [{
+//             text: "Click Legend to Hide or Unhide Data Series"
+//         }],
+//         axisX: {
+//             title: "Coins"
+//         },
+//         axisY: {
+//             title: "Price (USD)",
+//             titleFontColor: "#4F81BC",
+//             lineColor: "#4F81BC",
+//             labelFontColor: "#4F81BC",
+//             tickColor: "#4F81BC"
+//         },
+//         toolTip: {
+//             shared: true
+//         },
+//         legend: {
+//             cursor: "pointer",
+//             itemclick: toggleDataSeries
+//         },
+//         data: [{
+//             type: "spline",
+//             name: "Coin Value (USD)",
+//             showInLegend: true,
+//             xValueFormatString: "MMM YYYY",
+//             yValueFormatString: "$#,##0.#",
+//             dataPoints: dataPoints // Use the fetched data points here
+//         }]
+//     };
+
+//     let chart = new CanvasJS.Chart("chartContainer", options);
+//     chart.render();
+
+//     // Define the toggleDataSeries function
+//     function toggleDataSeries(e) {
+//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+//             e.dataSeries.visible = false;
+//         } else {
+//             e.dataSeries.visible = true;
+//         }
+//         e.chart.render();
+//     }
+// }
+
+// // Call the initializeChart function when the page is loaded
+// $(document).ready(async function () {
+//     const coinPrices = await fetchCoinPrices(); // Fetch coin prices asynchronously
+//     initializeChart(coinPrices); // Pass fetched coin prices to initializeChart
+// });
+
+
+
+
+// async function initializeChart(coinPrices) {
+//     const coinPrices = await fetchCoinPrices();
+
+//     Extract data points from the fetched coin prices
+//     const dataPoints = Object.entries(coinPrices).map(([symbol, price]) => ({
+//         x: new Date(), // Assuming the current time as the fetch time
+//         y: price.USD // Assuming the fetched data contains the USD price for each coin
+//     }));
+//     console.log('dataPoints:', dataPoints);
+//     console.log('coinPrices:', coinPrices);
+
+//     Log the dataPoints array
+//     Log the dataPoints array
+
+//     let options = {
+//         exportEnabled: true,
+//         animationEnabled: true,
+//         title: {
+//             text: "coin name to USD"
+//         },
+//         subtitles: [{
+//             text: "Click Legend to Hide or Unhide Data Series"
+//         }],
+//         axisX: {
+//             title: "States"
+//         },
+//         axisY: {
+//             title: "coin value",
+//             titleFontColor: "#4F81BC",
+//             lineColor: "#4F81BC",
+//             labelFontColor: "#4F81BC",
+//             tickColor: "#4F81BC"
+//         },
+//         axisY2: {
+//             title: "Profit in USD",
+//             titleFontColor: "#C0504E",
+//             lineColor: "#C0504E",
+//             labelFontColor: "#C0504E",
+//             tickColor: "#C0504E"
+//         },
+//         toolTip: {
+//             shared: true
+//         },
+//         legend: {
+//             cursor: "pointer",
+//             itemclick: toggleDataSeries
+//         },
+//         data: [{
+//             type: "spline",
+//             name: "Coin Value (USD)",
+//             showInLegend: true,
+//             xValueFormatString: "MMM YYYY",
+//             yValueFormatString: "$#,##0.#",
+//             dataPoints: dataPoints // Use the fetched data points here
+//         }]
+//     };
+//     Initialize the chart within the chartContainer element
+
+
+//     let chart = new CanvasJS.Chart("chartContainer", options);
+
+//     chart.render();
+
+//     Define the toggleDataSeries function
+//     function toggleDataSeries(e) {
+//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+//             e.dataSeries.visible = false;
+//         } else {
+//             e.dataSeries.visible = true;
+//         }
+//         e.chart.render();
+//     }
+// }
+
+// Call the initializeChart function when the page is loaded
+// $(document).ready(async function () {
+//     const coinPrices = await fetchCoinPrices(); // Fetch coin prices asynchronously
+//     initializeChart(); // Pass fetched coin prices to initializeChart
+// });
 
 
 
