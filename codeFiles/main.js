@@ -205,8 +205,6 @@ const endProgress = function () {
 };
 
 const headerLogo = document.getElementById('header-main');
-//document.body.appendChild(headerContainer);
-
 const mainHeader = document.createElement('h1');
 mainHeader.setAttribute('id', 'main-header');
 mainHeader.setAttribute('class', 'mainHeaderStyle');
@@ -215,7 +213,7 @@ mainHeader.style.fontWeight = "bold"; // Set the font weight to bold
 mainHeader.style.fontSize = "25px"; // Set the font size to 20 pixels
 
 mainHeader.style.backgroundImage = "url('../assets/cr.png')";
-mainHeader.textContent = "Cryptonite";
+// mainHeader.textContent = "Crypto";
 
 headerLogo.appendChild(mainHeader);
 
@@ -1024,6 +1022,15 @@ $(document).ready(function () {
 // }
 
 
+// // Fetch coin prices asynchronously and update chart
+// setInterval(async () => {
+//     try {
+//         const coinPrices = await fetchCoinPrices(); // Fetch coin prices
+//     } catch (error) {
+//         console.error('Error fetching coin prices:', error);
+//     }
+// }, 2000); // Fetch every 2 seconds
+
 
 async function fetchCoinPrices() {
     await generateModalContent();
@@ -1035,13 +1042,6 @@ async function fetchCoinPrices() {
         const response = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`);
         const data = await response.json();
         console.log('Fetched coin prices:', data); // Log the fetched items
-        // const usdPrices = Object.keys(data).map(symbol => data[symbol].USD);
-        // console.log('USD prices:', usdPrices); // Log USD prices
-
-        // const usdPrices = [];
-        // Object.keys(data).forEach(symbol => {
-        //     usdPrices.push(data[symbol].USD);
-        // });
 
         const usdPrices = Object.keys(data).map((symbol) => ({ symbol: symbol, price: data[symbol].USD }));
 
@@ -1054,6 +1054,8 @@ async function fetchCoinPrices() {
         return {};
     }
 }
+
+
 async function initializeChart(coinPrices) {
     console.log('chart works:');
 
@@ -1092,7 +1094,9 @@ async function initializeChart(coinPrices) {
             titleFontColor: "#4F81BC",
             lineColor: "#4F81BC",
             labelFontColor: "#4F81BC",
-            tickColor: "#4F81BC"
+            tickColor: "#4F81BC",
+            minimum: 0, // Set minimum y-axis value to 0
+            maximum: 7000 
         },
         toolTip: {
             shared: true
@@ -1537,7 +1541,6 @@ async function initializeChart(coinPrices) {
 
 
 
-// Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Get a reference to the button
     var backToTopBtn = document.getElementById('back-to-top-btn');
