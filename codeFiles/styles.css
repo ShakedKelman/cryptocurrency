@@ -456,6 +456,9 @@ body {
     justify-content: center;
     color: black;
 }
+.pageFooter{
+bottom: 0;
+}
 
 @media (max-width: 750px) {
 
