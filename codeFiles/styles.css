@@ -37,6 +37,8 @@ body {
 .navbar {
     position: fixed;
     width: 100%;
+    z-index: 2000; /* Ensure it is above other content */
+
 }
 
 .navContainer {
@@ -51,9 +53,57 @@ body {
 
 }
 
+.carusel-box{
+    height: 50px;
+}
+
+.carousel-caption-text{
+font-size: 15px;
+}
+.carousel-inner{
+    object-fit: cover;
+
+}
+.carousel-caption {
+    padding: 10px; /* Add padding to give some space around the text */
+    border-radius: 10px; /* Add rounded corners */
+    position: absolute; /* Position the caption absolutely within the carousel item */
+    bottom: 0; /* Align the caption to the bottom of the carousel item */
+    left: 0; /* Align the caption to the left side of the carousel item */
+    width: 100%; /* Make the caption span the entire width of the carousel item */
+    height: auto; /* Allow the caption height to adjust based on its content */
+}
+
+.carousel {
+    position: fixed;
+    top: 0; /* Place the carousel at the top of the viewport */
+    width: 100%;
+    height: 10px; /* Adjust the height as needed */
+    z-index: 2500; /* Ensure a high z-index to keep it above other elements */
+}
+
+#progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: black;
+    border-radius: 4px;
+    position: sticky; /* Make the container sticky */
+
+}
+
+#progress-bar-container {
+    background-color: black;
+    height: 10px;
+    margin: 0;
+    z-index: 1500; /* Ensure it is above other content but below the carousel */
+    position: sticky; /* Make the container sticky */
+    top: 110px; /* Position it below the fixed navbar */
+    padding: 0; /* Remove padding to ensure it fits correctly */
+}
+
+
 .custom-card-style {
     border-radius: 10px;
-    /* Adjust border radius to round corners */
     box-shadow:
         0 0 0 2px rgba(80, 213, 223, 0.2),
         /* Outer black border */
@@ -93,30 +143,6 @@ body {
 
 }
 
-.sticky {
-    position: -webkit-sticky;
-    /* For Safari */
-    position: sticky;
-    top: 0;
-    z-index: 1020;
-    /* Adjusted for stacking context */
-}
-
-.fixed {
-    position: fixed;
-    top: 56px;
-    /* Adjust according to the height of the navbar */
-    width: 100%;
-    z-index: 1010;
-    /* Adjusted for stacking context */
-    background-color: #f8f9fa;
-    /* Background color to match navbar */
-}
-
-.ui-progressbar {
-    height: 5px;
-    /* Adjust height as needed */
-}
 
 /* coin output */
 .coinInfoImg {
@@ -131,25 +157,6 @@ body {
 
 }
 
-#progress-bar {
-    width: 100%;
-    height: 10px;
-    /* background-color: #0a6a6ac9; */
-    background-color: black;
-    border-radius: 4px;
-    /* margin-bottom: 20px; */
-}
-
-#progress-bar-container {
-    /* background-color: #4e8f8fc9; */
-    padding-top: calc(56px + 1000px); /* Adjust padding to accommodate the fixed navbar and topStrip */
-
-    background-color: black;
-    height: 10px;
-    margin: 0px;
-    padding: 0px;
-
-}
 
 /* Hide default checkbox */
 .toggle-switch input {
@@ -253,34 +260,6 @@ body {
     text-align: center;
 }
 
-.carusel-box{
-    height: 50px;
-}
-
-.carousel-caption-text{
-font-size: 15px;
-}
-.carousel-inner{
-    object-fit: cover;
-
-}
-.carousel-caption {
-    padding: 10px; /* Add padding to give some space around the text */
-    border-radius: 10px; /* Add rounded corners */
-    position: absolute; /* Position the caption absolutely within the carousel item */
-    bottom: 0; /* Align the caption to the bottom of the carousel item */
-    left: 0; /* Align the caption to the left side of the carousel item */
-    width: 100%; /* Make the caption span the entire width of the carousel item */
-    height: auto; /* Allow the caption height to adjust based on its content */
-}
-
-.carousel {
-    position: fixed;
-    top: 0; /* Place the carousel at the top of the viewport */
-    width: 100%;
-    height: 10px; /* Adjust the height as needed */
-    z-index: 2500; /* Ensure a high z-index to keep it above other elements */
-}
 
 .about-img {
     margin: 25px;
