@@ -87,7 +87,9 @@ font-size: 15px;
     height: 10px;
     background-color: black;
     border-radius: 4px;
-    position: sticky; /* Make the container sticky */
+    top: 110px; /* Position it below the fixed navbar */
+
+    position: fixed; /* Make the container sticky */
 
 }
 
@@ -96,7 +98,7 @@ font-size: 15px;
     height: 10px;
     margin: 0;
     z-index: 1500; /* Ensure it is above other content but below the carousel */
-    position: sticky; /* Make the container sticky */
+    position: fixed; /* Make the container sticky */
     top: 110px; /* Position it below the fixed navbar */
     padding: 0; /* Remove padding to ensure it fits correctly */
 }
