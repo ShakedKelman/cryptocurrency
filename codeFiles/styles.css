@@ -28,7 +28,7 @@ body {
 .parallax-header {
     background-size: cover;
     background-position: center;
-    height: 35vh;
+    height: 55vh;
     position: relative;
     z-index: -1;
     padding-bottom: 0;
@@ -322,6 +322,14 @@ body {
         /* Inner white border */
         0 0 25px rgba(0, 0, 0, 0.5);
     /* Depth effect */
+}
+
+#resultList {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem; /* Optional: adds space between items */
 }
 
 .hidden {
