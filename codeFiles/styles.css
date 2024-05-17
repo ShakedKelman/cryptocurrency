@@ -414,15 +414,12 @@ body {
     right: 20px;
     z-index: 999;
 }
-
 .topStrip {
     position: absolute;
     top: 0;
     height: 10px;
     width: 100%;
-    z-index: 1000;
-    /* Adjust z-index as needed */
-
+    z-index: 2000; /* Increased z-index */
 }
 
 .topBar {

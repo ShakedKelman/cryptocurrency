@@ -351,7 +351,19 @@ async function getCoins() {
                 } else {
                     addToReport(coin, index);
                     if (isChecked) {
-                        fetchCoinPrices(); // Call fetchCoinPrices here
+                        setInterval(() => {
+                            if (typeof chart !== 'undefined') {
+                            // Update the x-axis to show the current time
+                            chart.options.data.forEach(dataSeries => {
+                                const y =  fetchCoinPrices('zcn,zoc').then( (res => dataSeries.dataPoints.push({ x: new Date(), y: y.ZOC.USD }) , rej => new Error('cannot')))
+                                console.log(y)
+                                // Example: Generate random data
+                            });
+                            chart.render();
+                            } else { console.log('chart not defined')}
+                        }, 2000);
+                        
+                        //fetchCoinPrices(); // Call fetchCoinPrices here
                     }
                 }
                 console.log("Selected toggle card index:", index);
@@ -719,10 +731,10 @@ $(document).ready(function () {
 });
 
 
-async function fetchCoinPrices() {
+async function fetchCoinPrices(coinSymbols) {
     await generateModalContent();
 
-    const coinSymbols = reportsArray.map(item => item.coin.symbol).join(',');
+    if (coinSymbols === undefined || coinSymbols.length === 0) coinSymbols = reportsArray.map(item => item.coin.symbol).join(',');
     console.log('Coin symbols:', coinSymbols); // Log the coin symbols
 
     try {
@@ -731,7 +743,6 @@ async function fetchCoinPrices() {
         console.log('Fetched coin prices:', data); // Log the fetched items
 
         const usdPrices = Object.keys(data).map((symbol) => ({ symbol: symbol, price: data[symbol].USD }));
-
         console.log('USD prices array:', usdPrices); // Log USD prices array
         initializeChart(usdPrices);
 
@@ -774,7 +785,9 @@ async function initializeChart(coinPrices) {
             text: "Click Legend to Hide or Unhide Data Series"
         }],
         axisX: {
-            title: "Time"
+            title: "Time",
+            // minimum: new Date().getTime(),
+            // maximum: new Date().getTime() + 7000 
         },
         axisY: {
             title: "Price (USD)",
@@ -797,7 +810,12 @@ async function initializeChart(coinPrices) {
 
     let chart = new CanvasJS.Chart("chartContainer", options);
     chart.render();
+    
+    
+    
 
+    
+    
     // Define the toggleDataSeries function
     function toggleDataSeries(e) {
         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
@@ -807,6 +825,8 @@ async function initializeChart(coinPrices) {
         }
         e.chart.render();
     }
+
+    return chart;
 }
 
 
