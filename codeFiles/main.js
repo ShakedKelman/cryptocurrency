@@ -272,9 +272,6 @@ navbarItems.forEach(itemId => {
 });
 
 
-//navbarItems.forEach(itemId => {
-//    document.getElementById(itemId).addEventListener('click', () => showNavInfo(itemId));
-//});
 
 // a function to fetch the coin information
 async function getCoins() {
@@ -347,26 +344,6 @@ async function getCoins() {
 
             cardContainer.appendChild(cardOutput);
 
-            //             const toggleSwitch = document.getElementById(`toggle-switch-${index}`);
-
-            // toggleSwitch.addEventListener('change', function(event) {
-            //     toggleSwitch.checked = event.target.checked;
-            //     if (!toggleSwitch.checked) {
-            //         removeReport(index);
-            //     }
-            //     else {
-            //         addToReport(coin, index);
-            //     }
-            // });
-            // function handleToggleSwitchChange(index, isChecked, coin, mainToggleIndex) {
-            //     if (!isChecked) {
-            //         removeReport(index);
-            //     } else {
-            //         addToReport(coin, index);
-            //     }
-            //     console.log("Selected toggle card index:", index);
-            //     console.log("Main toggle index:", mainToggleIndex); // Log the main toggle index
-            // }
             function handleToggleSwitchChange(index, isChecked, coin) {
                 console.log(index, isChecked, coin)
                 if (!isChecked) {
@@ -511,11 +488,6 @@ function getCoinHash() {
 }
 
 
-//
-// save a snapshot of the toggle buttons that appear inside the modal
-// and add an event listener to the 'undo' button in the modal. When
-// undo is clicked, any unchecked toggles will be restored to checked.
-//
 function undoSaveHistory() {
     const undoBtn = $('#undoModal');
     if (eventHandlerType === 'click') {
@@ -529,53 +501,6 @@ function undoSaveHistory() {
     }
 }
 
-
-// function generateModalContent() {
-//     let switches = $('#modal-switches');
-//     switches.empty();
-
-//     const coin_hash = getCoinHash();
-
-//     undoSaveHistory();
-
-//     reportsArray
-//       .sort((a,b) => coin_hash[ a.coin.id ] - coin_hash[ b.coin.id])
-//       .forEach((item) => {
-//         const coin = item.coin; // Define coin variable here
-//         const index = coin_hash[ coin.id ];
-//         console.log(index)
-
-//         // Create a new <li> element, within create a label + input, within the latter create a span
-//         const li = $('<li>');
-//         li.text(`${coin.name} (${coin.symbol})`);
-//         const div = $('<span>')
-//         const label = $('<label>').addClass('toggle-switch').attr('id', `modal-toggle-${index}`);
-//         const inp = $('<input>')
-//         inp.attr('type', 'checkbox').attr('id', `modal-switch-${index}`).prop('checked', true);
-
-//         inp[0].addEventListener('change', function(ev) {
-//             $( '#' + ev.target.id.replace(/modal-/, 'toggle-') ).click()
-//             // handleToggleSwitchChange(index, $( this).prop('checked'), coin); // Pass coin as a parameter
-//         });
-
-//         console.log(inp)
-//         const span = $('<span>').addClass('slider-modal').attr('id', `modal-slider-${index}`)
-//         label.append(inp).append(span);
-//         div.append(label)
-//         li.append(div);
-//         switches.append(li);
-
-//         // Add event listener to the toggle switch
-//         /*
-//         inp.on('change', function (ev) {
-//             console.log([ 'EEEEEEEEEEEE', ev ])
-//             //handleToggleSwitchChange(index, $(this).prop('checked'), coin); // Pass coin as a parameter
-//         });
-//         */
-//     });
-
-//     return switches;
-// }
 
 function generateModalContent() {
     let switches = $('#modal-switches');
@@ -624,22 +549,6 @@ function generateModalContent() {
     return switches;
 }
 
-
-// async function fetchCoinPricesAndGenerateModalContent() {
-//     try {
-//         const coinPrices = await fetchCoinPrices();
-//         const modalContent = await generateModalContent(coinPrices);
-//         // Do something with modalContent, e.g., append it to the DOM
-//     } catch (error) {
-//         console.error('Error fetching coin prices and generating modal content:', error);
-//         // Handle error gracefully
-//     }
-// }
-// const toggleSwitch = document.getElementById('my-toggle-switch');
-
-// // To toggle the switch programmatically
-// toggleSwitch.checked = !toggleSwitch.checked;
-
 function closeModal() {
     // $('#maxCoinsModal').modal('hide');
     // console.log('Reports array:', reportsArray);
@@ -666,10 +575,6 @@ document.addEventListener('DOMContentLoaded', function () {
     //modalText.innerHTML = generateModalContent();
 });
 
-// function renderReportsArray() {
-//     // Render the reports array wherever you want to display it
-//     console.log('Reports array:', reportsArray);
-// }
 function renderReportsArray() {
     // Render the reports array wherever you want to display it
     console.log('Reports array:', reportsArray);
@@ -696,7 +601,7 @@ function reloadPage() {
 
 
 function filterByName() {
-    
+
     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
     const filteredData = dataDebug.filter(item => item.symbol.toLowerCase() === filterValue); // Compare entire name
     // clearCardContainer();
@@ -708,29 +613,34 @@ function filterByName() {
     if (filteredData.length === 0) {
         alert('please type the full name of the coin you want to find');
     }
-// Check if the searched card is in reportsArray
-// Check if the searched card is in reportsArray
-filteredData.forEach(item => {
-    // Check if any item in reportsArray has the same symbol as the current item in filteredData
-    const foundInReports = reportsArray.some(reportItem => reportItem.coin.symbol === item.symbol);
-    // If a match is found, log a message
-    if (foundInReports) {
-        console.log(`"${item.symbol}" is in the reports array.`);
-    } else {
-        // If no match is found, log a message
-        console.log(`"${item.symbol}" is not in the reports array.`);
-    }
-});
+    // Check if the searched card is in reportsArray
+    filteredData.forEach(item => {
+        const foundInReports = reportsArray.some(reportItem => reportItem.coin.symbol === item.symbol);
+        if (foundInReports) {
+            console.log(`"${item.symbol}" is in the reports array.`);
+        } else {
+            // If no match is found, log a message
+            console.log(`"${item.symbol}" is not in the reports array.`);
+        }
+    });
+
+    // Iterate over filtered data to attach event listeners
+    filteredData.forEach((item, index) => {
+        const toggleSwitch = $(`#toggle-switch-${index}`);
+        toggleSwitch.on('change', function (event) {
+            handleToggleSwitchChange(index, event.target.checked, item);
+        });
+
+        const moreInfoButton = document.querySelector(`.more-info-btn-${index}`);
+        moreInfoButton.addEventListener('click', async (ev) => {
+            const btnTarget = ev.target.getAttribute('data-bs-target');
+            console.log($(btnTarget).prop('class'));
+            setTimeout(() => getMyCollapse(btnTarget), 500);
+            await getCoinInfo(item.id, `coin-info-id-${index}`);
+        });
+    });
 
 
-    // filteredData.forEach(item => {
-    //     const index = dataDebug.findIndex(dataItem => dataItem.id === item.id);
-    //     const toggleSwitch = $(`#toggle-switch-${index}`);
-    //     if (toggleSwitch.prop('checked')) {
-    //         $(toggleSwitch).prop('checked', true); // Mark the corresponding toggle switch as checked
-    //         console.log("toggle is checked");
-    //     }
-    // });
     document.getElementById('filterInput').value = '';
 }
 
@@ -808,286 +718,6 @@ $(document).ready(function () {
     });
 });
 
-// function initializeChart() {
-//     var options = {
-//         exportEnabled: true,
-//         animationEnabled: true,
-//         title:{
-//             text: "Units Sold VS Profit"
-//         },
-//         subtitles: [{
-//             text: "Click Legend to Hide or Unhide Data Series"
-//         }],
-//         axisX: {
-//             title: "States"
-//         },
-//         axisY: {
-//             title: "Units Sold",
-//             titleFontColor: "#4F81BC",
-//             lineColor: "#4F81BC",
-//             labelFontColor: "#4F81BC",
-//             tickColor: "#4F81BC"
-//         },
-//         axisY2: {
-//             title: "Profit in USD",
-//             titleFontColor: "#C0504E",
-//             lineColor: "#C0504E",
-//             labelFontColor: "#C0504E",
-//             tickColor: "#C0504E"
-//         },
-//         toolTip: {
-//             shared: true
-//         },
-//         legend: {
-//             cursor: "pointer",
-//             itemclick: toggleDataSeries
-//         },
-//         data: [{
-//             type: "spline",
-//             name: "Units Sold",
-//             showInLegend: true,
-//             xValueFormatString: "MMM YYYY",
-//             yValueFormatString: "#,##0 Units",
-//             dataPoints: [
-//                 { x: new Date(2016, 0, 1),  y: 120 },
-//                 { x: new Date(2016, 1, 1), y: 135 },
-//                 { x: new Date(2016, 2, 1), y: 144 },
-//                 { x: new Date(2016, 3, 1),  y: 103 },
-//                 { x: new Date(2016, 4, 1),  y: 93 },
-//                 { x: new Date(2016, 5, 1),  y: 129 },
-//                 { x: new Date(2016, 6, 1), y: 143 },
-//                 { x: new Date(2016, 7, 1), y: 156 },
-//                 { x: new Date(2016, 8, 1),  y: 122 },
-//                 { x: new Date(2016, 9, 1),  y: 106 },
-//                 { x: new Date(2016, 10, 1),  y: 137 },
-//                 { x: new Date(2016, 11, 1), y: 142 }
-//             ]
-//         },
-//         {
-//             type: "spline",
-//             name: "Profit",
-//             axisYType: "secondary",
-//             showInLegend: true,
-//             xValueFormatString: "MMM YYYY",
-//             yValueFormatString: "$#,##0.#",
-//             dataPoints: [
-//                 { x: new Date(2016, 0, 1),  y: 19034.5 },
-//                 { x: new Date(2016, 1, 1), y: 20015 },
-//                 { x: new Date(2016, 2, 1), y: 27342 },
-//                 { x: new Date(2016, 3, 1),  y: 20088 },
-//                 { x: new Date(2016, 4, 1),  y: 20234 },
-//                 { x: new Date(2016, 5, 1),  y: 29034 },
-//                 { x: new Date(2016, 6, 1), y: 30487 },
-//                 { x: new Date(2016, 7, 1), y: 32523 },
-//                 { x: new Date(2016, 8, 1),  y: 20234 },
-//                 { x: new Date(2016, 9, 1),  y: 27234 },
-//                 { x: new Date(2016, 10, 1),  y: 33548 },
-//                 { x: new Date(2016, 11, 1), y: 32534 }
-//             ]
-//         }]
-//     };
-//     $("#chartContainer").CanvasJSChart(options);
-//     function toggleDataSeries(e) {
-//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-//             e.dataSeries.visible = false;
-//         } else {
-//             e.dataSeries.visible = true;
-//         }
-//         e.chart.render();
-//     }
-// }
-
-
-// async function fetchCoinPrices() {
-//     await generateModalContent();
-
-//     const coinSymbols = reportsArray.map(item => item.coin.symbol.toUpperCase()).join(',');
-//     console.log('Coin symbols:', coinSymbols); // Log the coin symbols
-
-//     const url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`;
-//     // Proceed with fetching data using the modified coinSymbols
-
-//     console.log('Request URL:', url); // Log the URL before making the fetch request
-
-//     try {
-//         const response = await fetch(url);
-//         const data = await response.json();
-
-//         console.log('Fetched coin prices:', data); // Log the fetched items
-
-//         return data;
-//     } catch (error) {
-//         console.error('Error fetching coin prices:', error);
-//         return {};
-//     }
-// }
-
-// async function fetchCoinPrices() {
-//     await generateModalContent();
-
-//     const coinSymbols = reportsArray.map(item => item.coin.symbol.toUpperCase()).join(',');
-//     console.log('Coin symbols:', coinSymbols); // Log the coin symbols
-
-//     let url;
-//     if (coinSymbols === '') {
-//         console.error('No coin symbols found in reportsArray');
-//         const defaultCoinSymbols = 'BTC,ETH,LTC'; // Example default symbols
-//         url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${defaultCoinSymbols}&tsyms=USD`;
-//     } else {
-//         url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`;
-//     }
-
-//     console.log('Request URL:', url); // Log the URL before making the fetch request
-
-//     try {
-//         const response = await fetch(url);
-//         const data = await response.json();
-
-//         console.log('Fetched coin prices:', data); // Log the fetched items
-
-//         return data;
-//     } catch (error) {
-//         console.error('Error fetching coin prices:', error);
-//         return {};
-//     }
-// }
-
-
-
-// async function initializeChart() {
-//     const coinPrices = await fetchCoinPrices();
-
-//     // Extract data points from the fetched coin prices
-//     const dataPoints = Object.entries(coinPrices).map(([symbol, price]) => ({
-//         x: new Date(), // Assuming the current time as the fetch time
-//         y: price.USD // Assuming the fetched data contains the USD price for each coin
-//     }));
-//     console.log('dataPoints:', dataPoints);
-//     console.log('coinPrices:', coinPrices);
-
-//     // Log the dataPoints array
-//     // Log the dataPoints array
-
-//     let options = {
-//         exportEnabled: true,
-//         animationEnabled: true,
-//         title: {
-//             text: "coin name to USD"
-//         },
-//         subtitles: [{
-//             text: "Click Legend to Hide or Unhide Data Series"
-//         }],
-//         axisX: {
-//             title: "States"
-//         },
-//         axisY: {
-//             title: "coin value",
-//             titleFontColor: "#4F81BC",
-//             lineColor: "#4F81BC",
-//             labelFontColor: "#4F81BC",
-//             tickColor: "#4F81BC"
-//         },
-//         // axisY2: {
-//         //     title: "Profit in USD",
-//         //     titleFontColor: "#C0504E",
-//         //     lineColor: "#C0504E",
-//         //     labelFontColor: "#C0504E",
-//         //     tickColor: "#C0504E"
-//         // },
-//         toolTip: {
-//             shared: true
-//         },
-//         legend: {
-//             cursor: "pointer",
-//             itemclick: toggleDataSeries
-//         },
-//         data: [{
-//             type: "spline",
-//             name: "Coin Value (USD)",
-//             showInLegend: true,
-//             xValueFormatString: "MMM YYYY",
-//             yValueFormatString: "$#,##0.#",
-//             dataPoints: dataPoints // Use the fetched data points here
-//         }]
-//     };
-//     // Initialize the chart within the chartContainer element
-
-
-//     let chart = new CanvasJS.Chart("chartContainer", options);
-
-//     chart.render();
-
-//     // Define the toggleDataSeries function
-//     function toggleDataSeries(e) {
-//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-//             e.dataSeries.visible = false;
-//         } else {
-//             e.dataSeries.visible = true;
-//         }
-//         e.chart.render();
-//     }
-// }
-
-// // Call the initializeChart function when the page is loaded
-// $(document).ready(function () {
-//     initializeChart();
-// });
-
-// async function fetchCoinPrices() {
-//     try {
-//         const coinSymbols = 'BTC,ETH,LTC'; // Debug version with fixed symbols
-//         console.log('Coin symbols:', coinSymbols); // Log the coin symbols
-
-//         const url = `https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`;
-
-//         const response = await fetch(url);
-//         const data = await response.json();
-//         console.log('Fetched coin prices:', data); // Log the fetched items
-
-//         return data;
-//     } catch (error) {
-//         console.error('Error fetching coin prices:', error);
-//         return {};
-//     }
-// }
-// setInterval(async () => {
-//     await fetchCoinPrices();
-// }, 2000); 
-
-// do not erase this!!!
-
-// async function fetchCoinPrices() {
-//         await generateModalContent();
-
-//     const coinSymbols = reportsArray.map(item => item.coin.symbol).join(',');
-//     console.log('Coin symbols:', coinSymbols); // Log the coin symbols
-
-//     try {
-//         const response = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`);
-//         const data = await response.json();
-//         console.log('Fetched coin prices:', data); // Log the fetched items
-
-//         const usdPrices = Object.keys(data).map(symbol => data[symbol].USD);
-//         console.log('USD prices:', usdPrices); // Log USD prices
-
-//         // return usdPrices; // Return only the USD prices array Return the USD prices array
-//         return data;
-//     } catch (error) {
-//         console.error('Error fetching coin prices:', error);
-//         return [];
-//     }
-// }
-
-
-// // Fetch coin prices asynchronously and update chart
-// setInterval(async () => {
-//     try {
-//         const coinPrices = await fetchCoinPrices(); // Fetch coin prices
-//     } catch (error) {
-//         console.error('Error fetching coin prices:', error);
-//     }
-// }, 2000); // Fetch every 2 seconds
-
 
 async function fetchCoinPrices() {
     await generateModalContent();
@@ -1153,7 +783,7 @@ async function initializeChart(coinPrices) {
             labelFontColor: "#4F81BC",
             tickColor: "#4F81BC",
             minimum: 0, // Set minimum y-axis value to 0
-            maximum: 7000 
+            maximum: 7000
         },
         toolTip: {
             shared: true
@@ -1182,428 +812,14 @@ async function initializeChart(coinPrices) {
 
 
 
-// async function initializeChart(coinPrices) {
-//     console.log('chart works:');
-
-//     // Ensure coinPrices is an object
-//     if (!Array.isArray(coinPrices)) {
-//         console.error('coinPrices is not a valid array:', coinPrices);
-//         return;
-//     }
-
-//     // Extract data points from the fetched coin prices
-//     const dataPoints = coinPrices.map(item => ({
-//         label: item.symbol, // Use the coin symbol as label
-//         y: item.price // Use the USD price as the y-value
-//     }));
-
-//     console.log('Data points:', dataPoints);
 
 
-
-//     let options = {
-//         exportEnabled: true,
-//         animationEnabled: true,
-//         title: {
-//             text: "Coin Prices to USD"
-//         },
-//         subtitles: [{
-//             text: "Click Legend to Hide or Unhide Data Series"
-//         }],
-//         axisX: {
-//             title: "Coins"
-//         },
-//         axisY: {
-//             title: "Price (USD)",
-//             titleFontColor: "#4F81BC",
-//             lineColor: "#4F81BC",
-//             labelFontColor: "#4F81BC",
-//             tickColor: "#4F81BC"
-//         },
-//         toolTip: {
-//             shared: true
-//         },
-//         legend: {
-//             cursor: "pointer",
-//             itemclick: toggleDataSeries
-//         },
-//         data: [{
-//             type: "spline",
-//             name: "Coin Value (USD)",
-//             showInLegend: true,
-//             xValueFormatString: "MMM YYYY",
-//             yValueFormatString: "$#,##0.#",
-//             dataPoints: dataPoints // Use the fetched data points here
-//         }]
-//     };
-
-//     let chart = new CanvasJS.Chart("chartContainer", options);
-//     chart.render();
-
-//     // Define the toggleDataSeries function
-//     function toggleDataSeries(e) {
-//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-//             e.dataSeries.visible = false;
-//         } else {
-//             e.dataSeries.visible = true;
-//         }
-//         e.chart.render();
-//     }
-// }
-
-
-
-// Call the initializeChart function when the page is loaded
-// $(document).ready(async function () {
-//     const coinPrices = await fetchCoinPrices(); // Fetch coin prices asynchronously
-//     initializeChart(coinPrices); // Pass fetched coin prices to initializeChart
-//     console.log("initalized initializeChart");
-// });
-
-
-// async function initializeChart() {
-// const coinPrices = await fetchCoinPrices();
-
-// Extract data points from the fetched coin prices
-// const dataPoints = Object.entries(coinPrices).map(([symbol, price]) => ({
-//     x: new Date(), // Assuming the current time as the fetch time
-//     y: price.USD // Assuming the fetched data contains the USD price for each coin
-// }));
-// console.log('dataPoints:', dataPoints);
-// console.log('coinPrices:', coinPrices);
-
-// Log the dataPoints array
-// Log the dataPoints array
-
-// let options = {
-//     exportEnabled: true,
-//     animationEnabled: true,
-//     title: {
-//         text: "coin name to USD"
-//     },
-//     subtitles: [{
-//         text: "Click Legend to Hide or Unhide Data Series"
-//     }],
-//     axisX: {
-//         title: "States"
-//     },
-//     axisY: {
-//         title: "coin value",
-//         titleFontColor: "#4F81BC",
-//         lineColor: "#4F81BC",
-//         labelFontColor: "#4F81BC",
-//         tickColor: "#4F81BC"
-//     },
-//     axisY2: {
-//         title: "Profit in USD",
-//         titleFontColor: "#C0504E",
-//         lineColor: "#C0504E",
-//         labelFontColor: "#C0504E",
-//         tickColor: "#C0504E"
-//     },
-//     toolTip: {
-//         shared: true
-//     },
-//     legend: {
-//         cursor: "pointer",
-//         itemclick: toggleDataSeries
-//     },
-//     data: [{
-//         type: "spline",
-//         name: "Coin Value (USD)",
-//         showInLegend: true,
-//         xValueFormatString: "MMM YYYY",
-//         yValueFormatString: "$#,##0.#",
-//         dataPoints: dataPoints // Use the fetched data points here
-//     }]
-// };
-// Initialize the chart within the chartContainer element
-
-
-// let chart = new CanvasJS.Chart("chartContainer", options);
-
-// chart.render();
-
-// Define the toggleDataSeries function
-// function toggleDataSeries(e) {
-//     if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-//         e.dataSeries.visible = false;
-//     } else {
-//         e.dataSeries.visible = true;
-//     }
-//     e.chart.render();
-// }
-// }
-
-// Call the initializeChart function when the page is loaded
-// $(document).ready(function () {
-// initializeChart();
-// });
-// async function initializeChart(coinPrices) {
-//     // Extract data points from the fetched coin prices
-//     const dataPoints = coinPrices.map((price, index) => ({
-//         label: reportsArray[index].coin.symbol, // Use the corresponding coin symbol as label
-//         y: price // Use the USD price as the y-value
-//     }));
-//     console.log('dataPoints:', dataPoints);
-
-//     let options = {
-//         exportEnabled: true,
-//         animationEnabled: true,
-//         title: {
-//             text: "Coin Prices to USD"
-//         },
-//         subtitles: [{
-//             text: "Click Legend to Hide or Unhide Data Series"
-//         }],
-//         axisX: {
-//             title: "Coins"
-//         },
-//         axisY: {
-//             title: "Price (USD)",
-//             titleFontColor: "#4F81BC",
-//             lineColor: "#4F81BC",
-//             labelFontColor: "#4F81BC",
-//             tickColor: "#4F81BC"
-//         },
-//         toolTip: {
-//             shared: true
-//         },
-//         legend: {
-//             cursor: "pointer",
-//             itemclick: toggleDataSeries
-//         },
-//         data: [{
-//             type: "spline",
-//             name: "Coin Value (USD)",
-//             showInLegend: true,
-//             xValueFormatString: "MMM YYYY",
-//             yValueFormatString: "$#,##0.#",
-//             dataPoints: dataPoints // Use the fetched data points here
-//         }]
-//     };
-
-//     let chart = new CanvasJS.Chart("chartContainer", options);
-//     chart.render();
-
-//     // Define the toggleDataSeries function
-//     function toggleDataSeries(e) {
-//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-//             e.dataSeries.visible = false;
-//         } else {
-//             e.dataSeries.visible = true;
-//         }
-//         e.chart.render();
-//     }
-// }
-
-// // Call the initializeChart function when the page is loaded
-// $(document).ready(async function () {
-//     const coinPrices = await fetchCoinPrices(); // Fetch coin prices asynchronously
-//     initializeChart(coinPrices); // Pass fetched coin prices to initializeChart
-// });
-
-
-
-
-// async function initializeChart(coinPrices) {
-//     const coinPrices = await fetchCoinPrices();
-
-//     Extract data points from the fetched coin prices
-//     const dataPoints = Object.entries(coinPrices).map(([symbol, price]) => ({
-//         x: new Date(), // Assuming the current time as the fetch time
-//         y: price.USD // Assuming the fetched data contains the USD price for each coin
-//     }));
-//     console.log('dataPoints:', dataPoints);
-//     console.log('coinPrices:', coinPrices);
-
-//     Log the dataPoints array
-//     Log the dataPoints array
-
-//     let options = {
-//         exportEnabled: true,
-//         animationEnabled: true,
-//         title: {
-//             text: "coin name to USD"
-//         },
-//         subtitles: [{
-//             text: "Click Legend to Hide or Unhide Data Series"
-//         }],
-//         axisX: {
-//             title: "States"
-//         },
-//         axisY: {
-//             title: "coin value",
-//             titleFontColor: "#4F81BC",
-//             lineColor: "#4F81BC",
-//             labelFontColor: "#4F81BC",
-//             tickColor: "#4F81BC"
-//         },
-//         axisY2: {
-//             title: "Profit in USD",
-//             titleFontColor: "#C0504E",
-//             lineColor: "#C0504E",
-//             labelFontColor: "#C0504E",
-//             tickColor: "#C0504E"
-//         },
-//         toolTip: {
-//             shared: true
-//         },
-//         legend: {
-//             cursor: "pointer",
-//             itemclick: toggleDataSeries
-//         },
-//         data: [{
-//             type: "spline",
-//             name: "Coin Value (USD)",
-//             showInLegend: true,
-//             xValueFormatString: "MMM YYYY",
-//             yValueFormatString: "$#,##0.#",
-//             dataPoints: dataPoints // Use the fetched data points here
-//         }]
-//     };
-//     Initialize the chart within the chartContainer element
-
-
-//     let chart = new CanvasJS.Chart("chartContainer", options);
-
-//     chart.render();
-
-//     Define the toggleDataSeries function
-//     function toggleDataSeries(e) {
-//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-//             e.dataSeries.visible = false;
-//         } else {
-//             e.dataSeries.visible = true;
-//         }
-//         e.chart.render();
-//     }
-// }
-
-// Call the initializeChart function when the page is loaded
-// $(document).ready(async function () {
-//     const coinPrices = await fetchCoinPrices(); // Fetch coin prices asynchronously
-//     initializeChart(); // Pass fetched coin prices to initializeChart
-// });
-
-
-
-
-
-// async function initializeChart() {
-//     try {
-//         let options = {
-//             exportEnabled: true,
-//             animationEnabled: true,
-//             title: {
-//                 text: "Coin Value Over Time"
-//             },
-//             subtitles: [{
-//                 text: "Click Legend to Hide or Unhide Data Series"
-//             }],
-//             axisX: {
-//                 title: "Time"
-//             },
-//             axisY: {
-//                 title: "Coin Value (USD)",
-//                 titleFontColor: "#4F81BC",
-//                 lineColor: "#4F81BC",
-//                 labelFontColor: "#4F81BC",
-//                 tickColor: "#4F81BC"
-//             },
-//             toolTip: {
-//                 shared: true
-//             },
-//             legend: {
-//                 cursor: "pointer",
-//                 itemclick: toggleDataSeries
-//             },
-//             data: [] // Initialize empty data array
-//         };
-
-//         let chart = new CanvasJS.Chart("chartContainer", options);
-        
-//         // Call fetchCoinPrices initially and then at intervals
-//         fetchAndRenderData(chart);
-
-//         // Fetch coin prices every 2 seconds and render data on the chart
-//         // setInterval(() => {
-//         //     fetchAndRenderData(chart);
-//         // }, 2000);
-
-//         function toggleDataSeries(e) {
-//             if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-//                 e.dataSeries.visible = false;
-//             } else {
-//                 e.dataSeries.visible = true;
-//             }
-//             e.chart.render();
-//         }
-
-//     } catch (error) {
-//         console.error('Error initializing chart:', error);
-//     }
-// }
-
-// async function fetchAndRenderData(chart) {
-//     try {
-//         // const coinSymbols = 'BTC,ETH,LTC'; // Debug version with fixed symbols
-//         // console.log('Coin symbols:', coinSymbols); // Log the coin symbols
-//         const coinSymbols= reportsArray[0]
-//         const response = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`);
-//         const data = await response.json();
-//         console.log('Fetched coin prices:', data); // Log the fetched items
-
-//         // Process the fetched data and add data series for each coin to the chart
-//         Object.entries(data).forEach(([symbol, price]) => {
-//             const dataPoints = [{
-//                 x: new Date(), // Assuming the current time as the fetch time
-//                 y: price.USD // Assuming the fetched data contains the USD price for each coin
-//             }];
-
-//             // Check if the data series already exists in the chart
-//             let dataSeries = chart.options.data.find(series => series.name === symbol);
-
-//             if (!dataSeries) {
-//                 // Create a new data series if it doesn't exist
-//                 dataSeries = {
-//                     type: "spline",
-//                     name: symbol,
-//                     showInLegend: true,
-//                     dataPoints: dataPoints
-//                 };
-//                 chart.options.data.push(dataSeries);
-//             } else {
-//                 // Add new data points to the existing data series
-//                 dataSeries.dataPoints.push(dataPoints[0]);
-                
-//                 // Limit the number of data points to 10
-//                 if (dataSeries.dataPoints.length > 10) {
-//                     dataSeries.dataPoints.shift(); // Remove the oldest data point
-//                 }
-//             }
-//         });
-
-//         // Render the updated chart
-//         chart.render();
-//     } catch (error) {
-//         console.error('Error fetching and rendering data:', error);
-//     }
-// }
-
-// // Call the initializeChart function when the page is loaded
-// $(document).ready(function () {
-//     initializeChart();
-// });
-
-
-
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Get a reference to the button
     var backToTopBtn = document.getElementById('back-to-top-btn');
 
     // Add a click event listener to scroll to the top when clicked
-    backToTopBtn.addEventListener('click', function() {
+    backToTopBtn.addEventListener('click', function () {
         window.scrollTo({
             top: 0,
             behavior: 'smooth' // Add smooth scrolling behavior
@@ -1611,7 +827,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Add a scroll event listener to show/hide the button based on scroll position
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         // Show the button when scrolling down past 200 pixels
         if (window.pageYOffset > 200) {
             backToTopBtn.classList.remove('d-none');
