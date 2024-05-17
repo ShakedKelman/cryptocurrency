@@ -351,17 +351,17 @@ async function getCoins() {
                 } else {
                     addToReport(coin, index);
                     if (isChecked) {
-                        setInterval(() => {
-                            if (typeof chart !== 'undefined') {
-                            // Update the x-axis to show the current time
-                            chart.options.data.forEach(dataSeries => {
-                                const y =  fetchCoinPrices('zcn,zoc').then( (res => dataSeries.dataPoints.push({ x: new Date(), y: y.ZOC.USD }) , rej => new Error('cannot')))
-                                console.log(y)
-                                // Example: Generate random data
-                            });
-                            chart.render();
-                            } else { console.log('chart not defined')}
-                        }, 2000);
+                        // setInterval(() => {
+                        //     if (typeof chart !== 'undefined') {
+                        //     // Update the x-axis to show the current time
+                        //     chart.options.data.forEach(dataSeries => {
+                        //         const y =  fetchCoinPrices('zcn,zoc').then( (res => dataSeries.dataPoints.push({ x: new Date(), y: y.ZOC.USD }) , rej => new Error('cannot')))
+                        //         console.log(y)
+                        //         // Example: Generate random data
+                        //     });
+                        //     chart.render();
+                        //     } else { console.log('chart not defined')}
+                        // }, 2000);
                         
                         //fetchCoinPrices(); // Call fetchCoinPrices here
                     }
