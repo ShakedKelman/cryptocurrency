@@ -712,25 +712,96 @@ function reloadPage() {
 //     const filteredData = dataDebug.filter(item => item.name.toLowerCase().includes(filterValue));
 //     displayResults(filteredData);
 // }
+// function filterByName() {
+//     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
+//     const filteredData = dataDebug.filter(item => item.symbol.toLowerCase() === filterValue); // Compare entire name
+//     displayResults(filteredData);
+//     if (filteredData.length === 0) {
+//         alert('please type the full name of the coin you want to find');
+//     }
+//     filterInput.value = '';
+
+// }
+
+
+// function displayResults(results) {
+//     const resultList = document.getElementById('resultList');
+//     resultList.innerHTML = '';
+//     results.forEach(item => {
+//         const li = document.createElement('li');
+//         li.textContent = `${item.symbol} - ${item.id} - ${item.name}`;
+//         resultList.appendChild(li);
+//     });
+// }
+
 function filterByName() {
     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
     const filteredData = dataDebug.filter(item => item.symbol.toLowerCase() === filterValue); // Compare entire name
+    clearCardContainer();
+
+    // Display the filtered results as full coin cards
     displayResults(filteredData);
+
     if (filteredData.length === 0) {
         alert('please type the full name of the coin you want to find');
     }
-    filterInput.value = '';
+    document.getElementById('filterInput').value = '';
+}
 
+let initialHomeSectContent = '';
+
+function saveInitialContent() {
+    const homeSect = document.getElementById('home-sect');
+    initialHomeSectContent = homeSect.innerHTML;
+}
+
+function clearCardContainer() {
+    const cardContainer = document.getElementById('home-sect'); // Assuming this is the container holding the initial cards
+    cardContainer.innerHTML = ''; // Clear all the initial cards
 }
 
 
 function displayResults(results) {
     const resultList = document.getElementById('resultList');
-    resultList.innerHTML = '';
-    results.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = `${item.symbol} - ${item.id} - ${item.name}`;
-        resultList.appendChild(li);
+    // resultList.innerHTML = ''; // Clear the previous results
+
+    results.forEach((item, index) => {
+        const cardOutput = document.createElement('div');
+        cardOutput.setAttribute('class', 'cardOutputStyle mb-3 col-md-4');
+        cardOutput.setAttribute('id', `card-coin-output-${index}`);
+        cardOutput.setAttribute('coin-id', item.id);
+
+        cardOutput.innerHTML = `
+            <div class="card mb-3 custom-card-style" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="../assets/card-logo.png" class="img-fluid rounded-start" alt="a logo picture">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body text-bg-light text-dark">
+                            <label class="toggle-switch" id="toggle-button-${index}">
+                                <input type="checkbox" id="toggle-switch-${index}">
+                                <span class="slider"></span>
+                            </label>
+                            <h5 class="card-title">${item.symbol}</h5>
+                            <p class="card-text">${item.name}</p>
+                            <p>
+                                <button class="btn btn-dark btn-sm more-info-btn-${index}" data-bs-target="#collapseExample${index}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample${index}" aria-expanded="false" aria-controls="collapseExample${index}">
+                                    more info
+                                </button>
+                            </p>
+                            <div class="collapse multi-collapse" aria-expanded="false" id="collapseExample${index}">
+                                <div class="card card-body cardIndex${index}" id="coin-info-id-${index}">
+                                    <!-- Additional coin info can be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        resultList.appendChild(cardOutput);
     });
 }
 
@@ -742,7 +813,16 @@ function showAll() {
     document.getElementById('filterInput').value = ''; // Clear the filter input
     const resultList = document.getElementById('resultList');
     resultList.innerHTML = ''; // Clear the UI output
+
+       // Restore the initial home-sect content
+       const homeSect = document.getElementById('home-sect');
+       homeSect.innerHTML = initialHomeSectContent;
 }
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    saveInitialContent();
+});
+
 $(document).ready(function () {
     // Initialize the popover
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
