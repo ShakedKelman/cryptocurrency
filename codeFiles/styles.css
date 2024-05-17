@@ -10,14 +10,58 @@ body {
 }
 
 .parallax-header {
-    background-size: cover;
+
+    background-repeat: no-repeat;
+    /* Prevent the background from repeating */
     background-position: center;
-    height: 55vh;
+    /* Center the background image */
+    height: 60vh;
+    /* Set the height */
     position: relative;
+    /* Position relative to allow child elements to be positioned absolutely */
     z-index: -1;
-    padding-bottom: 0;
-    margin-bottom: 0;
+    /* Ensure it stays behind other content */
+    width: 100%;
+    /* Ensure it covers the full width */
+    margin: 0;
+    /* Remove any default margin */
+    padding: 0;
+    /* Remove any default padding */
+    /* box-shadow:
+        0 0 20px 20px rgba(60, 250, 237, 0.1),
+        0 0 20px 20px rgba(96, 221, 212, 0.2),
+        0 0 20px 20px rgba(45, 224, 212, 0.3); */
 }
+.circle-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    justify-content: center;
+    border: 1px solid rgb(16, 15, 15);
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+}
+
+.circle-img:hover {
+    transform: scale(1.3); /* Scale the image to 110% on hover */
+}
+
+.circles-container {
+    background-color: rgb(194, 191, 191,0.2);
+    padding: 15px;
+    width: 100%;
+    height: 175px;
+    text-align: center;
+}
+
+
+.circle-footer{
+    margin-top: 5px;
+    padding-top: 5px;
+    text-align: center;
+    font-size: small;
+}
+
 
 .searchStyle {
     justify-content: flex-end;
@@ -37,7 +81,9 @@ body {
 .navbar {
     position: fixed;
     width: 100%;
-    z-index: 2000; /* Ensure it is above other content */
+    z-index: 2000;
+    /* Ensure it is above other content */
+
 
 }
 
@@ -47,39 +93,62 @@ body {
     width: 100%;
     z-index: 1000;
     background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
     padding-top: 0;
     margin-top: 0;
 
 }
 
-.carusel-box{
+.carusel-box {
     height: 50px;
 }
 
-.carousel-caption-text{
-font-size: 15px;
+.carousel-caption-text {
+    font-size: 15px;
 }
-.carousel-inner{
+
+.carousel-inner {
     object-fit: cover;
+    height: 25px;
 
 }
+
 .carousel-caption {
-    padding: 10px; /* Add padding to give some space around the text */
-    border-radius: 10px; /* Add rounded corners */
-    position: absolute; /* Position the caption absolutely within the carousel item */
-    bottom: 0; /* Align the caption to the bottom of the carousel item */
-    left: 0; /* Align the caption to the left side of the carousel item */
-    width: 100%; /* Make the caption span the entire width of the carousel item */
-    height: auto; /* Allow the caption height to adjust based on its content */
+    border-radius: 10px;
+    /* Add rounded corners */
+    position: absolute;
+    /* Position the caption absolutely within the carousel item */
+    bottom: 0;
+    /* Align the caption to the bottom of the carousel item */
+    left: 0;
+    /* Align the caption to the left side of the carousel item */
+    width: 100%;
+    /* Make the caption span the entire width of the carousel item */
+    height: auto;
+    /* Allow the caption height to adjust based on its content */
 }
 
 .carousel {
     position: fixed;
-    top: 0; /* Place the carousel at the top of the viewport */
+    top: 0;
+    /* Place the carousel at the top of the viewport */
     width: 100%;
-    height: 10px; /* Adjust the height as needed */
-    z-index: 2500; /* Ensure a high z-index to keep it above other elements */
+    height: 10px;
+    /* Adjust the height as needed */
+    z-index: 2500;
+    /* Ensure a high z-index to keep it above other elements */
+}
+
+.carousel-control-prev-icon {
+    margin-top: 5px;
+    justify-content: center;
+    height: 15px;
+}
+
+.carousel-control-next-icon {
+    margin-top: 5px;
+    justify-content: center;
+    height: 15px;
 }
 
 #progress-bar {
@@ -87,9 +156,10 @@ font-size: 15px;
     height: 10px;
     background-color: black;
     border-radius: 4px;
-    top: 110px; /* Position it below the fixed navbar */
-
-    position: fixed; /* Make the container sticky */
+    top: 90px;
+    /* Position it below the fixed navbar */
+    position: fixed;
+    /* Make the container sticky */
 
 }
 
@@ -97,10 +167,14 @@ font-size: 15px;
     background-color: black;
     height: 10px;
     margin: 0;
-    z-index: 1500; /* Ensure it is above other content but below the carousel */
-    position: fixed; /* Make the container sticky */
-    top: 110px; /* Position it below the fixed navbar */
-    padding: 0; /* Remove padding to ensure it fits correctly */
+    z-index: 1500;
+    /* Ensure it is above other content but below the carousel */
+    position: fixed;
+    /* Make the container sticky */
+    top: 100px;
+    /* Position it below the fixed navbar */
+    padding: 0;
+    /* Remove padding to ensure it fits correctly */
 }
 
 
@@ -263,67 +337,57 @@ font-size: 15px;
 }
 
 
-.about-img {
-    margin: 25px;
-    /* padding: 5px; */
-    height: 200px;
-    width: 200px;
 
-    /* border: 1px solid black; */
-    box-shadow:
-        0 0 0 2px rgba(50, 189, 199, 0.2),
-        /* Outer black border */
-        0 0 0 5px rgba(50, 189, 199, 0.2),
-        /* Inner white border */
-        0 0 25px rgba(0, 0, 0, 0.5);
-    /* Depth effect */
-}
 
 #resultList {
     padding: 20px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem; /* Optional: adds space between items */
+    gap: 1rem;
+    /* Optional: adds space between items */
 }
 
 .hidden {
     display: none;
 }
 
-.canvasjs-chart-canvas{
+.canvasjs-chart-canvas {
     height: 100%;
     width: 100px;
     padding: 50px;
     margin: 50px;
 }
+
 .card-continer-about {
     background-color: white;
     /* RGBA color with 79% opacity */
     padding: 30px;
 }
 
+.about-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+}
+
+
 .about-img-container {
-    /* background-color: #3eeaeac9; */
-    /* background-color: #4ee7e7c9; */
-    background-color: rgba(50, 189, 199, 0.5);
-    /* RGBA color with 79% opacity */
+
+    background-color: rgb(167, 163, 163,0.2);
+    background-size: cover;
 
     width: 100%;
-    height: 100%;
+    height: 200px;
     display: flex;
     justify-content: center;
-    /* Horizontally center the items */
     align-items: center;
-    /* Vertically center the items */
-    box-shadow:
-        0 0 0 2px rgba(50, 189, 199, 0.2),
-        /* Outer black border */
-        0 0 0 5px rgba(50, 189, 199, 0.2),
-        /* Inner white border */
-        0 0 25px rgba(0, 0, 0, 0.5);
-    /* Depth effect */
+    position: relative;
 }
+
 
 
 .about-text {
@@ -349,38 +413,48 @@ font-size: 15px;
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1500; /* Higher z-index to place it above the navbar */
+    z-index: 1500;
+    /* Higher z-index to place it above the navbar */
 }
 
 .topBar {
     position: fixed;
-    top: calc(10px + 300px); /* Adjust top position to accommodate the carousel */
+    top: calc(10px + 300px);
+    /* Adjust top position to accommodate the carousel */
     width: 100%;
-    z-index: 1000; /* Lower z-index to place it below the carousel */
+    z-index: 1000;
+    /* Lower z-index to place it below the carousel */
 }
 
 
 .headerContainer {
-    padding-top: calc(56px + 10px); /* Adjust padding to accommodate the fixed navbar and topStrip */
+    padding-top: calc(56px + 10px);
+    /* Adjust padding to accommodate the fixed navbar and topStrip */
 }
 
 
 .navbar {
     position: fixed;
-    top: calc(10px + 35px); /* Adjust top position to place it between header and carousel */
+    top: calc(10px + 15px);
+    /* Adjust top position to place it between header and carousel */
     width: 100%;
-    z-index: 2000; /* Set a z-index higher than the header but lower than the carousel */
+    z-index: 2000;
+    /* Set a z-index higher than the header but lower than the carousel */
 }
 
 .topBar {
     position: fixed;
-    top: 10px; /* Adjust top position to accommodate the navbar */
+    top: 0px;
+    /* Adjust top position to accommodate the navbar */
     width: 100%;
-    z-index: 1500; /* Set a z-index lower than the navbar to ensure it stays behind */
+    z-index: 1500;
+    /* Set a z-index lower than the navbar to ensure it stays behind */
 }
 
-.headerContainer {
-    padding-top: calc(56px + 10px); /* Adjust padding to accommodate the fixed navbar, topStrip, and carousel */
+.breadcrumb {
+    text-align: center;
+    justify-content: center;
+    color: black;
 }
 
 @media (max-width: 750px) {
@@ -418,7 +492,7 @@ font-size: 15px;
     }
 
 
-  
+
     .coin-container {
         justify-content: center;
         /* Center the cards */
@@ -453,6 +527,10 @@ font-size: 15px;
         font-size: small;
     }
 
+    .circles-container {
+        display: none;
 
 
+
+    }
 }

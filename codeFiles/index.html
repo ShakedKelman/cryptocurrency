@@ -4,19 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- jQuery UI Progress Bar -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<!-- CanvasJS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
+    <!-- jQuery UI Progress Bar -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- CanvasJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
 
-<!-- js file -->
-<script defer src="./main.js"></script>
+    <!-- js file -->
+    <script defer src="./main.js"></script>
 
-<!-- bootstrap -->
+    <!-- bootstrap -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- JavaScript (optional, for Bootstrap components that require JavaScript) -->
@@ -31,92 +31,129 @@
 <body>
 
 
-                <div class="topStrip">
-                    <div id="carouselExampleDark" class="carousel slide sticky-top" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active carusel-box" data-bs-interval="10000">
-                                <img src="../assets/carusel-color.png" class="d-block w-100" alt="...">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h6 class="carousel-caption-text">a website that tracks crypto price</h6>
-                                    <!-- <p>you can track it from all over the world</p> -->
-                                </div>
-                            </div>
-                            <div class="carousel-item carusel-box" data-bs-interval="2000">
-                                <img src="../assets/carusel-color.png" class="d-block w-100" alt="...">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h6 class="carousel-caption-text">get to know what crypto is all about</h6>
-                                    <!-- <p>using the websides card you can learn all you need to know about crypto</p> -->
-                                </div>
-                            </div>
-                            <div class="carousel-item carusel-box">
-                                <img src="../assets/carusel-color.png" class="d-block w-100" alt="...">
-                                <div class="carousel-caption d-none d-md-block">
-                                    <h6 class="carousel-caption-text">track graphs that indicates the current change</h6>
-                                    <!-- <p>allows the clients to track all changes that happen</p> -->
-                                </div>
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
+    <div class="topStrip">
+        <div id="carouselExampleDark" class="carousel slide sticky-top" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active carusel-box" data-bs-interval="10000">
+                    <img src="../assets/carusel-color.png" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h6 class="carousel-caption-text">a website that tracks crypto price</h6>
+                        <!-- <p>you can track it from all over the world</p> -->
                     </div>
                 </div>
-            
-            
-        <div class="topBar">
-            <div id="navbar-container" class="navContainer">
-                <nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
-                    <div class="container-fluid">
-                        <a class="navbar-brand" href="#">menu</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mb-2 mb-lg-0 ms-auto navStyle">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-section="home-sect" id="home-id" aria-current="page" href="#">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-section="live-reports-sect" href="#" id="live-reports-id">live reports</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-section="about-sect" href="#" id="about-id">about</a>
-                                </li>
-                            </ul>
-                            <form class="d-flex ms-auto searchStyle" role="search">
-                                <input type="text" id="filterInput" class="form-control me-2" placeholder="search coin name" data-bs-toggle="popover"
-                                    data-bs-placement="bottom" data-bs-content="Enter the full name of the coin you want to search">
-                                <button type="button" class="btn btn-dark btn-sm" onclick="filterByName()">search</button>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="showAll()">Clear Filter</button>
-                            </form>
-                        </div>
+                <div class="carousel-item carusel-box" data-bs-interval="2000">
+                    <img src="../assets/carusel-color.png" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h6 class="carousel-caption-text">get to know what crypto is all about</h6>
+                        <!-- <p>using the websides card you can learn all you need to know about crypto</p> -->
                     </div>
-                </nav>
+                </div>
+                <div class="carousel-item carusel-box">
+                    <img src="../assets/carusel-color.png" class="d-block w-100" alt="...">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h6 class="carousel-caption-text">track graphs that indicates the current change</h6>
+                        <!-- <p>allows the clients to track all changes that happen</p> -->
+                    </div>
+                </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
+    </div>
+
+
+    <div class="topBar">
+        <div id="navbar-container" class="navContainer">
+            <nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">menu</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto navStyle">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-section="home-sect" id="home-id" aria-current="page"
+                                    href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-section="live-reports-sect" href="#" id="live-reports-id">live
+                                    reports</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-section="about-sect" href="#" id="about-id">about</a>
+                            </li>
+                        </ul>
+                        <form class="d-flex ms-auto searchStyle" role="search">
+                            <input type="text" id="filterInput" class="form-control me-2" placeholder="search coin name"
+                                data-bs-toggle="popover" data-bs-placement="bottom"
+                                data-bs-content="Enter the full name of the coin you want to search">
+                            <button type="button" class="btn btn-dark btn-sm" onclick="filterByName()">search</button>
+                            <button type="button" class="btn btn-secondary btn-sm" onclick="showAll()">Clear
+                                Filter</button>
+                        </form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
     <!-- </div> -->
 
-        <div id="progress-bar-container"  class="fixed">
-            <div id="progress-bar" role="progressbar" aria-valuemin="0" class="ui-progressbar ui-corner-all ui-widget ui-widget-content" aria-valuemax="100" aria-valuenow="100">
-            </div>
+    <div id="progress-bar-container" class="fixed">
+        <div id="progress-bar" role="progressbar" aria-valuemin="0"
+            class="ui-progressbar ui-corner-all ui-widget ui-widget-content" aria-valuemax="100" aria-valuenow="100">
+        </div>
         <!-- </div> -->
     </div>
 
 
     <div id="header" class="headerContainer">
         <div id="header-main">
+
+
+        </div>
+    </div>
+    <div class="circles-container">
+        <div class="row justify-content-center">
+            <div class="col-md-2">
+                <img src="../assets/new-assets/circle1.png" alt="Image 1" class="circle-img">
+                <p class="circle-footer">Currency Revolution
+                </p>
+            </div>
+            <div class="col-md-2">
+                <img src="../assets/new-assets/circle2.png" alt="Image 2" class="circle-img">
+                <p class="circle-footer">Finance Power</p>
+            </div>
+            <div class="col-md-2">
+                <img src="../assets/new-assets/circle3.png" alt="Image 3" class="circle-img">
+                <p class="circle-footer">Blockchain Innovation</p>
+            </div>
+            <div class="col-md-2">
+                <img src="../assets/new-assets/circle4.png" alt="Image 4" class="circle-img">
+                <p class="circle-footer">Investment Potential</p>
+            </div>
+            <div class="col-md-2">
+                <img src="../assets/new-assets/cirle5.png" alt="Image 5" class="circle-img">
+                <p class="circle-footer">Asset Evolution</p>
+            </div>
         </div>
     </div>
 
-        <ul id="resultList"></ul>
-        <ul id="more-info-about"></ul>
-        <ul id="more-info-live-reports"></ul>
+
+
+    <ul id="resultList"></ul>
+    <ul id="more-info-about"></ul>
+    <ul id="more-info-live-reports"></ul>
 
 
     <!-- </div>
@@ -125,7 +162,7 @@
     <!-- Modal -->
     <div class="modal fade" id="maxCoinsModal" tabindex="-1" role="dialog" aria-labelledby="maxCoinsModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h6 class="modal-title" id="maxCoinsModalLabel">Maximum number of coins reached-You need to remove a
@@ -137,8 +174,8 @@
                     <button type="button" class="close btn btn-dark" id="undoModal" aria-label="Undo">
                         <span aria-hidden="true">Undo</span>
                     </button>
-                    
-                    
+
+
                 </div>
                 <div class="modal-body" id="model-text">
                     <ul id="modal-switches"></ul>
@@ -152,12 +189,12 @@
 
     <div>
         <section id="home-sect" class="coin-container">
-            
+
         </section>
-    
-  
+
+
         <section id="live-reports-sect">
-                        <div id="chartContainer" style="height: 300px; width: 100%;"></div> <!-- Add this div for the chart -->
+            <div id="chartContainer" style="height: 300px; width: 100%;"></div> <!-- Add this div for the chart -->
 
             <div>Live report</div>
             <!-- <div id="carouselExampleDark" class="carousel slide sticky-top" data-bs-ride="carousel">
@@ -196,108 +233,90 @@
 
 
         </section>
-    
+
         <section id="about-sect">
-<div id="about-header">
-    <!-- <div id="carouselExampleDark" class="carousel slide sticky-top" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active" data-bs-interval="10000">
-                <img src="../assets/crypto-about-1.jpeg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>a website that tracks crypto price</h5>
-                    <p>you can track it from all over the world</p>
-                </div>
+            <div id="about-header">
             </div>
-            <div class="carousel-item" data-bs-interval="2000">
-                <img src="../assets/crypto-about-2.jpeg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>get to know what crypto is all about</h5>
-                    <p>using the websides card you can learn all you need to know about crypto</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="../assets/crypto-about-3.jpeg" class="d-block w-100" alt="...">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>track graphs that indicates the current change</h5>
-                    <p>allows the clients to track all changes that happen</p>
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div> -->
-</div>
-<!-- 
-            <div class="about-img-container">
-                <div class="card" style="width: 18rem;">
-                    <img class="about-img card-img-top" src="../assets/about-img.jpeg" alt="about image">
-                    <div class="card-body">
-                        <h5 class="card-title">Shaked Kelman</h5>
-                        <p class="card-text">Hi there! My name is Shaked I'm 21 years old, currently living in Jerusalem, very interested in coding and learning new techniques</p>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title card-title-about">
+                        <div class="card-footer">
+                            <h6>About me</h6>
+                            <div class="card-footer about-img-container">
+                                <!-- <img src="../assets/about-img.jpeg" class="card-img-top about-img" alt="about image" style="left: 85%; width: 50px; height: 50px;">
+                                <img src="../assets/about-img.jpeg" class="card-img-top about-img" alt="about image" style="left: 80%; width: 70px; height: 70px;"> -->
+                                <div class="card-footer about-img-container">
+                                    <!-- First image -->
+                                    <img src="../assets/new-assets/about-3.jpeg" class="card-img-top about-img" alt="about image"
+                                        style="left: 35%; top: 35%; width: 80px; height: 80px;">
+                                    <!-- Second image -->
+                                    <img src="../assets/about-img.jpeg" class="card-img-top about-img" alt="about image"
+                                        style="left: 40%; top: 20%; width: 150px; height: 150px;">
+                                    <!-- Third image -->
+                                    <img src="../assets/new-assets/about-1.jpeg" class="card-img-top about-img" alt="about image"
+                                        style="left: 50%; top: 2%; width: 110px; height: 110px;">
+                                    <img src="../assets/new-assets/about-2.jpeg" class="card-img-top about-img" alt="about image" style="left: 55%; top:45%; width: 50px; height: 50px;"> 
+
+                                </div>
+
+                            </div>
+                        </div>
+                        Shaked Kelman
+                    </h4>
+
+                    <div class="card-continer-text-about card-footer">
+                        <p class="card-text about-text">Hi there! My name is Shaked. I'm 21 years old, currently living
+                            in Jerusalem, very interested in coding and learning new techniques.</p>
                     </div>
+
                     <div class="card-footer">
                         <h6>About the project</h6>
-                        <p>this project was createdin order to help my clients get easy access to today's current state of each cryptocurrency in the market.</p>
+                        <p class="card-text">This project was created in order to help my clients get easy access to
+                            today's current state of each cryptocurrency in the market.With a user-friendly interface
+                            and comprehensive features, Cryptonite serves as a valuable tool for investors and
+                            enthusiasts seeking real-time insights and data analysis. From tracking market trends to
+                            providing detailed information on individual cryptocurrencies, Cryptonite empowers users to
+                            make informed decisions in an ever-changing financial environment. Welcome to Cryptonite,
+                            where innovation meets reliability in the realm of digital finance.
+                        </p>
                     </div>
-                </div>
-            </div>
-        </section>
-    </div>
- -->
- <div class="card-continer-about">
-
- <div class="card mb-3 about-img-container">
-    <img src="../assets/about-img.jpeg" class="card-img-top about-img  rounded-circle" alt="about image">
-    <div class="card-body">
-        <h4 class="card-title card-title-about">Shaked Kelman</h4>
-
- <div class="card-continer-text-about card-footer">
-      
-        <p class="card-text about-text">Hi there! My name is Shaked. I'm 21 years old, currently living in Jerusalem, very interested in coding and learning new techniques.</p>
-    </div>
-    
-    <div class="card-footer">
-        <h6>About the project</h6>
-        <p class="card-text">This project was created in order to help my clients get easy access to today's current state of each cryptocurrency in the market.With a user-friendly interface and comprehensive features, Cryptonite serves as a valuable tool for investors and enthusiasts seeking real-time insights and data analysis. From tracking market trends to providing detailed information on individual cryptocurrencies, Cryptonite empowers users to make informed decisions in an ever-changing financial environment. Welcome to Cryptonite, where innovation meets reliability in the realm of digital finance.
-
-        </p>
-    </div>
-</div>
-</div>
-
-
-</div>
-  
-
-
-    <div id="dummy"></div>
-
-<footer>
-
-    <button id="back-to-top-btn" class="btn btn-outline-dark">Back to Top</button>
-    <div class="container text-center">
-        <p>&copy; 2024 MyWebsite. All rights reserved.</p>
-        <ul class="list-inline">
-            <li class="list-inline-item"><a href="#" class="text-white">Privacy Policy</a></li>
-            <li class="list-inline-item"><a href="#" class="text-white">Terms of Use</a></li>
-            <li class="list-inline-item"><a href="#" class="text-white">Contact Us</a></li>
-        </ul>
-    </div>
-</footer>
-<!-- <footer class="fixed-bottom bg-light py-2">
-    <div class="container">
-        <button id="back-to-top-btn" class="btn btn-outline-dark">Back to Top</button>
-    </div>
-</footer> -->
 
 
 
+
+
+
+                    <!-- <div id="dummy"></div> -->
+                    <footer>
+                        <button id="back-to-top-btn" class="btn btn-outline-dark">Back to Top</button>
+
+
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="#home-sect">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#live-reports-sect">Live Reports</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><a href="#about-sect">About</a>
+                                </li>
+                            </ol>
+                        </nav>
+
+
+
+                        <div class="container text-center">
+                            <p>&copy; 2024 cryptoWeb. All rights reserved.</p>
+                            <ul class="list-inline">
+                                <li class="list-inline-item"><a href="#" class="text-white">Privacy Policy</a></li>
+                                <li class="list-inline-item"><a href="#" class="text-white">Terms of Use</a></li>
+                                <li class="list-inline-item"><a href="#" class="text-white">Contact Us</a></li>
+                            </ul>
+                        </div>
+
+                        <!-- Breadcrumbs -->
+
+
+                        <!-- Additional breadcrumbs as needed -->
+
+                    </footer>
 
 </body>
 
