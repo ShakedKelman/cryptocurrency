@@ -737,7 +737,8 @@ function reloadPage() {
 function filterByName() {
     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
     const filteredData = dataDebug.filter(item => item.symbol.toLowerCase() === filterValue); // Compare entire name
-    clearCardContainer();
+    // clearCardContainer();
+    document.getElementById('home-sect').classList.add('hidden');
 
     // Display the filtered results as full coin cards
     displayResults(filteredData);
@@ -748,17 +749,17 @@ function filterByName() {
     document.getElementById('filterInput').value = '';
 }
 
-let initialHomeSectContent = '';
+// let initialHomeSectContent = '';
 
-function saveInitialContent() {
-    const homeSect = document.getElementById('home-sect');
-    initialHomeSectContent = homeSect.innerHTML;
-}
+// function saveInitialContent() {
+//     const homeSect = document.getElementById('home-sect');
+//     initialHomeSectContent = homeSect.innerHTML;
+// }
 
-function clearCardContainer() {
-    const cardContainer = document.getElementById('home-sect'); // Assuming this is the container holding the initial cards
-    cardContainer.innerHTML = ''; // Clear all the initial cards
-}
+// function clearCardContainer() {
+//     const cardContainer = document.getElementById('home-sect'); // Assuming this is the container holding the initial cards
+//     cardContainer.innerHTML = ''; // Clear all the initial cards
+// }
 
 
 function displayResults(results) {
@@ -815,13 +816,15 @@ function showAll() {
     resultList.innerHTML = ''; // Clear the UI output
 
        // Restore the initial home-sect content
-       const homeSect = document.getElementById('home-sect');
-       homeSect.innerHTML = initialHomeSectContent;
+    //    const homeSect = document.getElementById('home-sect');
+    //    homeSect.innerHTML = initialHomeSectContent;
+    document.getElementById('home-sect').classList.remove('hidden');
+
 }
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    saveInitialContent();
-});
+// document.addEventListener('DOMContentLoaded', (event) => {
+//     saveInitialContent();
+// });
 
 $(document).ready(function () {
     // Initialize the popover
