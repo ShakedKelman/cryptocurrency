@@ -325,7 +325,12 @@ body {
 }
 
 
-
+.canvasjs-chart-canvas{
+    height: 100%;
+    width: 100px;
+    padding: 50px;
+    margin: 50px;
+}
 .card-continer-about {
     background-color: white;
     /* RGBA color with 79% opacity */
