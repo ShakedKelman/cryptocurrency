@@ -174,8 +174,7 @@ const dataDebug =
     ];
 
 const cache = {};
-// Simulate progress (increase value over time)
-// Simulate progress (increase value over time)
+
 function simulateProgress() {
     var val = $("#progress-bar").progressbar("value");
     val = val + 10; // Increase value by 10%
@@ -185,7 +184,6 @@ function simulateProgress() {
         setTimeout(simulateProgress, 1000); // Update every 1 second
     }
 }
-
 
 
 const startProgress = function () {
@@ -213,8 +211,6 @@ mainHeader.style.fontWeight = "bold"; // Set the font weight to bold
 mainHeader.style.fontSize = "25px"; // Set the font size to 20 pixels
 
 mainHeader.style.backgroundImage = "url('../assets/cr.png')";
-// mainHeader.textContent = "Crypto";
-
 headerLogo.appendChild(mainHeader);
 
 document.addEventListener('scroll', function () {
@@ -224,22 +220,7 @@ document.addEventListener('scroll', function () {
 });
 
 
-
 const navbarContainer = document.getElementById("navbar-container");
-
-/*
-const progressBarContainer = document.createElement('div');
-progressBarContainer.setAttribute('id', 'progress-bar-container');
-navbarContainer.appendChild(progressBarContainer);
-
-const progressBarLabel = document.createElement('div');
-progressBarLabel.setAttribute('id', 'progress-label');
-progressBarContainer.appendChild(progressBarLabel);
-
-const progressBar = document.createElement('div');
-progressBar.setAttribute('id', 'progress-bar');
-progressBarLabel.appendChild(progressBar);
-*/
 
 
 let isAdditionalInfoDisplayed = {
@@ -292,10 +273,6 @@ async function getCoins() {
 
         const cardContainer = document.getElementById('home-sect');
 
-        //cardContainer.setAttribute('id', 'coin-container');
-        //document.body.appendChild(cardContainer);
-
-
         first25Coins.forEach((coin, index) => {
 
             const cardOutput = document.createElement('div');
@@ -304,7 +281,6 @@ async function getCoins() {
             const coinInfoId = `coin-info-id-${index}`;
             cardOutput.setAttribute('id', `card-coin-output-${index}`);
             cardOutput.setAttribute('coin-id', coin.id)
-
 
 
             cardOutput.innerHTML = `
@@ -362,7 +338,7 @@ async function getCoins() {
                         //     chart.render();
                         //     } else { console.log('chart not defined')}
                         // }, 2000);
-                        
+
                         //fetchCoinPrices(); // Call fetchCoinPrices here
                     }
                 }
@@ -731,6 +707,8 @@ $(document).ready(function () {
 });
 
 
+
+
 async function fetchCoinPrices(coinSymbols) {
     await generateModalContent();
 
@@ -753,6 +731,111 @@ async function fetchCoinPrices(coinSymbols) {
     }
 }
 
+
+// async function initializeChart(coinPrices) {
+//     console.log('chart works:');
+
+//     // Ensure coinPrices is an object
+//     if (!Array.isArray(coinPrices)) {
+//         console.error('coinPrices is not a valid array:', coinPrices);
+//         return;
+//     }
+
+//     // Extract data points from the fetched coin prices
+//     const dataSeries = coinPrices.map(item => ({
+//         type: "spline",
+//         name: item.symbol, // Use the coin symbol as the series name
+//         showInLegend: true,
+//         xValueFormatString: "MMM YYYY",
+//         yValueFormatString: "$#,##0.########", // Display all digits after the decimal point
+//         dataPoints: [{ x: new Date(), y: item.price }] // Initialize with the first data point
+//     }));
+
+//     console.log('Data series:', dataSeries);
+
+//     let options = {
+//         exportEnabled: true,
+//         animationEnabled: true,
+//         title: {
+//             text: "Coin Prices to USD"
+//         },
+//         subtitles: [{
+//             text: "Click Legend to Hide or Unhide Data Series"
+//         }],
+//         axisX: {
+//             title: "Time",
+//             valueFormatString: "HH:mm:ss",
+
+//             // minimum: new Date().getTime(),
+//             // maximum: new Date().getTime() + 7000 
+//         },
+//         axisY: {
+//             title: "Price (USD)",
+//             titleFontColor: "#4F81BC",
+//             lineColor: "#4F81BC",
+//             labelFontColor: "#4F81BC",
+//             tickColor: "#4F81BC",
+//             minimum: 0, // Set minimum y-axis value to 0
+//             maximum: 7000
+//         },
+//         toolTip: {
+//             shared: true
+//         },
+//         legend: {
+//             cursor: "pointer",
+//             itemclick: toggleDataSeries
+//         },
+//         data: dataSeries // Use the fetched data series here
+//     };
+
+//     let chart = new CanvasJS.Chart("chartContainer", options);
+//     chart.render();
+
+
+
+
+//     // Define the toggleDataSeries function
+//     function toggleDataSeries(e) {
+//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+//             e.dataSeries.visible = false;
+//         } else {
+//             e.dataSeries.visible = true;
+//         }
+//         e.chart.render();
+//     }
+
+//     return chart;
+// }
+
+// // Function to fetch coin prices
+// // Update the chart data every two seconds
+// setInterval(async () => {
+//     // Call fetchCoinPrices to fetch new coin prices
+//     const newData = await fetchCoinPrices();
+    
+//     // Get the current time
+//     let currentTime = new Date();
+    
+//     // Update the x-axis labels with the current time and the previous time
+//     chart.options.axisX.labelFormatter = function (e) {
+//         let prevTime = new Date(currentTime);
+//         prevTime.setSeconds(currentTime.getSeconds() - 2); // Subtract 2 seconds to get the previous time
+//         return CanvasJS.formatDate(prevTime, "HH:mm:ss") + " - " + CanvasJS.formatDate(currentTime, "HH:mm:ss");
+//     };
+
+//     // Update the data points with the new time and price
+//     chart.options.data.forEach(series => {
+//         series.dataPoints.push({ x: currentTime, y: newData.find(item => item.symbol === series.name).price });
+//     });
+
+//     // Render the updated chart
+//     chart.render();
+// }, 2000);
+
+// // trying]
+
+
+let chart; // Declare chart variable in the global scope
 
 async function initializeChart(coinPrices) {
     console.log('chart works:');
@@ -786,6 +869,9 @@ async function initializeChart(coinPrices) {
         }],
         axisX: {
             title: "Time",
+            valueFormatString: "HH:mm:ss",
+            minimum: dataSeries[0].dataPoints[0].x.getTime() - 1000, // Move 1 second back
+            maximum: new Date().getTime() + 1000 // 
             // minimum: new Date().getTime(),
             // maximum: new Date().getTime() + 7000 
         },
@@ -808,14 +894,9 @@ async function initializeChart(coinPrices) {
         data: dataSeries // Use the fetched data series here
     };
 
-    let chart = new CanvasJS.Chart("chartContainer", options);
+    chart = new CanvasJS.Chart("chartContainer", options); // Assign chart to the global variable
     chart.render();
-    
-    
-    
 
-    
-    
     // Define the toggleDataSeries function
     function toggleDataSeries(e) {
         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
@@ -830,31 +911,54 @@ async function initializeChart(coinPrices) {
 }
 
 
+// Call fetchCoinPrices every 2 seconds
+setInterval(async () => {
+    // Call fetchCoinPrices to fetch new coin prices
+    await fetchCoinPrices();
+}, 2000);
+
+// Update the chart data every two seconds
+// setInterval(async () => {
+//     // Call fetchCoinPrices to fetch new coin prices
+//     const newData = await fetchCoinPrices();
+    
+//     // Ensure newData is an array
+//     // if (!Array.isArray(newData)) {
+//     //     console.error('Invalid data format:', newData);
+//     //     return;
+//     // }
+
+//     // Get the current time
+//     let currentTime = new Date();
+    
+//     // Update the x-axis labels with the current time and the previous time
+//     chart.options.axisX.labelFormatter = function (e) {
+//         let prevTime = new Date(currentTime);
+//         prevTime.setSeconds(currentTime.getSeconds() - 2); // Subtract 2 seconds to get the previous time
+//         return CanvasJS.formatDate(prevTime, "HH:mm:ss") + " - " + CanvasJS.formatDate(currentTime, "HH:mm:ss");
+//     };
+
+//     // Update the data points with the new time and price
+//     chart.options.data.forEach(series => {
+//         // Find the corresponding item in newData
+//         const newItem = newData.find(item => item.symbol === series.name);
+//         // If newItem is found, push the new data point
+//         if (newItem) {
+//             // Increment the x-coordinate by one unit
+//             const newX = series.dataPoints.length > 0 ? series.dataPoints[series.dataPoints.length - 1].x.getTime() + 1000 : currentTime.getTime();
+//             series.dataPoints.push({ x: new Date(newX), y: newItem.price });
+//         }
+//     });
+
+//     // Render the updated chart
+//     chart.render();
+// }, 2000);
 
 
 
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Get a reference to the button
-    var backToTopBtn = document.getElementById('back-to-top-btn');
 
-    // Add a click event listener to scroll to the top when clicked
-    backToTopBtn.addEventListener('click', function () {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth' // Add smooth scrolling behavior
-        });
-    });
 
-    // Add a scroll event listener to show/hide the button based on scroll position
-    window.addEventListener('scroll', function () {
-        // Show the button when scrolling down past 200 pixels
-        if (window.pageYOffset > 200) {
-            backToTopBtn.classList.remove('d-none');
-        } else {
-            backToTopBtn.classList.add('d-none');
-        }
-    });
-});
 
+// trying
 
