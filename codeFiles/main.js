@@ -588,115 +588,186 @@ function reloadPage() {
 
 
 
-function filterByName() {
+// function filterByName() {
 
+//     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
+//     const filteredData = dataDebug.filter(item => item.symbol.toLowerCase() === filterValue); // Compare entire name
+//     // clearCardContainer();
+//     document.getElementById('home-sect').classList.add('hidden');
+
+//     // Display the filtered results as full coin cards
+//     displayResults(filteredData);
+
+//     if (filteredData.length === 0) {
+//         alert('please type the full name of the coin you want to find');
+//     }
+//     // Check if the searched card is in reportsArray
+//     filteredData.forEach(item => {
+//         const foundInReports = reportsArray.some(reportItem => reportItem.coin.symbol === item.symbol);
+//         if (foundInReports) {
+//             console.log(`"${item.symbol}" is in the reports array.`);
+//         } else {
+//             // If no match is found, log a message
+//             console.log(`"${item.symbol}" is not in the reports array.`);
+//         }
+//     });
+
+//     // Iterate over filtered data to attach event listeners
+//     filteredData.forEach((item, index) => {
+//         const toggleSwitch = $(`#toggle-switch-${index}`);
+//         toggleSwitch.on('change', function (event) {
+//             handleToggleSwitchChange(index, event.target.checked, item);
+//         });
+
+//         const moreInfoButton = document.querySelector(`.more-info-btn-${index}`);
+//         moreInfoButton.addEventListener('click', async (ev) => {
+//             const btnTarget = ev.target.getAttribute('data-bs-target');
+//             console.log($(btnTarget).prop('class'));
+//             setTimeout(() => getMyCollapse(btnTarget), 500);
+//             await getCoinInfo(item.id, `coin-info-id-${index}`);
+//         });
+//     });
+
+
+//     document.getElementById('filterInput').value = '';
+// }
+
+
+// function displayResults(results) {
+//     const resultList = document.getElementById('resultList');
+
+//     results.forEach((item, index) => {
+//         if (document.querySelector(`#card-coin-output-${item.id}`)) {
+//             alert("This card is already displayed!"); // Alert when skipping a card
+
+//             return; // Skip if the card is already displayed
+//         }
+//         const cardOutput = document.createElement('div');
+//         cardOutput.setAttribute('class', 'cardOutputStyle mb-3 col-md-4');
+//         // cardOutput.setAttribute('id', `card-coin-output-${index}`);
+//         cardOutput.setAttribute('id', `card-coin-output-${item.id}`);
+
+//         cardOutput.setAttribute('coin-id', item.id);
+
+//         cardOutput.innerHTML = `
+//             <div class="card mb-3 custom-card-style" style="max-width: 540px;">
+//                 <div class="row g-0">
+//                     <div class="col-md-4">
+//                         <img src="../assets/card-logo.png" class="img-fluid rounded-start" alt="a logo picture">
+//                     </div>
+//                     <div class="col-md-8">
+//                         <div class="card-body text-bg-light text-dark">
+//                             <label class="toggle-switch" id="toggle-button-${index}">
+//                             <input type="checkbox" id="toggle-switch-${index}" ${isInReports(item.id) ? 'checked' : ''}>
+//                             <span class="slider"></span>
+//                             </label>
+//                             <h5 class="card-title">${item.symbol}</h5>
+//                             <p class="card-text">${item.name}</p>
+//                             <p>
+//                                 <button class="btn btn-dark btn-sm more-info-btn-${index}" data-bs-target="#collapseExample${index}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample${index}" aria-expanded="false" aria-controls="collapseExample${index}">
+//                                     more info
+//                                 </button>
+//                             </p>
+//                             <div class="collapse multi-collapse" aria-expanded="false" id="collapseExample${index}">
+//                                 <div class="card card-body cardIndex${index}" id="coin-info-id-${index}">
+//                                     <!-- Additional coin info can be inserted here -->
+//                                 </div>
+//                             </div>
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//         `;
+
+//         resultList.appendChild(cardOutput);
+//     });
+// }
+// // unction to check if a card is in the reports array
+// function isInReports(coinId) {
+//     return reportsArray.some(reportItem => reportItem.coin.id === coinId);
+// }
+
+// function showAll() {
+//     document.getElementById('filterInput').value = ''; // Clear the filter input
+//     const resultList = document.getElementById('resultList');
+//     resultList.innerHTML = ''; // Clear the UI output
+
+//     document.getElementById('home-sect').classList.remove('hidden');
+
+// }
+
+
+// function filterByName() {
+//     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
+//     const cards = document.querySelectorAll('.cardOutputStyle'); // Get all card elements
+
+//     cards.forEach(card => {
+//         const symbol = card.querySelector('.card-title').innerText.toLowerCase();
+//         if (symbol === filterValue) {
+//             card.style.display = 'block'; // Show matching cards
+//         } else {
+//             card.style.display = 'none'; // Hide non-matching cards
+//         }
+//     });
+
+//     // clearCardContainer();
+//     document.getElementById('home-sect').classList.add('hidden');
+
+//     // Display the filtered results as full coin cards
+//     // displayResults(filteredData);
+
+//     if (filteredData.length === 0) {
+//         alert('please type the full name of the coin you want to find');
+//     }
+// }
+
+function filterByName() {
     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
-    const filteredData = dataDebug.filter(item => item.symbol.toLowerCase() === filterValue); // Compare entire name
+    const cards = document.querySelectorAll('#home-sect .cardOutputStyle'); // Get all card elements within the home-sect
+
+    cards.forEach(card => {
+        const symbol = card.querySelector('.card-title').innerText.toLowerCase();
+        if (symbol === filterValue) {
+            card.style.display = 'block'; // Show matching cards
+        } else {
+            card.style.display = 'none'; // Hide non-matching cards
+        }
+    });
+
+    // Update filteredData if needed
+    // filteredData = ...; // Populate filteredData with the filtered results
+
     // clearCardContainer();
-    document.getElementById('home-sect').classList.add('hidden');
+    // document.getElementById('home-sect').classList.add('hidden');
 
     // Display the filtered results as full coin cards
-    displayResults(filteredData);
+    // displayResults(filteredData);
 
-    if (filteredData.length === 0) {
-        alert('please type the full name of the coin you want to find');
-    }
-    // Check if the searched card is in reportsArray
-    filteredData.forEach(item => {
-        const foundInReports = reportsArray.some(reportItem => reportItem.coin.symbol === item.symbol);
-        if (foundInReports) {
-            console.log(`"${item.symbol}" is in the reports array.`);
-        } else {
-            // If no match is found, log a message
-            console.log(`"${item.symbol}" is not in the reports array.`);
-        }
-    });
-
-    // Iterate over filtered data to attach event listeners
-    filteredData.forEach((item, index) => {
-        const toggleSwitch = $(`#toggle-switch-${index}`);
-        toggleSwitch.on('change', function (event) {
-            handleToggleSwitchChange(index, event.target.checked, item);
-        });
-
-        const moreInfoButton = document.querySelector(`.more-info-btn-${index}`);
-        moreInfoButton.addEventListener('click', async (ev) => {
-            const btnTarget = ev.target.getAttribute('data-bs-target');
-            console.log($(btnTarget).prop('class'));
-            setTimeout(() => getMyCollapse(btnTarget), 500);
-            await getCoinInfo(item.id, `coin-info-id-${index}`);
-        });
-    });
-
-
-    document.getElementById('filterInput').value = '';
+    // Note: You may need to handle the display of filteredData separately
 }
 
 
-function displayResults(results) {
-    const resultList = document.getElementById('resultList');
 
-    results.forEach((item, index) => {
-        if (document.querySelector(`#card-coin-output-${item.id}`)) {
-            alert("This card is already displayed!"); // Alert when skipping a card
+// function displayResults(results) {
+//     const resultList = document.getElementById('resultList');
+//     // Clear previous results
+//     resultList.innerHTML = '';
 
-            return; // Skip if the card is already displayed
-        }
-        const cardOutput = document.createElement('div');
-        cardOutput.setAttribute('class', 'cardOutputStyle mb-3 col-md-4');
-        // cardOutput.setAttribute('id', `card-coin-output-${index}`);
-        cardOutput.setAttribute('id', `card-coin-output-${item.id}`);
-
-        cardOutput.setAttribute('coin-id', item.id);
-
-        cardOutput.innerHTML = `
-            <div class="card mb-3 custom-card-style" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="../assets/card-logo.png" class="img-fluid rounded-start" alt="a logo picture">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body text-bg-light text-dark">
-                            <label class="toggle-switch" id="toggle-button-${index}">
-                            <input type="checkbox" id="toggle-switch-${index}" ${isInReports(item.id) ? 'checked' : ''}>
-                            <span class="slider"></span>
-                            </label>
-                            <h5 class="card-title">${item.symbol}</h5>
-                            <p class="card-text">${item.name}</p>
-                            <p>
-                                <button class="btn btn-dark btn-sm more-info-btn-${index}" data-bs-target="#collapseExample${index}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample${index}" aria-expanded="false" aria-controls="collapseExample${index}">
-                                    more info
-                                </button>
-                            </p>
-                            <div class="collapse multi-collapse" aria-expanded="false" id="collapseExample${index}">
-                                <div class="card card-body cardIndex${index}" id="coin-info-id-${index}">
-                                    <!-- Additional coin info can be inserted here -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        resultList.appendChild(cardOutput);
-    });
-}
-// unction to check if a card is in the reports array
-function isInReports(coinId) {
-    return reportsArray.some(reportItem => reportItem.coin.id === coinId);
-}
+//     // Loop through the filtered results and create list items to display them
+//     results.forEach(result => {
+//         const listItem = document.createElement('li');
+//         listItem.textContent = result.name; // Adjust this to display the appropriate property of each result
+//         resultList.appendChild(listItem);
+//     });
+// }
 
 function showAll() {
-    document.getElementById('filterInput').value = ''; // Clear the filter input
-    const resultList = document.getElementById('resultList');
-    resultList.innerHTML = ''; // Clear the UI output
+    const cards = document.querySelectorAll('.cardOutputStyle'); // Get all card elements
 
-    document.getElementById('home-sect').classList.remove('hidden');
-
+    cards.forEach(card => {
+        card.style.display = 'block'; // Show all cards
+    });
 }
-
-
 
 $(document).ready(function () {
     // Initialize the popover
