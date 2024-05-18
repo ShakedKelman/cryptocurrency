@@ -732,106 +732,6 @@ async function fetchCoinPrices(coinSymbols) {
 }
 
 
-// async function initializeChart(coinPrices) {
-//     console.log('chart works:');
-
-//     // Ensure coinPrices is an object
-//     if (!Array.isArray(coinPrices)) {
-//         console.error('coinPrices is not a valid array:', coinPrices);
-//         return;
-//     }
-
-//     // Extract data points from the fetched coin prices
-//     const dataSeries = coinPrices.map(item => ({
-//         type: "spline",
-//         name: item.symbol, // Use the coin symbol as the series name
-//         showInLegend: true,
-//         xValueFormatString: "MMM YYYY",
-//         yValueFormatString: "$#,##0.########", // Display all digits after the decimal point
-//         dataPoints: [{ x: new Date(), y: item.price }] // Initialize with the first data point
-//     }));
-
-//     console.log('Data series:', dataSeries);
-
-//     let options = {
-//         exportEnabled: true,
-//         animationEnabled: true,
-//         title: {
-//             text: "Coin Prices to USD"
-//         },
-//         subtitles: [{
-//             text: "Click Legend to Hide or Unhide Data Series"
-//         }],
-//         axisX: {
-//             title: "Time",
-//             valueFormatString: "HH:mm:ss",
-
-//             // minimum: new Date().getTime(),
-//             // maximum: new Date().getTime() + 7000 
-//         },
-//         axisY: {
-//             title: "Price (USD)",
-//             titleFontColor: "#4F81BC",
-//             lineColor: "#4F81BC",
-//             labelFontColor: "#4F81BC",
-//             tickColor: "#4F81BC",
-//             minimum: 0, // Set minimum y-axis value to 0
-//             maximum: 7000
-//         },
-//         toolTip: {
-//             shared: true
-//         },
-//         legend: {
-//             cursor: "pointer",
-//             itemclick: toggleDataSeries
-//         },
-//         data: dataSeries // Use the fetched data series here
-//     };
-
-//     let chart = new CanvasJS.Chart("chartContainer", options);
-//     chart.render();
-
-
-
-
-//     // Define the toggleDataSeries function
-//     function toggleDataSeries(e) {
-//         if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-//             e.dataSeries.visible = false;
-//         } else {
-//             e.dataSeries.visible = true;
-//         }
-//         e.chart.render();
-//     }
-
-//     return chart;
-// }
-
-// // Function to fetch coin prices
-// // Update the chart data every two seconds
-// setInterval(async () => {
-//     // Call fetchCoinPrices to fetch new coin prices
-//     const newData = await fetchCoinPrices();
-    
-//     // Get the current time
-//     let currentTime = new Date();
-    
-//     // Update the x-axis labels with the current time and the previous time
-//     chart.options.axisX.labelFormatter = function (e) {
-//         let prevTime = new Date(currentTime);
-//         prevTime.setSeconds(currentTime.getSeconds() - 2); // Subtract 2 seconds to get the previous time
-//         return CanvasJS.formatDate(prevTime, "HH:mm:ss") + " - " + CanvasJS.formatDate(currentTime, "HH:mm:ss");
-//     };
-
-//     // Update the data points with the new time and price
-//     chart.options.data.forEach(series => {
-//         series.dataPoints.push({ x: currentTime, y: newData.find(item => item.symbol === series.name).price });
-//     });
-
-//     // Render the updated chart
-//     chart.render();
-// }, 2000);
-
 // // trying]
 
 
@@ -858,6 +758,12 @@ async function initializeChart(coinPrices) {
 
     console.log('Data series:', dataSeries);
 
+    const minYValue = 0; // Start from 0
+    const maxYValue = Math.max(...coinPrices.map(item => item.price)) + 100; // Add 100 to the maximum value
+
+        console.log('Min Y Value:', minYValue);
+        console.log('Max Y Value:', maxYValue);
+        
     let options = {
         exportEnabled: true,
         animationEnabled: true,
@@ -881,8 +787,8 @@ async function initializeChart(coinPrices) {
             lineColor: "#4F81BC",
             labelFontColor: "#4F81BC",
             tickColor: "#4F81BC",
-            minimum: 0, // Set minimum y-axis value to 0
-            maximum: 7000
+            minimum: minYValue, // Set minimum y-axis value dynamically
+            maximum: maxYValue //
         },
         toolTip: {
             shared: true
