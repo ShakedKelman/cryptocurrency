@@ -625,37 +625,45 @@ $(document).ready(function () {
 });
 
 
-
+let archive_data = { };
 
 async function fetchCoinPrices(coinSymbols) {
     await generateModalContent();
 
     if (coinSymbols === undefined || coinSymbols.length === 0) coinSymbols = reportsArray.map(item => item.coin.symbol).join(',');
     console.log('Coin symbols:', coinSymbols); // Log the coin symbols
+    if (coinSymbols.length !== 0) {
+        try {
+            const response = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`);
+            const data = await response.json();
+            console.log('Fetched coin prices:', data); // Log the fetched items
 
-    try {
-        const response = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`);
-        const data = await response.json();
-        console.log('Fetched coin prices:', data); // Log the fetched items
+            //const prices = Object.keys(data).map( symbol => )
+            
+            Object.keys(data).forEach((symbol) => {
+                if (archive_data[symbol] === undefined) archive_data[symbol] = [];
+                archive_data[symbol].push( { price: data[symbol].USD, time: new Date() } );
+            });
+            //archive_data = Object.keys(data).map((symbol) => ({ [symbol] : Object.assign( [], ... archive_data[symbol], { price: data[symbol].USD, time: new Date() } ) } ));
+            const usdPrices = archive_data;
+            console.log('USD prices array:', usdPrices); // Log USD prices array
 
-        const usdPrices = Object.keys(data).map((symbol) => ({ symbol: symbol, price: data[symbol].USD }));
-        console.log('USD prices array:', usdPrices); // Log USD prices array
-        initializeChart(usdPrices);
+            initializeChart(usdPrices['ZCN']);
 
-        return data; // Return the entire data object
-    } catch (error) {
-        console.error('Error fetching coin prices:', error);
-        return {};
+            return data; // Return the entire data object
+        } catch (error) {
+            console.error('Error fetching coin prices:', error);
+            return {};
+        }
     }
 }
 
 
 // // trying]
 
-
 let chart; // Declare chart variable in the global scope
 
-async function initializeChart(coinPrices) {
+async function initializeChart(coinPrices, symbol = 'ZCN') {
     console.log('chart works:');
 
     // Ensure coinPrices is an object
@@ -663,25 +671,37 @@ async function initializeChart(coinPrices) {
         console.error('coinPrices is not a valid array:', coinPrices);
         return;
     }
-
+    dataPoints = coinPrices.map( item => ( {x : item.time, y: item.price }));
+    //const now = new Date().getTime();
+    //const dataPoints = [];
+    //for (let i = 0; i < coinPrices.length; i++) {
+    //    const pointTime = now - (coinPrices.length - i - 1) * 2000; // Set each data point 2 seconds apart
+    //    dataPoints.push({ x: new Date(pointTime), y: coinPrices[i].price });
+    //}
+    
     // Extract data points from the fetched coin prices
-    const dataSeries = coinPrices.map(item => ({
+    const dataSeries = {
         type: "spline",
-        name: item.symbol, // Use the coin symbol as the series name
+        name: symbol, // Use the coin symbol as the series name
         showInLegend: true,
         xValueFormatString: "MMM YYYY",
         yValueFormatString: "$#,##0.########", // Display all digits after the decimal point
-        dataPoints: [{ x: new Date(), y: item.price }] // Initialize with the first data point
-    }));
-
+        dataPoints // Use the data points created
+    };
     console.log('Data series:', dataSeries);
 
     const minYValue = 0; // Start from 0
-    const maxYValue = Math.max(...coinPrices.map(item => item.price)) + 100; // Add 100 to the maximum value
+    const maxYValue = Math.max(...coinPrices.map(item => item.price)) * 1.01; // Add 1% to the maximum value
 
-        console.log('Min Y Value:', minYValue);
-        console.log('Max Y Value:', maxYValue);
-        
+    const minXValue = dataPoints[0].x;
+    const maxXValue = dataPoints.slice(-1)[0].x;
+    
+    console.log('Min Y Value:', minYValue);
+    console.log('Max Y Value:', maxYValue);
+
+    console.log('Min X Value:', minXValue);
+    console.log('Max X Value:', maxXValue);
+    
     let options = {
         exportEnabled: true,
         animationEnabled: true,
@@ -694,11 +714,10 @@ async function initializeChart(coinPrices) {
         axisX: {
             title: "Time",
             valueFormatString: "HH:mm:ss",
-            minimum: dataSeries[0].dataPoints[0].x.getTime() - 1000, // Move 1 second back
-            maximum: new Date().getTime() + 1000 // 
-            // minimum: new Date().getTime(),
-            // maximum: new Date().getTime() + 7000 
+            minimum: minXValue, // Display data from the past based on the number of data points
+            maximum: maxXValue // Set maximum to 2 seconds in the future
         },
+        
         axisY: {
             title: "Price (USD)",
             titleFontColor: "#4F81BC",
@@ -715,10 +734,15 @@ async function initializeChart(coinPrices) {
             cursor: "pointer",
             itemclick: toggleDataSeries
         },
-        data: dataSeries // Use the fetched data series here
+        data: [dataSeries] // Use the fetched data series here
     };
-
-    chart = new CanvasJS.Chart("chartContainer", options); // Assign chart to the global variable
+    
+    if (typeof chart === 'undefined') {
+        chart = new CanvasJS.Chart("chartContainer", options); // Assign chart to the global variable
+    } else {
+        chart.options.axisX.maximum = maxXValue;
+        chart.options.data = [dataSeries];
+    }
     chart.render();
 
     // Define the toggleDataSeries function
@@ -734,12 +758,40 @@ async function initializeChart(coinPrices) {
     return chart;
 }
 
+// Function to add new data points to the chart
+function addDataPoints(newDataPoints) {
+    if (!chart) {
+        console.error('Chart is not initialized.');
+        return;
+    }
+
+    // Convert new data points to the correct format
+    const formattedDataPoints = newDataPoints.map(item => ({
+        x: new Date(item.time), // Convert item.time to a Date object
+        y: item.price
+    }));
+
+    // Get the first data series in the chart
+    const dataSeries = chart.options.data[0];
+
+    // Add new data points to the data series
+    dataSeries.dataPoints.push(...formattedDataPoints);
+
+    // Update the maximum X axis value
+    const maxXValue = Math.max(...dataSeries.dataPoints.map(dp => dp.x));
+    chart.options.axisX.maximum = maxXValue;
+
+    // Update the chart with new data points
+    chart.render();
+}
+
 
 // Call fetchCoinPrices every 2 seconds
 setInterval(async () => {
     // Call fetchCoinPrices to fetch new coin prices
     await fetchCoinPrices();
 }, 2000);
+
 
 // Update the chart data every two seconds
 // setInterval(async () => {
