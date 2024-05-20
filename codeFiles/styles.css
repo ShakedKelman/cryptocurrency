@@ -189,7 +189,9 @@ body {
     /* Depth effect */
 }
 
-.coin-container {
+.coin-container  .filter,
+.coin-container  .cards
+ {
     display: flex;
     background-color: #ffffff;
 
@@ -410,9 +412,10 @@ body {
 }
 
 .live-reports-header {
-    position: absolute;
-    z-index: 1500;
+    /* position: absolute;
     top: calc(100px + 600px);
+    */
+    z-index: 1500;
     width: 100%;
 }
 
@@ -523,7 +526,8 @@ bottom: 0;
 
 
 
-    .coin-container {
+    .coin-container  .filter,
+    .coin-container  .cards {
         justify-content: center;
         /* Center the cards */
     }

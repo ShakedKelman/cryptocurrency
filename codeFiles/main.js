@@ -1,6 +1,6 @@
 
 
-const debug = false;
+const debug = true;
 
 const reportsArray = [];
 let saveReportsArray = [];
@@ -8,170 +8,7 @@ const addedCardIds = [];
 let eventHandlerType;
 const usdPrices = [];
 
-const dataDebug =
-    [
-
-        {
-            "id": "01coin",
-            "symbol": "zoc",
-            "name": "01coin"
-        },
-        {
-            "id": "0chain",
-            "symbol": "zcn",
-            "name": "Zus"
-        },
-        {
-            "id": "0-knowledge-network",
-            "symbol": "0kn",
-            "name": "0 Knowledge Network"
-        },
-        {
-            "id": "0-mee",
-            "symbol": "ome",
-            "name": "O-MEE"
-        },
-        {
-            "id": "0vix-protocol",
-            "symbol": "vix",
-            "name": "0VIX Protocol"
-        },
-        {
-            "id": "0vm",
-            "symbol": "zerovm",
-            "name": "0VM"
-        },
-        {
-            "id": "0x",
-            "symbol": "zrx",
-            "name": "0x Protocol"
-        },
-        {
-            "id": "0x0-ai-ai-smart-contract",
-            "symbol": "0x0",
-            "name": "0x0.ai: AI Smart Contract"
-        },
-        {
-            "id": "0x1-tools-ai-multi-tool",
-            "symbol": "0x1",
-            "name": "0x1.tools: AI Multi-tool"
-        },
-        {
-            "id": "0x404",
-            "symbol": "xfour",
-            "name": "0x404"
-        },
-        {
-            "id": "0xaiswap",
-            "symbol": "0xaiswap",
-            "name": "0xAISwap"
-        },
-        {
-            "id": "0xanon",
-            "symbol": "0xanon",
-            "name": "0xAnon"
-        },
-        {
-            "id": "0xbet",
-            "symbol": "0xbet",
-            "name": "0xBET"
-        },
-        {
-            "id": "0xblack",
-            "symbol": "0xb",
-            "name": "0xBlack"
-        },
-        {
-            "id": "0xcoco",
-            "symbol": "coco",
-            "name": "0xCoco"
-        },
-        {
-            "id": "0xconnect",
-            "symbol": "0xcon",
-            "name": "0xConnect"
-        },
-        {
-            "id": "0xdao",
-            "symbol": "oxd",
-            "name": "0xDAO"
-        },
-        {
-            "id": "0xdefcafe",
-            "symbol": "cafe",
-            "name": "0xDEFCAFE"
-        },
-        {
-            "id": "0xengage",
-            "symbol": "engage",
-            "name": "0xEngage"
-        },
-        {
-            "id": "0xfair",
-            "symbol": "fair",
-            "name": "0xFair"
-        },
-        {
-            "id": "0xfreelance",
-            "symbol": "0xfree",
-            "name": "0xFreelance"
-        },
-        {
-            "id": "0xgambit",
-            "symbol": "0xg",
-            "name": "0xgambit"
-        },
-        {
-            "id": "0xgasless",
-            "symbol": "0xgas",
-            "name": "0xGasless (OLD)"
-        },
-        {
-            "id": "0xgasless-2",
-            "symbol": "0xgas",
-            "name": "0xGasless"
-        },
-        {
-            "id": "0xgpu-ai",
-            "symbol": "0xg",
-            "name": "0xGPU.ai"
-        },
-        {
-            "id": "0x-leverage",
-            "symbol": "oxl",
-            "name": "0x Leverage"
-        },
-        {
-            "id": "0xliquidity",
-            "symbol": "0xlp",
-            "name": "0xLiquidity"
-        },
-        {
-            "id": "0xlsd",
-            "symbol": "0xlsd",
-            "name": "0xLSD"
-        },
-        {
-            "id": "0xmonero",
-            "symbol": "0xmr",
-            "name": "0xMonero"
-        },
-        {
-            "id": "0xnude",
-            "symbol": "nude",
-            "name": "0xNude"
-        },
-        {
-            "id": "0xnumber",
-            "symbol": "oxn",
-            "name": "0xNumber"
-        },
-        {
-            "id": "0xos-ai",
-            "symbol": "0xos",
-            "name": "0xOS AI"
-        }
-    ];
+const dataDebug = $.parseJSON( $('#some-data').text() ); // .then(response => response.json());
 
 const cache = {};
 
@@ -199,11 +36,12 @@ const endProgress = function () {
         value: 100 // Initial value (0%)
     });
 
-    $("#progress-label").text("Complete!"); // Update progress label when complete
+    // $("#progress-label").text("Complete!"); // Update progress label when complete
 };
 
+const mainHeader = document.getElementById('main-header');
+/*
 const headerLogo = document.getElementById('header-main');
-const mainHeader = document.createElement('h1');
 mainHeader.setAttribute('id', 'main-header');
 mainHeader.setAttribute('class', 'mainHeaderStyle');
 mainHeader.setAttribute('class', 'parallax-header');
@@ -212,6 +50,7 @@ mainHeader.style.fontSize = "25px"; // Set the font size to 20 pixels
 
 mainHeader.style.backgroundImage = "url('../assets/cr.png')";
 headerLogo.appendChild(mainHeader);
+*/
 
 document.addEventListener('scroll', function () {
     const scrollTop = window.scrollY;
@@ -269,12 +108,16 @@ async function getCoins() {
             data = dataDebug // 'file:///Users/shakedkelman/Documents/FullStack4578:41/projects/project_two/codeFiles/coins.json');
         }
 
-        const first25Coins = data // .slice(0, 25);
-        console.log(first25Coins);
+        const allCoins = data.slice(0, 10000);
+        console.log(allCoins);
+    
 
-        const cardContainer = document.getElementById('home-sect');
+        const cardContainer = $('#home-sect .cards')[0];
+        const totalCoins = allCoins.length;
+        let currentCoinIndex = 0;
 
-        first25Coins.forEach((coin, index) => {
+        startProgress();
+        allCoins.forEach((coin, index) => {
 
             const cardOutput = document.createElement('div');
             cardOutput.setAttribute('class', 'cardOutputStyle mb-3 col-md-4');
@@ -282,6 +125,7 @@ async function getCoins() {
             const coinInfoId = `coin-info-id-${index}`;
             cardOutput.setAttribute('id', `card-coin-output-${index}`);
             cardOutput.setAttribute('coin-id', coin.id)
+            cardOutput.setAttribute('coin-name', coin.symbol)
 
 
             cardOutput.innerHTML = `
@@ -319,7 +163,12 @@ async function getCoins() {
             `;
 
 
-            cardContainer.appendChild(cardOutput);
+       cardContainer.appendChild(cardOutput);
+            // updateProgress(++currentCoinIndex, totalCoins); // Update progress
+
+            // if (currentCoinIndex === totalCoins) {
+            //     endProgress(); // End progress when all coins are loaded
+            // }
 
             function handleToggleSwitchChange(index, isChecked, coin) {
                 console.log(index, isChecked, coin)
@@ -328,19 +177,7 @@ async function getCoins() {
                 } else {
                     addToReport(coin, index);
                     if (isChecked) {
-                        // setInterval(() => {
-                        //     if (typeof chart !== 'undefined') {
-                        //     // Update the x-axis to show the current time
-                        //     chart.options.data.forEach(dataSeries => {
-                        //         const y =  fetchCoinPrices('zcn,zoc').then( (res => dataSeries.dataPoints.push({ x: new Date(), y: y.ZOC.USD }) , rej => new Error('cannot')))
-                        //         console.log(y)
-                        //         // Example: Generate random data
-                        //     });
-                        //     chart.render();
-                        //     } else { console.log('chart not defined')}
-                        // }, 2000);
-
-                        //fetchCoinPrices(); // Call fetchCoinPrices here
+		      $(`#toggle-switch-${index}`).prop('checked', true); // make sure the main checkbox is checked (this includes a filtered screen element that was checked)
                     }
                 }
                 console.log("Selected toggle card index:", index);
@@ -391,7 +228,7 @@ async function getCoins() {
                 // Check if the collapse element is opening
                 if (!$(collapseElement).hasClass('show')) {
                     console.log($(btnTarget).prop('class'));
-                    setTimeout(() => getMyCollapse(btnTarget), 500);
+                    //setTimeout(() => getMyCollapse(btnTarget), 500);
                     startProgress(); // Call startProgress only when the collapse is opening
                     await getCoinInfo(coin.id, coinInfoId);
                 }
@@ -399,24 +236,35 @@ async function getCoins() {
             
         });
         document.body.style.height = `${window.innerHeight}px`;
-
-        return first25Coins;
+        // endProgress(); // End progress when all coins are displayed
+        return allCoins;
 
     } catch (err) {
         console.log('an error happened', err);
     }
 
 }
+    getCoins();
 
-getCoins();
 
+// // Function to update the progress bar
+// function updateProgress(current, total) {
+//     const progress = (current / total) * 100;
+//     $("#progress-bar").progressbar("value", progress);
+//     $("#progress-label").text(Math.round(progress) + "%");
+// }
+
+// // Call getCoins on DOMContentLoaded
+// document.addEventListener('DOMContentLoaded', function() {
+//     getCoins();
+// });
 // const getMyCollapse = (elem = '#collapseExample1') => {
 //     console.log($(elem).prop('class'))
 // }
 
-// function sleep(ms) {
-//     return new Promise(resolve => setTimeout(resolve, ms));
-// }
+function sleep(ms) {
+     return new Promise(resolve => setTimeout(resolve, ms));
+ }
 
 async function getCoinInfo(coinId, coinInfoId) {
     try {
@@ -479,8 +327,6 @@ function addToReport(coin, index) {
     }
 }
 
-
-
 /*
    create an array keyed by coin id, the values are the HTML tag's id, abbrevioated to the numeric value only. To locate the id do:
    pattern = 'card-coin-output-' + coin_hash['01coin'];
@@ -501,13 +347,14 @@ function getCoinHash() {
 }
 
 
+
 /*
    create an array keyed by coin id, the values are the coin names
 {
-    "01coin": "zoc",
-    "0chain": "zcn",
- ...
-    "0xos-ai": "0xos"
+    "zoc":  "01coin",
+    "zcn":  "0chain",
+ ...        
+     "0xos":"0xos-ai"   
 }
 */
 function getCoinNamesHash() {
@@ -515,9 +362,10 @@ function getCoinNamesHash() {
         ...Array.from($('.cardOutputStyle'))
             .map(d => {
                 const title = $(d).find('h5');
-                return ({ [ $(title).text() ] : $(d).attr('coin-id') }) }))
+                return ({ [ $(d).attr('coin-id') ] : $(title).text() }) }))
     return coin_hash;
 }
+
 
 
 function undoSaveHistory() {
@@ -623,35 +471,30 @@ function reloadPage() {
 
 
 function filterByName() {
+    $('.coin-container .filter').empty();
+    $('.coin-container .cards').hide();
+
     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
     const cards = document.querySelectorAll('#home-sect .cardOutputStyle'); // Get all card elements within the home-sect
 
-    coin_hash = getCoinHash();
-    coin_names_hash = getCoinNamesHash();
-    const these = Object.keys(coin_names_hash).filter( k => k.match(filterValue) ); // all coins that are not the searched coin
-    const other = Object.keys(coin_names_hash).filter( k => !k.match(filterValue) ); // all coins that are not the searched coin
-    const pat = new RegExp( other.join ("|") );
+  coin_names_hash = getCoinNamesHash();
+  const these = Object.values(coin_names_hash).filter( k => k.match(filterValue) ); // all coins that fit the search pattern
+  const pat = new RegExp( these.join ("|") );
 
-    otherCards = [ ...cards].filter( card => pat.test( $(card).find('.card-title').text()) );
-    otherCards.forEach(card => 
-        card.style.display = 'none' // Hide non-matching cards
-    );
+  // DOM entities that fit the search pattern
+  theseCards = [...cards].filter( card => pat.test( $(card).attr('coin-name')) )
 
-    const value_pat = new RegExp( filterValue );
-    theseCards = [...cards].filter( card => value_pat.test( $(card).find('.card-title').text()) )
-    theseCards.forEach( card => card.style.display = 'block' ) // Show matching cards
-    
-    document.getElementById('filterInput').value = '';
+  // copy the card to the filter container
+  theseCards.forEach( card => $('.coin-container .filter').append( $(card).clone(true, true)) );
 
+  $('.coin-container .filter').show();
 }
 
 
 function showAll() {
-    const cards = document.querySelectorAll('.cardOutputStyle'); // Get all card elements
-
-    cards.forEach(card => {
-        card.style.display = 'block'; // Show all cards
-    });
+  document.getElementById('filterInput').value = '';
+  $('.coin-container .cards').show();
+  $('.coin-container .filter').hide();
 }
 
 $(document).ready(function () {
@@ -686,7 +529,7 @@ async function fetchCoinPrices(coinSymbols) {
             const usdPrices = archive_data;
             console.log('USD prices array:', usdPrices); // Log USD prices array
 
-            initializeChart(usdPrices['ZCN']);
+            initializeChart(usdPrices);
 
             return data; // Return the entire data object
         } catch (error) {
@@ -697,19 +540,31 @@ async function fetchCoinPrices(coinSymbols) {
 }
 
 
-// // trying]
+
+// // // trying]
 
 let chart; // Declare chart variable in the global scope
 
 async function initializeChart(coinPrices, symbol = 'ZCN') {
     console.log('chart works:');
 
-    // Ensure coinPrices is an object
-    if (!Array.isArray(coinPrices)) {
+    // Ensure coinPrices is a valid object
+    if (Object.keys(coinPrices).length === 0)
+    //if (!Array.isArray(coinPrices))
+    {
         console.error('coinPrices is not a valid array:', coinPrices);
         return;
     }
-    dataPoints = coinPrices.map( item => ( {x : item.time, y: item.price }));
+
+    // create an array of arrays. symbol is the key, data is a series
+    const dataPoints = Object.keys(coinPrices)
+        .map(
+            ky => ({
+                symbol: ky,
+                data: coinPrices[ky].slice(-30).map( item => ( {x : item.time, y: item.price }) )
+                })
+        );
+    
     //const now = new Date().getTime();
     //const dataPoints = [];
     //for (let i = 0; i < coinPrices.length; i++) {
@@ -718,68 +573,91 @@ async function initializeChart(coinPrices, symbol = 'ZCN') {
     //}
     
     // Extract data points from the fetched coin prices
-    const dataSeries = {
+    const dataSeries0 = {
         type: "spline",
-        name: symbol, // Use the coin symbol as the series name
         showInLegend: true,
         xValueFormatString: "MMM YYYY",
         yValueFormatString: "$#,##0.########", // Display all digits after the decimal point
-        dataPoints // Use the data points created
     };
-    console.log('Data series:', dataSeries);
 
-    const minYValue = 0; // Start from 0
-    const maxYValue = Math.max(...coinPrices.map(item => item.price)) * 1.01; // Add 1% to the maximum value
+    // dataSeries used to be an array. Now it is an array of
+    // array-objects. Each is a data series of a symbol
+    const dataSeries = Object.keys(dataPoints).map(
+        ky => Object.assign(
+            {},
+            dataSeries0,
+            { dataPoints: dataPoints[ky].data, name: dataPoints[ky].symbol }
+        )
+    );
+    //dataPoints // Use the data points created
 
-    const minXValue = dataPoints[0].x;
-    const maxXValue = dataPoints.slice(-1)[0].x;
+    console.log('all data series:', dataSeries);
+
+  const allYValues = Object
+    .values(dataPoints)
+    .map( d => d.data )
+    .reduce( (a,s) => [].concat(s, a) )
+    .map( d => d.y )
+    .sort( (a, b) => a-b);
+
+  const delta = ( allYValues.slice(-1)[0] - allYValues[0] ) * 0.2;
+  const minYValue = allYValues[0] - delta;
+    const maxYValue = allYValues.slice(-1)[0] + delta; // Add 1% to the maximum value
     
     console.log('Min Y Value:', minYValue);
     console.log('Max Y Value:', maxYValue);
+
+    const allXValues = Object.assign( [], ...Object.values(dataPoints).map( ({data}) => data ) ).map( ({x}) => x ).sort( (a, b) => a-b);
+    const minXValue = allXValues[0];
+    const maxXValue = allXValues.slice(-1)[0];
 
     console.log('Min X Value:', minXValue);
     console.log('Max X Value:', maxXValue);
     
     let options = {
-        exportEnabled: true,
-        animationEnabled: true,
-        title: {
-            text: "Coin Prices to USD"
-        },
-        subtitles: [{
-            text: "Click Legend to Hide or Unhide Data Series"
-        }],
-        axisX: {
-            title: "Time",
-            valueFormatString: "HH:mm:ss",
-            minimum: minXValue, // Display data from the past based on the number of data points
-            maximum: maxXValue // Set maximum to 2 seconds in the future
-        },
-        
-        axisY: {
-            title: "Price (USD)",
-            titleFontColor: "#4F81BC",
-            lineColor: "#4F81BC",
-            labelFontColor: "#4F81BC",
-            tickColor: "#4F81BC",
-            minimum: minYValue, // Set minimum y-axis value dynamically
-            maximum: maxYValue //
-        },
-        toolTip: {
-            shared: true
-        },
-        legend: {
-            cursor: "pointer",
-            itemclick: toggleDataSeries
-        },
-        data: [dataSeries] // Use the fetched data series here
+      height: 500,
+      exportEnabled: true,
+      animationEnabled: true,
+      title: {
+	  text: "Coin Prices to USD"
+      },
+      subtitles: [{
+	  text: "Click Legend to Hide or Unhide Data Series"
+      }],
+      axisX: {
+	  title: "Time",
+	  valueFormatString: "HH:mm:ss",
+	  minimum: minXValue, // Display data from the past based on the number of data points
+	  maximum: maxXValue // Set maximum to 2 seconds in the future
+      },
+      
+      axisY: {
+	  title: "Price (USD)",
+	  titleFontColor: "#4F81BC",
+	  lineColor: "#4F81BC",
+	  labelFontColor: "#4F81BC",
+	  tickColor: "#4F81BC",
+	  minimum: minYValue, // Set minimum y-axis value dynamically
+	  maximum: maxYValue //
+      },
+      toolTip: {
+	  shared: true
+      },
+      legend: {
+	  cursor: "pointer",
+	  itemclick: toggleDataSeries
+      },
+      data: dataSeries //  Use the fetched data series here
     };
     
     if (typeof chart === 'undefined') {
         chart = new CanvasJS.Chart("chartContainer", options); // Assign chart to the global variable
     } else {
+        chart.options.axisX.minimum = minXValue;
         chart.options.axisX.maximum = maxXValue;
-        chart.options.data = [dataSeries];
+        chart.options.axisY.minimum = minYValue;
+        chart.options.axisY.maximum = maxYValue;
+        chart.options.data = dataSeries;
     }
     chart.render();
 
@@ -867,14 +745,6 @@ setInterval(async () => {
 //     // Render the updated chart
 //     chart.render();
 // }, 2000);
-
-
-
-
-
-
-
-
 
 
 
