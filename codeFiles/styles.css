@@ -248,6 +248,7 @@ body {
     border-radius: 10px;
 }
 
+
 .slider {
     position: absolute;
     top: 10px;
@@ -363,6 +364,7 @@ body {
     background-color: white;
     /* RGBA color with 79% opacity */
     padding: 30px;
+    height: 100px;
 }
 
 .about-img {
@@ -394,6 +396,12 @@ body {
     text-align: center;
 }
 
+.card-about{
+    height: 100%;
+    width: 700px;
+    margin: auto; /* Center the card horizontally */
+
+}
 
 #live-reports-sect,
 #about-sect {
@@ -401,6 +409,12 @@ body {
     /* Hide the sections initially */
 }
 
+.live-reports-header {
+    position: absolute;
+    z-index: 1500;
+    top: calc(100px + 600px);
+    width: 100%;
+}
 
 #back-to-top-btn {
     position: fixed;
@@ -460,6 +474,15 @@ body {
 bottom: 0;
 }
 
+
+.header-block {
+    width: 100%;
+    background-color: rgba(78, 214, 232, 0.1); /* Change this color as needed */
+    color: rgb(16, 14, 14);
+    text-align: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+}
 @media (max-width: 750px) {
 
     .headerContainer {
@@ -484,15 +507,19 @@ bottom: 0;
         height: 100%;
         padding-bottom: 0px;
     }
-
     .parallax-header {
-        background-size: cover;
-        background-position: center;
-        height: 20vh;
+        background-repeat: no-repeat;
+        background-size: cover; /* Ensure the background image covers the entire element */
+        background-position: center; /* Center the background image */
+        height: 10vh; /* Adjust the height as needed */
+        width: 80%; /* Adjust the width as needed */
         position: relative;
         z-index: -1;
-        /* Ensure header stays behind other content */
+        margin: 0 auto; /* Center the element horizontally */
+        padding: 0;
     }
+    
+    
 
 
 
@@ -616,6 +643,25 @@ bottom: 0;
     justify-content: center;
     height: 15px;
 }
+.about-img:not(:nth-child(2)) {
+    display: none;
+}
+.live-reports-header {
+    position: absolute;
+    z-index: 1500;
+    top: calc(100px + 50px);
+    width: 100%;
+}
+.card-about{
+    height: 100%;
+    width: 300px;
+    margin: auto; /* Center the card horizontally */
 
+}
+.canvasjs-chart-canvas{
+    height: 100%;
+    width: 300px;
+    margin: auto; /
+}
 
 }

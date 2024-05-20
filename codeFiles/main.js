@@ -1,6 +1,6 @@
 
 
-const debug = true;
+const debug = false;
 
 const reportsArray = [];
 let saveReportsArray = [];
@@ -248,6 +248,7 @@ navbarItems.forEach(itemId => {
         toHide.forEach(sectId => $('#' + sectId).hide()); // hide all sections not under itemId
         $('#' + itemId.replace(/-id/, '-sect')).show(); // show the section under itemId
 
+        
         isAdditionalInfoDisplayed[itemId] = !isAdditionalInfoDisplayed[itemId];
     });
 });
@@ -268,7 +269,7 @@ async function getCoins() {
             data = dataDebug // 'file:///Users/shakedkelman/Documents/FullStack4578:41/projects/project_two/codeFiles/coins.json');
         }
 
-        const first25Coins = data.slice(0, 25);
+        const first25Coins = data // .slice(0, 25);
         console.log(first25Coins);
 
         const cardContainer = document.getElementById('home-sect');
@@ -480,10 +481,41 @@ function addToReport(coin, index) {
 
 
 
+/*
+   create an array keyed by coin id, the values are the HTML tag's id, abbrevioated to the numeric value only. To locate the id do:
+   pattern = 'card-coin-output-' + coin_hash['01coin'];
+   $('#' + pattern)
+
+{
+    "01coin": "0",
+    "0chain": "1",
+ ...
+    "0xos-ai": "31"
+}
+*/
 function getCoinHash() {
     const coin_hash = Object.assign({},
         ...Array.from($('.cardOutputStyle'))
             .map(d => ({ [d.getAttribute('coin-id')]: d.id.replace(/.*-/, '') })))
+    return coin_hash;
+}
+
+
+/*
+   create an array keyed by coin id, the values are the coin names
+{
+    "01coin": "zoc",
+    "0chain": "zcn",
+ ...
+    "0xos-ai": "0xos"
+}
+*/
+function getCoinNamesHash() {
+    const coin_hash = Object.assign({},
+        ...Array.from($('.cardOutputStyle'))
+            .map(d => {
+                const title = $(d).find('h5');
+                return ({ [ $(title).text() ] : $(d).attr('coin-id') }) }))
     return coin_hash;
 }
 
@@ -594,16 +626,22 @@ function filterByName() {
     const filterValue = document.getElementById('filterInput').value.toLowerCase().trim(); // Trim whitespace from the input
     const cards = document.querySelectorAll('#home-sect .cardOutputStyle'); // Get all card elements within the home-sect
 
-    cards.forEach(card => {
-        const symbol = card.querySelector('.card-title').innerText.toLowerCase();
-        if (symbol === filterValue) {
-            card.style.display = 'block'; // Show matching cards
-        } else {
-            card.style.display = 'none'; // Hide non-matching cards
-        }
-    });
-    document.getElementById('filterInput').value = '';
+    coin_hash = getCoinHash();
+    coin_names_hash = getCoinNamesHash();
+    const these = Object.keys(coin_names_hash).filter( k => k.match(filterValue) ); // all coins that are not the searched coin
+    const other = Object.keys(coin_names_hash).filter( k => !k.match(filterValue) ); // all coins that are not the searched coin
+    const pat = new RegExp( other.join ("|") );
 
+    otherCards = [ ...cards].filter( card => pat.test( $(card).find('.card-title').text()) );
+    otherCards.forEach(card => 
+        card.style.display = 'none' // Hide non-matching cards
+    );
+
+    const value_pat = new RegExp( filterValue );
+    theseCards = [...cards].filter( card => value_pat.test( $(card).find('.card-title').text()) )
+    theseCards.forEach( card => card.style.display = 'block' ) // Show matching cards
+    
+    document.getElementById('filterInput').value = '';
 
 }
 
@@ -836,5 +874,30 @@ setInterval(async () => {
 
 
 
-// trying
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Get a reference to the button
+    var backToTopBtn = document.getElementById('back-to-top-btn');
+
+    // Add a click event listener to scroll to the top when clicked
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // Add smooth scrolling behavior
+        });
+    });
+
+    // Add a scroll event listener to show/hide the button based on scroll position
+    window.addEventListener('scroll', function() {
+        // Show the button when scrolling down past 200 pixels
+        if (window.pageYOffset > 200) {
+            backToTopBtn.classList.remove('d-none');
+        } else {
+            backToTopBtn.classList.add('d-none');
+        }
+    });
+});
 
