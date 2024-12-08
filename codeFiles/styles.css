@@ -83,8 +83,6 @@ body {
     width: 100%;
     z-index: 2000;
     /* Ensure it is above other content */
-
-
 }
 
 .navContainer {
@@ -486,7 +484,17 @@ bottom: 0;
     padding: 20px 0;
     margin-bottom: 20px;
 }
+
 @media (max-width: 750px) {
+
+  .about-img:nth-child(2) {
+    left: inherit!important;
+    top: 10%!important;
+  }
+
+  .navbar {
+      top: 0;
+  }
 
     .headerContainer {
         width: 100%;
@@ -543,129 +551,128 @@ bottom: 0;
         /* Set each card to occupy one-third of the container width */
     }
 
-    .card {
-        height: 100%;
-        /* Set a fixed width for each container */
+  .card {
+      height: 100%;
+      /* Set a fixed width for each container */
 
-    }
+  }
 
-    /* coin output */
-    .coinInfoImg {
-        width: 30px;
-        height: 30px;
-    }
+  /* coin output */
+  .coinInfoImg {
+      width: 30px;
+      height: 30px;
+  }
 
-    .coinInfoDiv {
-        text-align: left;
-        gap: 10px;
-        font-size: small;
-    }
+  .coinInfoDiv {
+      text-align: left;
+      gap: 10px;
+      font-size: small;
+  }
 
-    .circles-container {
-        display: none;
-
-
-
-    }
+  .circles-container {
+      display: none;
+  }
 
 
-#progress-bar {
-    width: 100%;
-    height: 10px;
-    background-color: black;
-    border-radius: 4px;
-    top: 80px;
-    /* Position it below the fixed navbar */
-    position: fixed;
-    /* Make the container sticky */
+  #progress-bar {
+      width: 100%;
+      height: 10px;
+      background-color: black;
+      border-radius: 4px;
+      top: 50px;
+      /* Position it below the fixed navbar */
+      position: fixed;
+      /* Make the container sticky */
 
-}
+  }
 
-#progress-bar-container {
-    background-color: black;
-    height: 10px;
-    margin: 0;
-    z-index: 1500;
-    /* Ensure it is above other content but below the carousel */
-    position: fixed;
-    /* Make the container sticky */
-    top: 50px;
-    /* Position it below the fixed navbar */
-    padding: 0;
-    /* Remove padding to ensure it fits correctly */
-}
+  #progress-bar-container {
+      background-color: black;
+      height: 10px;
+      margin: 0;
+      z-index: 1500;
+      /* Ensure it is above other content but below the carousel */
+      position: fixed;
+      /* Make the container sticky */
+      top: 50px;
+      /* Position it below the fixed navbar */
+      padding: 0;
+      /* Remove padding to ensure it fits correctly */
+  }
 
 
-.carusel-box {
-    height: 50px;
-}
+  .carusel-box {
+      height: 50px;
+  }
 
-.carousel-caption-text {
-    font-size: 15px;
-}
+  .carousel-caption-text {
+      font-size: 15px;
+  }
 
-.carousel-inner {
-    object-fit: cover;
-    height: 25px;
+  .carousel-inner {
+      object-fit: cover;
+      height: 25px;
 
-}
+  }
 
-.carousel-caption {
-    border-radius: 10px;
-    /* Add rounded corners */
-    position: absolute;
-    /* Position the caption absolutely within the carousel item */
-    bottom: 0;
-    /* Align the caption to the bottom of the carousel item */
-    left: 0;
-    /* Align the caption to the left side of the carousel item */
-    width: 100%;
-    /* Make the caption span the entire width of the carousel item */
-    height: auto;
-    /* Allow the caption height to adjust based on its content */
-}
+  .carousel-caption {
+      border-radius: 10px;
+      /* Add rounded corners */
+      position: absolute;
+      /* Position the caption absolutely within the carousel item */
+      bottom: 0;
+      /* Align the caption to the bottom of the carousel item */
+      left: 0;
+      /* Align the caption to the left side of the carousel item */
+      width: 100%;
+      /* Make the caption span the entire width of the carousel item */
+      height: auto;
+      /* Allow the caption height to adjust based on its content */
+  }
 
-.carousel {
-    position: fixed;
-    top: 0;
-    /* Place the carousel at the top of the viewport */
-    width: 100%;
-    height: 10px;
-    /* Adjust the height as needed */
-    z-index: 2500;
-    /* Ensure a high z-index to keep it above other elements */
-}
+  .carousel {
+      position: fixed;
+      top: 0;
+      /* Place the carousel at the top of the viewport */
+      width: 100%;
+      height: 10px;
+      /* Adjust the height as needed */
+      z-index: 2500;
+      /* Ensure a high z-index to keep it above other elements */
+  }
 
-.carousel-control-prev-icon {
-    margin-top: 5px;
-    justify-content: center;
-    height: 15px;
-}
+  .carousel-control-prev-icon {
+      margin-top: 5px;
+      justify-content: center;
+      height: 15px;
+  }
 
-.carousel-control-next-icon {
-    margin-top: 5px;
-    justify-content: center;
-    height: 15px;
-}
-.about-img:not(:nth-child(2)) {
-    display: none;
-}
-.live-reports-header {
-    position: absolute;
-    z-index: 1500;
-    top: calc(100px + 50px);
-    width: 100%;
-}
-.card-about{
-    height: 100%;
-    width: 300px;
-    margin: auto; /* Center the card horizontally */
+  .carousel-control-next-icon {
+      margin-top: 5px;
+      justify-content: center;
+      height: 15px;
+  }
+  .about-img:not(:nth-child(2)) {
+      display: none;
+  }
+  .live-reports-header {
+      z-index: 1500;
+      top: calc(100px + 50px);
+      width: 100%;
+  }
+  .card-about{
+      height: 100%;
+      width: 300px;
+      margin: auto; /* Center the card horizontally */
 
-}
-.canvasjs-chart-canvas{
-    height: 100%;
-    width: 300px;
-    margin: auto; /
-}
+  }
+  .canvasjs-chart-canvas{
+      height: 100%;
+      width: 300px;
+      margin: auto; /
+  }
 
+  *[class^="carousel-"] {
+    display : none;
+  }
 }

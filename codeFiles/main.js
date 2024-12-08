@@ -1,12 +1,13 @@
 
 
-const debug = true;
+const debug = false;  // true == do not fetch coins. Get them from HTML
 
 const reportsArray = [];
 let saveReportsArray = [];
 const addedCardIds = [];
 let eventHandlerType;
 const usdPrices = [];
+let nIntervId;
 
 const dataDebug = $.parseJSON( $('#some-data').text() ); // .then(response => response.json());
 
@@ -18,18 +19,27 @@ function simulateProgress() {
     if (val <= 100) {
         $("#progress-bar").progressbar("value", val);
         $("#progress-label").text(val + "%");
-        setTimeout(simulateProgress, 1000); // Update every 1 second
+        setTimeout(simulateProgress, 500); // Update every 1 second
     }
 }
 
 
-const startProgress = function () {
+const startProgress = function (doSim = true) {
     $("#progress-bar").progressbar({
         value: 0 // Initial value (0%)
     });
 
+  if (doSim)
     simulateProgress(); // Start the progress simulation
 };
+
+const updateProgress = function () {
+    var val = $("#progress-bar").progressbar("value");
+    $("#progress-bar").progressbar({
+        value: val + 10
+    });
+};
+
 
 const endProgress = function () {
     $("#progress-bar").progressbar({
@@ -40,17 +50,6 @@ const endProgress = function () {
 };
 
 const mainHeader = document.getElementById('main-header');
-/*
-const headerLogo = document.getElementById('header-main');
-mainHeader.setAttribute('id', 'main-header');
-mainHeader.setAttribute('class', 'mainHeaderStyle');
-mainHeader.setAttribute('class', 'parallax-header');
-mainHeader.style.fontWeight = "bold"; // Set the font weight to bold
-mainHeader.style.fontSize = "25px"; // Set the font size to 20 pixels
-
-mainHeader.style.backgroundImage = "url('../assets/cr.png')";
-headerLogo.appendChild(mainHeader);
-*/
 
 document.addEventListener('scroll', function () {
     const scrollTop = window.scrollY;
@@ -69,6 +68,39 @@ let isAdditionalInfoDisplayed = {
 };
 const navbarItems = ['home-id', 'live-reports-id', 'about-id'];
 
+
+//
+// side effects of the navbar nav items
+//
+function navClickSideEffects(itemId) {
+
+  // disable the filter buttons when not at 'Home'
+  if (itemId === 'home-id') {
+    $('.searchStyle button, .searchStyle input').attr('disabled', false);
+  } else {
+    $('.searchStyle button, .searchStyle input').attr('disabled', true);
+  }
+
+  // clear the fetch interval when no at 'Live Reports'
+  if (itemId !== 'live-reports-id' && nIntervId) {
+    clearInterval(nIntervId);
+    nIntervId = null;
+  }
+
+  if (itemId === 'live-reports-id') {
+    archive_data = { };
+  // Call fetchCoinPrices every 2 seconds
+    if (!nIntervId) {
+	nIntervId = setInterval(async () => {
+	    // Call fetchCoinPrices to fetch new coin prices
+	  if (reportsArray.length > 0 )
+	    await fetchCoinPrices();
+	}, 2000);
+      }
+  }
+
+}
+
 navbarItems.forEach(itemId => {
     const navItem = document.getElementById(itemId);
 
@@ -80,6 +112,7 @@ navbarItems.forEach(itemId => {
         toActivate.forEach(navId => $('#' + navId).removeClass('active')); // hide all sections not under itemId
         $('#' + itemId).addClass('active'); // show the section under itemId
 
+	navClickSideEffects(itemId);
         // reflect the display on the respective section(s)
         const toHide = Object.keys(isAdditionalInfoDisplayed)
             .filter(navId => navId !== itemId)
@@ -87,16 +120,30 @@ navbarItems.forEach(itemId => {
         toHide.forEach(sectId => $('#' + sectId).hide()); // hide all sections not under itemId
         $('#' + itemId.replace(/-id/, '-sect')).show(); // show the section under itemId
 
-        
         isAdditionalInfoDisplayed[itemId] = !isAdditionalInfoDisplayed[itemId];
     });
 });
 
+function addListenerToCollapse(moreInfoButton, coinId, coinInfoId ) {
+  moreInfoButton.addEventListener('click', async (ev) => {
+      const btnTarget = ev.target.getAttribute('data-bs-target');
+      const collapseElement = document.querySelector(btnTarget);
+      
+      // Check if the collapse element is opening
+      if (!$(collapseElement).hasClass('show')) {
+	  console.log($(btnTarget).prop('class'));
+	  //setTimeout(() => getMyCollapse(btnTarget), 500);
+	  startProgress(); // Call startProgress only when the collapse is opening
+	  await getCoinInfo(coinId, coinInfoId);
+      }
+  });
+}
 
 
 // a function to fetch the coin information
 async function getCoins() {
 
+    startProgress();
     try {
         let response;
         let data;
@@ -108,25 +155,21 @@ async function getCoins() {
             data = dataDebug // 'file:///Users/shakedkelman/Documents/FullStack4578:41/projects/project_two/codeFiles/coins.json');
         }
 
-        const allCoins = data.slice(0, 10000);
+      const allCoins = data//slice(0, 10000);
         console.log(allCoins);
-    
 
         const cardContainer = $('#home-sect .cards')[0];
         const totalCoins = allCoins.length;
         let currentCoinIndex = 0;
 
-        startProgress();
         allCoins.forEach((coin, index) => {
 
             const cardOutput = document.createElement('div');
             cardOutput.setAttribute('class', 'cardOutputStyle mb-3 col-md-4');
-            cardOutput.setAttribute('id', 'card-coin-output');
             const coinInfoId = `coin-info-id-${index}`;
             cardOutput.setAttribute('id', `card-coin-output-${index}`);
             cardOutput.setAttribute('coin-id', coin.id)
             cardOutput.setAttribute('coin-name', coin.symbol)
-
 
             cardOutput.innerHTML = `
             <div class="card mb-3 custom-card-style" style="max-width: 540px;">
@@ -166,9 +209,9 @@ async function getCoins() {
        cardContainer.appendChild(cardOutput);
             // updateProgress(++currentCoinIndex, totalCoins); // Update progress
 
-            // if (currentCoinIndex === totalCoins) {
-            //     endProgress(); // End progress when all coins are loaded
-            // }
+	    if (index >= totalCoins) {
+                endProgress(); // End progress when all coins are loaded
+            }
 
             function handleToggleSwitchChange(index, isChecked, coin) {
                 console.log(index, isChecked, coin)
@@ -221,22 +264,11 @@ async function getCoins() {
 
             // });
             const moreInfoButton = cardOutput.querySelector(`.more-info-btn-${index}`);
-            moreInfoButton.addEventListener('click', async (ev) => {
-                const btnTarget = ev.target.getAttribute('data-bs-target');
-                const collapseElement = document.querySelector(btnTarget);
-                
-                // Check if the collapse element is opening
-                if (!$(collapseElement).hasClass('show')) {
-                    console.log($(btnTarget).prop('class'));
-                    //setTimeout(() => getMyCollapse(btnTarget), 500);
-                    startProgress(); // Call startProgress only when the collapse is opening
-                    await getCoinInfo(coin.id, coinInfoId);
-                }
-            });
+	    addListenerToCollapse(moreInfoButton, coin.id, coinInfoId );
             
         });
         document.body.style.height = `${window.innerHeight}px`;
-        // endProgress(); // End progress when all coins are displayed
+        endProgress(); // End progress when all coins are displayed
         return allCoins;
 
     } catch (err) {
@@ -280,22 +312,28 @@ async function getCoinInfo(coinId, coinInfoId) {
             }, 2 * 60 * 1000); // 2 minutes in milliseconds
         } else {
             data = cache[coinId];
-            await sleep(2000)
+	  // await sleep(2000)
         }
 
         //$('#dummy').removeClass('done')
         //$('#dummy').addClass("load").delay(4000).addClass("done").removeClass('load');
 
-        const moreInfoData = document.getElementById(coinInfoId);
-        moreInfoData.innerHTML = `
+	// remove a possible prefixing '_' from the DOM elem id
+        const baseCoinInfoId = coinInfoId.replace( /^_/, '');
+        const moreInfoData = $(`*[id*="${baseCoinInfoId}"`).toArray();
+      console.log(data.market_data)
+	const price = data.market_data.current_price.hasOwnProperty('eur')
+	? data.market_data.current_price
+	: { usd: Math.random().toFixed(5), eur: Math.random().toFixed(5), ils: Math.random().toFixed(5) };
+      moreInfoData.forEach( mid => mid.innerHTML = `
         <img src="${data.image.small}" class="coinInfoImg">
         <div class="coinInfoDiv">
             market price:
-           <br> in usd-${data.market_data.current_price.usd}$
-           <br>  in eur-${data.market_data.current_price.eur}€
-           <br>  in ils-${data.market_data.current_price.ils}₪
+           <br> USD-${price.usd}$
+           <br> EUR-${price.eur}€
+           <br> ILS-${price.ils}₪
         </div>
-    `;
+    `);
 
         console.log(data.id);
         console.log("Coin ID:", coinId);
@@ -469,6 +507,17 @@ function reloadPage() {
     window.location.reload();
 }
 
+function processCopiedCards() {
+  const copiedCards = $('.filter .cardOutputStyle').toArray();
+  copiedCards.forEach( card => {
+    const btn = $(card).find('[class*="more-info-btn-"]');
+    const coinId = $(card).attr('coin-id');
+    const coinInfoId = card.id.replace( /card-coin-output-/, 'coin-info-id-');
+    const newCoinInfoId = `_${coinInfoId}`;
+    $(`.filter .cardOutputStyle #${coinInfoId}`).attr('id', newCoinInfoId);
+    addListenerToCollapse(btn[0], coinId, newCoinInfoId )
+  });
+}
 
 function filterByName() {
     $('.coin-container .filter').empty();
@@ -478,8 +527,8 @@ function filterByName() {
     const cards = document.querySelectorAll('#home-sect .cardOutputStyle'); // Get all card elements within the home-sect
 
   coin_names_hash = getCoinNamesHash();
-  const these = Object.values(coin_names_hash).filter( k => k.match(filterValue) ); // all coins that fit the search pattern
-  const pat = new RegExp( these.join ("|") );
+  const these = Object.values(coin_names_hash).filter( k => k.match( `^${filterValue}$`) ); // all coins that fit the search pattern
+  const pat = new RegExp( '^(' + these.join ("|") + ')$' );
 
   // DOM entities that fit the search pattern
   theseCards = [...cards].filter( card => pat.test( $(card).attr('coin-name')) )
@@ -487,7 +536,28 @@ function filterByName() {
   // copy the card to the filter container
   theseCards.forEach( card => $('.coin-container .filter').append( $(card).clone(true, true)) );
 
+  processCopiedCards();
+
   $('.coin-container .filter').show();
+  $('#filterInput').popover('hide');
+}
+
+function filterChecked() {
+    $('.coin-container .filter').empty();
+    $('.coin-container .cards').hide();
+
+    const cards = document.querySelectorAll('#home-sect .cardOutputStyle'); // Get all card elements within the home-sect
+
+  // DOM entities that fit the search pattern
+  theseCards = [ ... $(".cardOutputStyle:has( input[id*='toggle-switch-']:checked )") ]
+
+  // copy the card to the filter container
+  theseCards.forEach( card => $('.coin-container .filter').append( $(card).clone(true, true)) );
+
+  processCopiedCards();
+
+  $('.coin-container .filter').show();
+  $('#filterInput').popover('hide');
 }
 
 
@@ -495,6 +565,7 @@ function showAll() {
   document.getElementById('filterInput').value = '';
   $('.coin-container .cards').show();
   $('.coin-container .filter').hide();
+  $('#filterInput').popover('hide');
 }
 
 $(document).ready(function () {
@@ -517,6 +588,8 @@ async function fetchCoinPrices(coinSymbols) {
         try {
             const response = await fetch(`https://min-api.cryptocompare.com/data/pricemulti?fsyms=${coinSymbols}&tsyms=USD`);
             const data = await response.json();
+	    if ( /Error/.test(data.Response) )
+	      throw Error('no data available');
             console.log('Fetched coin prices:', data); // Log the fetched items
 
             //const prices = Object.keys(data).map( symbol => )
@@ -544,6 +617,21 @@ async function fetchCoinPrices(coinSymbols) {
 // // // trying]
 
 let chart; // Declare chart variable in the global scope
+
+function showDefaultText(chart, text){
+  let isEmpty = !chart.options.data || chart.options.data.length > 0 && chart.options.data[0].dataPoints && chart.options.data[0].dataPoints.length === 0;
+
+   if(!chart.options.subtitles)
+   	(chart.options.subtitles = []);
+
+   if(isEmpty)
+   	chart.options.subtitles.push({
+     text : text,
+     verticalAlign : 'center',
+   });
+   else
+   	(chart.options.subtitles = []);
+}
 
 async function initializeChart(coinPrices, symbol = 'ZCN') {
     console.log('chart works:');
@@ -593,21 +681,27 @@ async function initializeChart(coinPrices, symbol = 'ZCN') {
 
     console.log('all data series:', dataSeries);
 
-  const allYValues = Object
-    .values(dataPoints)
-    .map( d => d.data )
-    .reduce( (a,s) => [].concat(s, a) )
-    .map( d => d.y )
-    .sort( (a, b) => a-b);
+  const unlist = Object
+      .values(dataPoints)         // get the dataPoints
+      .map( d => d.data )         // retrive the data tag
+      .reduce( (a,s) => [].concat(s, a) ); // spread the lists
 
-  const delta = ( allYValues.slice(-1)[0] - allYValues[0] ) * 0.2;
-  const minYValue = allYValues[0] - delta;
+    const allYValues = unlist
+      .map( d => d.y )            // get the y component
+      .sort( (a, b) => a-b);      // sort numerically
+
+    let delta = ( allYValues.slice(-1)[0] - allYValues[0] ) * 0.2;
+    if (delta === 0) delta = allYValues[0] * 0.1;
+    const minYValue = allYValues[0] - delta;
     const maxYValue = allYValues.slice(-1)[0] + delta; // Add 1% to the maximum value
     
     console.log('Min Y Value:', minYValue);
     console.log('Max Y Value:', maxYValue);
 
-    const allXValues = Object.assign( [], ...Object.values(dataPoints).map( ({data}) => data ) ).map( ({x}) => x ).sort( (a, b) => a-b);
+    const allXValues = unlist
+      .map( d => d.x )            // get the x component
+      .sort( (a, b) => a-b);      // sort numerically
+
     const minXValue = allXValues[0];
     const maxXValue = allXValues.slice(-1)[0];
 
@@ -649,9 +743,10 @@ async function initializeChart(coinPrices, symbol = 'ZCN') {
       },
       data: dataSeries //  Use the fetched data series here
     };
-    
+
     if (typeof chart === 'undefined') {
         chart = new CanvasJS.Chart("chartContainer", options); // Assign chart to the global variable
+      showDefaultText(chart, "No Data available");
     } else {
         chart.options.axisX.minimum = minXValue;
         chart.options.axisX.maximum = maxXValue;
@@ -702,11 +797,6 @@ function addDataPoints(newDataPoints) {
 }
 
 
-// Call fetchCoinPrices every 2 seconds
-setInterval(async () => {
-    // Call fetchCoinPrices to fetch new coin prices
-    await fetchCoinPrices();
-}, 2000);
 
 
 // Update the chart data every two seconds
